@@ -1,12 +1,16 @@
 package com.thoughtworks.bbs.web;
 
+import com.thoughtworks.bbs.model.Post;
 import com.thoughtworks.bbs.model.User;
+import com.thoughtworks.bbs.service.PostService;
 import com.thoughtworks.bbs.service.UserService;
+import com.thoughtworks.bbs.service.impl.PostServiceImpl;
 import com.thoughtworks.bbs.service.impl.UserServiceImpl;
 import com.thoughtworks.bbs.util.MyBatisUtil;
 import com.thoughtworks.bbs.util.UserBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -14,13 +18,21 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
-    private UserService userService = new UserServiceImpl(MyBatisUtil.getSqlSessionFactory());
+    private UserService userService;
+    private PostService postService;
+
+    public UserController() {
+        userService = new UserServiceImpl(MyBatisUtil.getSqlSessionFactory());
+        postService = new PostServiceImpl(MyBatisUtil.getSqlSessionFactory());
+    }
 
     @RequestMapping(value = {"/create"}, method = RequestMethod.GET)
     public ModelAndView registerUser(ModelMap model) {
@@ -28,11 +40,21 @@ public class UserController {
     }
 
     @RequestMapping(value = {"/profile"}, method = RequestMethod.GET)
-    public ModelAndView userProfile(ModelMap model, Principal principal) {
+    public ModelAndView userProfile(ModelMap model, Principal principal, @ModelAttribute("post") Post post) {
         User user = userService.getByUsername(principal.getName());
         Map<String, User> map = new HashMap<String, User>();
         map.put("user", user);
 
+        List<Post> myPostsList = postService.findMainPostByAuthorName(principal.getName());
+        List<Post> myPostsSortedList = new ArrayList<Post>();
+        for (int i = 0; i < myPostsList.size();i++)
+        {
+            int num = myPostsList.size() - 1 - i;
+            myPostsSortedList.add(myPostsList.get(num));
+        }
+
+        //model.addAttribute("myPosts", postService.findMainPostByAuthorName(principal.getName()));
+        model.addAttribute("myPosts", myPostsSortedList);
         return new ModelAndView("user/profile", map);
     }
 
