@@ -66,4 +66,13 @@ public interface PostMapper {
                     "ORDER BY id asc"
     )
     List<Post> findAllPostByMainPost(Long postId);
+
+    @Select(
+            "SELECT id as postId, parent_id as parentId, author_name as authorName, title, content, create_time as createTime, " +
+                    "modify_time as modifyTime, creator_id as creatorId, modifier_id as modifierId " +
+                    "FROM post " +
+                    "ORDER BY create_time desc"
+    )
+    List<Post> findAllPostsOrderByTime();
+
 }

@@ -15,10 +15,10 @@ public interface UserMapper {
     void insert(User user);
 
     @Update(
-            "UPDATE users " +
-                    "SET username=#{userName}, password=#{passwordHash}, enabled=#{enabled} " +
-                    "WHERE id=#{id}"
-    )
+        "UPDATE users " +
+        "SET username=#{userName}, password=#{passwordHash}, enabled=#{enabled} " +
+        "WHERE id=#{id}"
+        )
     void update(User user);
 
     @Select(

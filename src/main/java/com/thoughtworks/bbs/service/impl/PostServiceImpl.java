@@ -99,4 +99,19 @@ public class PostServiceImpl implements PostService {
 
         return posts;
     }
+
+    @Override
+    public List<Post> findAllPostsOrderByTime() {
+        SqlSession session = factory.openSession();
+        List<Post> posts = new LinkedList<Post>();
+
+        try {
+            PostMapper postMapper = session.getMapper(PostMapper.class);
+            posts = postMapper.findAllPostsOrderByTime();
+        } finally {
+            session.close();
+        }
+
+        return posts;
+    }
 }
