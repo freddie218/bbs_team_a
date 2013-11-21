@@ -3,6 +3,23 @@
 
 <%@ include file="../header.jsp" %>
 
+<c:choose>
+	<c:when test="${not empty error}">
+		<div class="page-action">
+			<div class="alert alert-danger col-sm-offset-2 col-sm-4">
+				Failed to change password!
+			</div>
+		</div>
+	</c:when>
+	<c:when test="${not empty success}">
+		<div class="page-action">
+			<div class="alert alert-success col-sm-offset-2 col-sm-4">
+				Password changed successfully.
+			</div>
+		</div>
+	</c:when>
+</c:choose>
+
 <div id="userInformation">
     <table class="table">
         <tr>
@@ -16,5 +33,7 @@
     </table>
 
 </div>
+
+<a href="changePassword">Change Password</a>
 
 <%@ include file="../footer.jsp" %>

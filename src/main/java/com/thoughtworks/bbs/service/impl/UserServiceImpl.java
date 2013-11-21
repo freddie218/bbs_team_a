@@ -78,4 +78,39 @@ public class UserServiceImpl implements UserService {
 
         return user;
     }
+
+    @Override
+    public ServiceResult<User> update(User user) {
+        SqlSession session = factory.openSession();
+        ServiceResult<User> serviceResult = null;
+        Map<String, String> errors = validator.validate(user);
+
+        if(errors.isEmpty()) {
+            try {
+                UserMapper mapper = session.getMapper(UserMapper.class);
+                mapper.update(user);
+                session.commit();
+            }catch (Exception e) {
+                errors.put("SqlError", e.getMessage());
+            }
+            finally {
+                session.close();
+            }
+        }
+        serviceResult = new ServiceResult<User>(errors, user);
+        return serviceResult;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    @Override
+    public boolean userVerify(User user, String password) {
+        return user.getPasswordHash().equals(password);
+    }
+
+    @Override
+    public boolean password(User user, String newpass) {
+        user.setPasswordHash(newpass);
+        if(update(user).hasErrors())
+            return false;
+        return true;
+    }
 }
