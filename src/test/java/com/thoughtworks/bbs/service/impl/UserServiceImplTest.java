@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 public class UserServiceImplTest {
@@ -44,4 +45,39 @@ public class UserServiceImplTest {
         verify(userMapper).insert(user);
     }
 
+    @Test
+<<<<<<< HEAD
+    public void shouldUpdateUserWhenUpdateExistedUser(){
+        user.setPasswordHash("changepassword");
+=======
+    public void shouldUpdateUserInfoWhenUpdate(){
+>>>>>>> 161413ab8ccbeeb862cfa10d9d46cee55c27467d
+        userService.update(user);
+
+        verify(userMapper).update(user);
+    }
+<<<<<<< HEAD
+=======
+
+    @Test
+    public void shouldReturnFalseWhenPasswordIncorrect_TrueWhenCorrect() {
+        String password = user.getPasswordHash();
+        assertEquals(userService.userVerify(user, password), true);
+        String wrongPassword = "xxxxxxxxxx";
+        assertEquals(userService.userVerify(user, wrongPassword), false);
+    }
+
+    @Test
+    public void shouldChangeUserPasswordWhenAsked() {
+        User updatedUser = new User();
+        updatedUser.setUserName(user.getUserName());
+        updatedUser.setPasswordHash("newpass");
+        when(userMapper.findByUsername(user.getUserName())).thenReturn(updatedUser);
+
+        boolean ret = userService.password(user, "newpass");
+        verify(userMapper).update(user);
+        assertEquals(userService.getByUsername(user.getUserName()).getPasswordHash(), "newpass");
+        assertEquals(ret, true);
+    }
+>>>>>>> 161413ab8ccbeeb862cfa10d9d46cee55c27467d
 }

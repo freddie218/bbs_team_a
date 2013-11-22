@@ -4,13 +4,14 @@ import com.thoughtworks.bbs.model.Post;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-public class PostMapperTest extends MapperTestBase{
+public class PostMapperTest extends MapperTestBase {
     PostMapper postMapper;
     Post post;
 
@@ -73,5 +74,33 @@ public class PostMapperTest extends MapperTestBase{
         List<Post> resultList = postMapper.findAllPostByMainPost(3L);
 
         assertThat(resultList.size(), is(before + 3));
+    }
+
+    @Test
+    public void shouldFindAllPostOrderByTime() {
+        List<Post> before = postMapper.findAllPostsOrderByTime();
+        Post post1 = new Post().setAuthorName("first").setTitle("I am a post").setContent("content").setCreateTime(new Date(2013,11,21))
+                .setModifyTime(new Date()).setCreatorId(1L).setModifierId(1L).setParentId(3L);
+        Post post2 = new Post().setAuthorName("second").setTitle("I am a post").setContent("content").setCreateTime(new Date(2013,11,22))
+                .setModifyTime(new Date()).setCreatorId(1L).setModifierId(1L).setParentId(2L);
+        Post post3 = new Post().setAuthorName("third").setTitle("I am a post").setContent("content").setCreateTime(new Date(2013,11,23))
+                .setModifyTime(new Date()).setCreatorId(1L).setModifierId(1L).setParentId(3L);
+        postMapper.insert(post1);
+        postMapper.insert(post2);
+        postMapper.insert(post3);
+
+        List<Post> expectedResult = new ArrayList<Post>();
+        expectedResult.add(post3);
+        expectedResult.add(post2);
+        expectedResult.add(post1);
+        expectedResult.addAll(before);
+
+        List<Post> postResult = postMapper.findAllPostsOrderByTime();
+
+        assertThat(postResult.size(), is(expectedResult.size()));
+        assertThat(postResult.get(0).getAuthorName(), is("third"));
+        assertThat(postResult.get(1).getAuthorName(), is("second"));
+        assertThat(postResult.get(2).getAuthorName(), is("first"));
+
     }
 }
