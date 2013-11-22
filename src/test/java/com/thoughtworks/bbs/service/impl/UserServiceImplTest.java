@@ -46,18 +46,11 @@ public class UserServiceImplTest {
     }
 
     @Test
-<<<<<<< HEAD
-    public void shouldUpdateUserWhenUpdateExistedUser(){
-        user.setPasswordHash("changepassword");
-=======
     public void shouldUpdateUserInfoWhenUpdate(){
->>>>>>> 161413ab8ccbeeb862cfa10d9d46cee55c27467d
         userService.update(user);
 
         verify(userMapper).update(user);
     }
-<<<<<<< HEAD
-=======
 
     @Test
     public void shouldReturnFalseWhenPasswordIncorrect_TrueWhenCorrect() {
@@ -79,5 +72,4 @@ public class UserServiceImplTest {
         assertEquals(userService.getByUsername(user.getUserName()).getPasswordHash(), "newpass");
         assertEquals(ret, true);
     }
->>>>>>> 161413ab8ccbeeb862cfa10d9d46cee55c27467d
 }

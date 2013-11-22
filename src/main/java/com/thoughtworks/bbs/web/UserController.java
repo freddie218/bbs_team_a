@@ -33,6 +33,10 @@ public class UserController {
         postService = new PostServiceImpl(MyBatisUtil.getSqlSessionFactory());
     }
 
+
+
+
+
     public UserController(UserService userService) {
         this.userService = userService;
     }
