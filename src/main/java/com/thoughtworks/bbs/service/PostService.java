@@ -17,4 +17,8 @@ public interface PostService {
     List<Post> findAllPostByMainPost(Long postId);
 
     List<Post> findAllPostsOrderByTime();
+
+    boolean titleIsEmpty(String title);
+
+    boolean contentIsEmpty(String contents);
 }
