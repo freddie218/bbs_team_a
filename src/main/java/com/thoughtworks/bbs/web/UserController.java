@@ -10,6 +10,7 @@ import com.thoughtworks.bbs.util.MyBatisUtil;
 import com.thoughtworks.bbs.util.UserBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -33,13 +34,14 @@ public class UserController {
         postService = new PostServiceImpl(MyBatisUtil.getSqlSessionFactory());
     }
 
-
-
-
+    public void setPostService(PostService postService){
+        this.postService = postService;
+    }
 
     public UserController(UserService userService) {
         this.userService = userService;
     }
+
 
     @RequestMapping(value = {"/create"}, method = RequestMethod.GET)
     public ModelAndView registerUser(ModelMap model) {
@@ -54,6 +56,7 @@ public class UserController {
 
         List<Post> myPostsList = postService.findMainPostByAuthorName(principal.getName());
         List<Post> myPostsSortedList = new ArrayList<Post>();
+
         for (int i = 0; i < myPostsList.size();i++)
         {
             int num = myPostsList.size() - 1 - i;
@@ -63,7 +66,6 @@ public class UserController {
         //model.addAttribute("myPosts", postService.findMainPostByAuthorName(principal.getName()));
         model.addAttribute("myPosts", myPostsSortedList);
         return new ModelAndView("user/profile", map);
-
     }
 
     @RequestMapping(value = {"/create"}, method = RequestMethod.POST)
