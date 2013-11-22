@@ -19,6 +19,7 @@ public class PostValidatorTest {
         post = new Post();
         post.setAuthorName("Juntao");
         post.setTitle("Introduce to TDD");
+        post.setContent("TDD");
     }
 
     @Test
@@ -41,5 +42,13 @@ public class PostValidatorTest {
         Map<String, String> errors = validator.validate(post);
 
         assertThat(errors.get("title"), is("Please enter post title"));
+    }
+
+    @Test
+    public  void  shouldHasContent(){
+        post.setContent(null);
+        Map<String, String> errors = validator.validate(post);
+
+        assertThat(errors.get("content"), is("Please enter post content"));
     }
 }

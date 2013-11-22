@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -90,5 +91,29 @@ public class PostServiceImplTest {
 
         verify(mapper).findAllPostsOrderByTime();
         assertThat(returnedPostList, is(expectedPostList));
+    }
+
+    @Test
+    public void shouldReturnTrueWhenTitleIsEmpty(){
+        String title = "";
+        assertEquals(postService.titleIsEmpty(title),true);
+    }
+
+    @Test
+    public void shouldReturnFalseWhenTitleIsNotEmpty(){
+        String title = "hello";
+        assertEquals(postService.titleIsEmpty(title),false);
+    }
+
+    @Test
+    public void shouldReturnTrueWhenContentsIsEmpty(){
+        String content = "";
+        assertEquals(postService.contentIsEmpty(content),true);
+    }
+
+    @Test
+    public void shouldReturnFalseWhenContentIsNotEmpty(){
+        String content = "hello everyone";
+        assertEquals(postService.contentIsEmpty(content),false);
     }
 }
