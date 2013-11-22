@@ -3,6 +3,21 @@
 
 <%@ include file="../header.jsp" %>
 
+
+    <c:choose>
+        <c:when test="${not empty error}">
+            <div id="createError" class="page-action create-error">
+                Both title and content can not be empty!
+                ${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}
+            </div>
+        </c:when>
+        <c:otherwise>
+            <div id="createHint" class="page-action">
+
+            </div>
+        </c:otherwise>
+    </c:choose>
+
 <div id="createPanel">
     <form class="form-horizontal" action="<c:url value='/posts/create' />" method="post">
         <div class="control-group">
