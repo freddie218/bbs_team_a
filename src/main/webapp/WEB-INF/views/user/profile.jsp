@@ -34,7 +34,6 @@
 
 </div>
 
-<<<<<<< HEAD
 <div id="myPost">
     <h2> My Posts</h2>
     <table class="table table-striped">
@@ -65,8 +64,6 @@
     </table>
 
 </div>
-=======
 <a href="changePassword">Change Password</a>
->>>>>>> 1d39f468d7a95a8ae3a3fa61555e8686a9df75ec
 
 <%@ include file="../footer.jsp" %>
