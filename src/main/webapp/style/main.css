@@ -91,3 +91,7 @@ table {
 .text-error {
     color: indianred;
 }
+
+#createError {
+    color: red;
+}
