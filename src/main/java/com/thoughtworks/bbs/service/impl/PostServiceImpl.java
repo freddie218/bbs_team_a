@@ -114,4 +114,20 @@ public class PostServiceImpl implements PostService {
 
         return posts;
     }
+
+    @Override
+    public boolean titleIsEmpty(String title) {
+        if(title.isEmpty())
+            return true;  //To change body of created methods use File | Settings | File Templates.
+        else
+            return false;
+    }
+
+    @Override
+    public boolean contentIsEmpty(String contents) {
+        if(contents.isEmpty())
+            return true;  //To change body of created methods use File | Settings | File Templates.
+        else
+            return false;
+    }
 }
