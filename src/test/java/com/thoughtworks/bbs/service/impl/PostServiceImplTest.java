@@ -35,7 +35,7 @@ public class PostServiceImplTest {
         postService = new PostServiceImpl(sessionFactory);
 
         postBuilder = new PostBuilder();
-        postBuilder.author("juntao").title("Introduce to TDD");
+        postBuilder.author("juntao").title("Introduce to TDD").content("ssss");
     }
 
     @Test
