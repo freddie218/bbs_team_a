@@ -39,7 +39,7 @@
 		var pass = changePassword.password.value;
 		var new_pass = changePassword.newPassword.value;
 		var cfm_pass = changePassword.confirmPassword.value;
-		var pass_rule=/^(\d[_0-9]{5,11})$/;
+		var pass_rule=/^([a-zA-Z0-9]\w{5,11})$/;
 		if (pass == ""){
 		    document.getElementById("password").focus();
 		    document.getElementById("pswdInfo").className="help-line text-danger";
@@ -54,7 +54,7 @@
 		    document.getElementById("newPassword").focus();
 		    document.getElementById("newPassInfo").className="help-line text-danger";
 		    document.getElementById("newPassInfo").innerHTML=
-		    "New password must be 6-12 characters(starting with a digit, and merely containing '_' and '0-9')!";
+		    "New password must be 6-12 characters(merely containing letters, '_'and '0-9' and not starting with a '_')!";
 		    return(false);
 		    }
 		    else if(new_pass == pass) {
