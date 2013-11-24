@@ -18,6 +18,8 @@ public interface PostService {
 
     List<Post> findAllPostsOrderByTime();
 
+    List<Post> findMainPostByAuthorNameSortedByCreateTime(String authorName);
+
     boolean titleIsEmpty(String title);
 
     boolean contentIsEmpty(String contents);

@@ -10,7 +10,6 @@ import com.thoughtworks.bbs.util.MyBatisUtil;
 import com.thoughtworks.bbs.util.UserBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -53,18 +52,7 @@ public class UserController {
         Map<String, User> map = new HashMap<String, User>();
         map.put("user", user);
 
-        // should not put this processing into this file.
-        List<Post> myPostsList = postService.findMainPostByAuthorName(principal.getName());
-        List<Post> myPostsSortedList = new ArrayList<Post>();
-
-        for (int i = 0; i < myPostsList.size();i++)
-        {
-            int num = myPostsList.size() - 1 - i;
-            myPostsSortedList.add(myPostsList.get(num));
-        }
-
-        //model.addAttribute("myPosts", postService.findMainPostByAuthorName(principal.getName()));
-        model.addAttribute("myPosts", myPostsSortedList);
+        model.addAttribute("myPosts", postService.findMainPostByAuthorNameSortedByCreateTime(principal.getName()));
         return new ModelAndView("user/profile", map);
     }
 
@@ -100,17 +88,10 @@ public class UserController {
         String newPasswd = request.getParameter("confirmPassword");
         Map<String, User> map = new HashMap<String, User>();
         map.put("user", user);
-        // Although function works, sort process should not be put in this file.
-        // Put into postService instead.
-        List<Post> myPosts = postService.findMainPostByAuthorName(principal.getName());
-        Collections.sort(myPosts, new Comparator<Post>() {
-            @Override
-            public int compare(Post post1, Post post2) {
-                return post2.getModifyTime().compareTo(post1.getModifyTime());
-            }
-        });
-        // till here.
+
+        List<Post> myPosts = postService.findMainPostByAuthorNameSortedByCreateTime(principal.getName());
         model.addAttribute("myPosts", myPosts);
+
         if (userService.userVerify(user, password) && userService.password(user, newPasswd)){
             model.addAttribute("success", "Password changed successfully.");
             return new ModelAndView("user/profile", map);

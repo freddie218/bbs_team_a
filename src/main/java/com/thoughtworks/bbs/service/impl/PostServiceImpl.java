@@ -8,9 +8,7 @@ import com.thoughtworks.bbs.service.ServiceResult;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class PostServiceImpl implements PostService {
     private SqlSessionFactory factory;
@@ -113,6 +111,19 @@ public class PostServiceImpl implements PostService {
         }
 
         return posts;
+    }
+
+    @Override
+    public List<Post> findMainPostByAuthorNameSortedByCreateTime(String authorName) {
+        List<Post> postByAuthorName = findMainPostByAuthorName(authorName);
+
+        Collections.sort(postByAuthorName, new Comparator<Post>() {
+            @Override
+            public int compare(Post post1, Post post2) {
+                return post2.getModifyTime().compareTo(post1.getModifyTime());
+            }
+        });
+        return postByAuthorName;
     }
 
     @Override
