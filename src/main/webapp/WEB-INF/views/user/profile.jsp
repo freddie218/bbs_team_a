@@ -31,7 +31,7 @@
             <td>${user.enabled}</td>
         </tr>
     </table>
-
+    <a href="changePassword">Change Password</a>
 </div>
 
 <div id="myPost">
@@ -64,6 +64,5 @@
     </table>
 
 </div>
-<a href="changePassword">Change Password</a>
 
 <%@ include file="../footer.jsp" %>

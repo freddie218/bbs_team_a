@@ -5,28 +5,24 @@ import com.thoughtworks.bbs.model.User;
 import com.thoughtworks.bbs.service.PostService;
 import com.thoughtworks.bbs.service.UserService;
 import com.thoughtworks.bbs.service.impl.UserServiceImpl;
-import com.thoughtworks.bbs.util.PostBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
-import sun.security.acl.PrincipalImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 public class UserControllerTest {
-    private UserService service;
+    private UserService userService;
     private PostService postService;//me
     private UserController userController;
     private HttpServletRequest request;
@@ -36,13 +32,13 @@ public class UserControllerTest {
     private Post post;
     private ModelAndView expected;
     private ModelAndView result;
-    private Map<String, User> map;
     private List<Post> postList;
 
     @Before
     public void setup() {
-        service = mock(UserServiceImpl.class);
+        userService = mock(UserServiceImpl.class);
         postService = mock(PostService.class);
+        principal = mock(Principal.class);
         request = mock(HttpServletRequest.class);
 
         user = new User();
@@ -55,19 +51,11 @@ public class UserControllerTest {
         postList = new ArrayList<Post>();
         postList.add(post);
 
-        principal = new PrincipalImpl("username");
-
-        when(service.getByUsername("username")).thenReturn(user);
+        when(principal.getName()).thenReturn("username");
+        when(userService.getByUsername("username")).thenReturn(user);
         when(postService.findMainPostByAuthorName("username")).thenReturn(postList);
-        when(request.getParameter("username")).thenReturn("username");
-        when(request.getParameter("password")).thenReturn("123456");
-        when(request.getParameter("confirmPassword")).thenReturn("12345678");
 
-        userController = new UserController(service);
-        userController.setPostService(postService);
-        map = new HashMap<String, User>();
-        map.put("user", user);
-
+        userController = new UserController().setUserService(userService).setPostService(postService);
     }
 
     @Test
@@ -76,39 +64,32 @@ public class UserControllerTest {
         expected = new ModelAndView("user/register");
 
         assertEquals("Page should jump to user/register page", expected.getViewName(), result.getViewName());
-        assertEquals("view should be equal", expected.getView(), result.getView());
-        assertEquals("model should be equal", expected.getModel(), result.getModel());
     }
 
     @Test
     public void shouldJumpToProfileWhenUrlMatchProfile() {
         ModelMap model = new ModelMap();
-        model.addAttribute("myPosts", postList);
 
         result = userController.userProfile(model,principal);
-        expected = new ModelAndView("user/profile", map);
+        expected = new ModelAndView("user/profile");
 
         assertEquals("page should jump to user/profile", expected.getViewName(), result.getViewName());
-        assertEquals("view should be equal", expected.getView(), result.getView());
-        assertEquals("model should be equal", expected.getModel(), result.getModel());
     }
 
     @Test
     public void shouldJumpToChangePasswordWhenUrlMatchChangePassword() {
 
         result = userController.changePassword(new ModelMap(), principal);
-        expected = new ModelAndView("user/changePassword", map);
+        expected = new ModelAndView("user/changePassword");
 
         assertEquals("page should jump to user/changePassword", expected.getViewName(), result.getViewName());
-        assertEquals("view should be equal", expected.getView(), result.getView());
-        assertEquals("model should be equal", expected.getModel(), result.getModel());
     }
 
     @Test
     public void shouldJumpToCreateSuccessAfterCreateNew() {
         Throwable th = null;
 
-        expected = new ModelAndView("user/createSuccess", map);
+        expected = new ModelAndView("user/createSuccess");
         try {
             result = userController.processCreate(request);
         } catch (IOException e) {
@@ -116,43 +97,46 @@ public class UserControllerTest {
         }
 
         assertEquals("page should jump to user/createSuccess", expected.getViewName(), result.getViewName());
-        assertEquals("view should be equal", expected.getView(), result.getView());
-        assertEquals("model should be equal", expected.getModel(), result.getModel());
         assertNull("There should be no exceptions.", th);
     }
 
     @Test
-    public void shouldJumpToProfileAfterPasswordChange() {
+    public void shouldJumpToProfileAfterPasswordChangeSuccess() {
         Throwable th = null;
         ModelMap model = new ModelMap();
-        model.addAttribute("success", "Password changed successfully.");
+        when(request.getParameter("password")).thenReturn("123456");
+        when(request.getParameter("confirmPassword")).thenReturn("1234567");
+        when(userService.userVerify(user, "123456")).thenReturn(true);
+        when(userService.password(user, "1234567")).thenReturn(true);
 
-        expected = new ModelAndView("user/profile", map);
+
+        expected = new ModelAndView("user/profile");
         try {
             result = userController.processPasswordChange(request, principal, model);
         } catch (IOException e) {
            th = e;
         }
-
-        assertEquals("page should jump to user/createSuccess", expected.getViewName(), result.getViewName());
-        assertEquals("view should be equal", expected.getView(), result.getView());
-        assertEquals("model should be equal", expected.getModel(), result.getModel());
-
+        verify(userService).password(user, "1234567");
+        assertEquals("page should jump to user/profile", expected.getViewName(), result.getViewName());
         assertNull("There should be no exceptions.", th);
+    }
 
-        model.clear();
-        model.addAttribute("error", "Failed to change password.");
+    @Test
+    public void shouldJumpToProfileAfterPasswordChangeFailed() {
+        Throwable th = null;
+        ModelMap model = new ModelMap();
+        when(request.getParameter("password")).thenReturn("12345678");
+        when(request.getParameter("confirmPassword")).thenReturn("1234567");
+        when(userService.userVerify(user, "12345678")).thenReturn(false);
 
-        expected = new ModelAndView("user/profile", map);
+        expected = new ModelAndView("user/profile");
         try {
             result = userController.processPasswordChange(request, principal, model);
         } catch (IOException e) {
             th = e;
         }
-
-        assertEquals("page should jump to user/createSuccess", expected.getViewName(), result.getViewName());
-        assertEquals("view should be equal", expected.getView(), result.getView());
-        assertEquals("model should be equal", expected.getModel(), result.getModel());
+        verify(userService, times(0)).password(user, "1234567");
+        assertEquals("page should jump to user/profile", expected.getViewName(), result.getViewName());
         assertNull("There should be no exceptions.", th);
     }
 }

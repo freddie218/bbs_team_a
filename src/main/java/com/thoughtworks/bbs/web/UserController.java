@@ -18,10 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.security.Principal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/user")
@@ -34,12 +31,14 @@ public class UserController {
         postService = new PostServiceImpl(MyBatisUtil.getSqlSessionFactory());
     }
 
-    public void setPostService(PostService postService){
+    public UserController setPostService(PostService postService){
         this.postService = postService;
+        return this;
     }
 
-    public UserController(UserService userService) {
+    public UserController setUserService(UserService userService) {
         this.userService = userService;
+        return this;
     }
 
 
@@ -54,6 +53,7 @@ public class UserController {
         Map<String, User> map = new HashMap<String, User>();
         map.put("user", user);
 
+        // should not put this processing into this file.
         List<Post> myPostsList = postService.findMainPostByAuthorName(principal.getName());
         List<Post> myPostsSortedList = new ArrayList<Post>();
 
@@ -100,6 +100,17 @@ public class UserController {
         String newPasswd = request.getParameter("confirmPassword");
         Map<String, User> map = new HashMap<String, User>();
         map.put("user", user);
+        // Although function works, sort process should not be put in this file.
+        // Put into postService instead.
+        List<Post> myPosts = postService.findMainPostByAuthorName(principal.getName());
+        Collections.sort(myPosts, new Comparator<Post>() {
+            @Override
+            public int compare(Post post1, Post post2) {
+                return post2.getModifyTime().compareTo(post1.getModifyTime());
+            }
+        });
+        // till here.
+        model.addAttribute("myPosts", myPosts);
         if (userService.userVerify(user, password) && userService.password(user, newPasswd)){
             model.addAttribute("success", "Password changed successfully.");
             return new ModelAndView("user/profile", map);
