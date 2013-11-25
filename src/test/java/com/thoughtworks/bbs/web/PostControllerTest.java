@@ -53,11 +53,6 @@ public class PostControllerTest {
         user.setId(0L);
 
         when(userService.getByUsername("name")).thenReturn(user);
-        when(postservice.titleIsEmpty("")).thenReturn(true);
-        when(postservice.titleIsEmpty("hello")).thenReturn(false);
-        when(postservice.contentIsEmpty("")).thenReturn(true);
-        when(postservice.contentIsEmpty("hello everyone")).thenReturn(false);
-
         when(request.getParameter("parentId")).thenReturn("0");
 
         model = new ExtendedModelMap();
@@ -77,8 +72,6 @@ public class PostControllerTest {
         expected = new ModelAndView("home");
 
         assertEquals("page should jump to home",expected.getViewName(),result.getViewName());
-        assertEquals("view should be equal",expected.getView(),result.getView());
-        assertEquals("model should be equal",expected.getModel(),result.getModel());
     }
 
     @Test
@@ -90,10 +83,23 @@ public class PostControllerTest {
         result = postController.processCreate(request,principal,model);
         expected= new ModelAndView("posts/create");
 
-        assertEquals("page should jump to home",expected.getViewName(),result.getViewName());
-        assertEquals("view should be equal",expected.getView(),result.getView());
-        assertEquals("model should be equal",expected.getModel(),result.getModel());
+        assertEquals("page should jump to posts/create",expected.getViewName(),result.getViewName());
+
     }
+
+    @Test
+    public void shouldToPostCreateWhenContentIsEmpty() throws IOException {
+
+        when(request.getParameter("title")).thenReturn("hello");
+        when(request.getParameter("content")).thenReturn("");
+
+        result = postController.processCreate(request,principal,model);
+        expected= new ModelAndView("posts/create");
+
+        assertEquals("page should jump to posts/create",expected.getViewName(),result.getViewName());
+
+    }
+
 
     @Test
     public void shouldToPostCreateWhenTitleAndContentAreEmpty() throws IOException {
@@ -104,9 +110,8 @@ public class PostControllerTest {
         result = postController.processCreate(request,principal,model);
         expected= new ModelAndView("posts/create");
 
-        assertEquals("page should jump to home",expected.getViewName(),result.getViewName());
-        assertEquals("view should be equal",expected.getView(),result.getView());
-        assertEquals("model should be equal",expected.getModel(),result.getModel());
+        assertEquals("page should jump to posts/create",expected.getViewName(),result.getViewName());
+
     }
 
 }

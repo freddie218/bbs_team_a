@@ -65,7 +65,7 @@ public class PostController {
         }
         User currentUser = userService.getByUsername(principal.getName());
 
-        if(postService.titleIsEmpty(title)||postService.contentIsEmpty(content)){
+        if(isTitleOrContentEmpty(title,content)){
            model.addAttribute("error","true");
            return new ModelAndView("posts/create");
         }
@@ -79,5 +79,12 @@ public class PostController {
         model.addAttribute("posts", postService.findAllPostsOrderByTime());
         return new ModelAndView("home");
         //return new ModelAndView("posts/createSuccess");
+    }
+
+    public boolean isTitleOrContentEmpty(String title, String content){
+        if(title.isEmpty() || content.isEmpty())
+            return true;
+        else
+            return false;
     }
 }
