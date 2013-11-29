@@ -5,8 +5,12 @@ import com.thoughtworks.bbs.model.User;
 import com.thoughtworks.bbs.service.PostService;
 import com.thoughtworks.bbs.service.UserService;
 import com.thoughtworks.bbs.service.impl.UserServiceImpl;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentMatcher;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -23,7 +27,7 @@ import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 public class UserControllerTest {
     private UserService userService;
-    private PostService postService;//me
+    private PostService postService;
     private UserController userController;
     private HttpServletRequest request;
 
@@ -116,7 +120,7 @@ public class UserControllerTest {
         } catch (IOException e) {
            th = e;
         }
-        verify(userService).password(user, "1234567");
+        verify(userService).password(eq(user), argThat(new PasswordMatcher()));
         assertEquals("page should jump to user/profile", expected.getViewName(), result.getViewName());
         assertNull("There should be no exceptions.", th);
     }
@@ -135,8 +139,28 @@ public class UserControllerTest {
         } catch (IOException e) {
             th = e;
         }
-        verify(userService, times(0)).password(user, "1234567");
+        verify(userService, times(0)).password(argThat(new UserMatcher()), argThat(new PasswordMatcher()));
         assertEquals("page should jump to user/profile", expected.getViewName(), result.getViewName());
         assertNull("There should be no exceptions.", th);
+    }
+
+    private class PasswordMatcher extends ArgumentMatcher<String> {
+
+        @Override
+        public boolean matches(Object item) {
+            if(item != null && item instanceof String)
+                return true;
+            return false;
+        }
+    }
+
+    private class UserMatcher extends ArgumentMatcher<User> {
+
+        @Override
+        public boolean matches(Object arg) {
+            if( null == arg || !(arg instanceof User) )
+                return  false;
+            return ((User) arg).getUserName().equals("username");
+        }
     }
 }

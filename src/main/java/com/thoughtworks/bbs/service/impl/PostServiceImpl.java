@@ -120,7 +120,7 @@ public class PostServiceImpl implements PostService {
         Collections.sort(postByAuthorName, new Comparator<Post>() {
             @Override
             public int compare(Post post1, Post post2) {
-                return post2.getModifyTime().compareTo(post1.getModifyTime());
+                return post2.getCreateTime().compareTo(post1.getCreateTime());
             }
         });
         return postByAuthorName;
