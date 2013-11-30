@@ -93,5 +93,7 @@ table {
 }
 
 #createError {
+    text-align: left;
+    margin-left: 130px;
     color: red;
 }
