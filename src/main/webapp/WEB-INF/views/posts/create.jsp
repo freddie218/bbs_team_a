@@ -7,7 +7,7 @@
     <c:choose>
         <c:when test="${not empty error}">
             <div id="createError" class="page-action create-error">
-                Both title and content can not be empty!
+                Title or content cannot be empty!
                 ${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}
             </div>
         </c:when>
