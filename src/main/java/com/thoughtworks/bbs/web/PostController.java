@@ -78,13 +78,9 @@ public class PostController {
 
         model.addAttribute("posts", postService.findAllPostsOrderByTime());
         return new ModelAndView("home");
-        //return new ModelAndView("posts/createSuccess");
     }
 
     public boolean isTitleOrContentEmpty(String title, String content){
-        if(title.isEmpty() || content.isEmpty())
-            return true;
-        else
-            return false;
+        return title.isEmpty() || content.isEmpty();
     }
 }
