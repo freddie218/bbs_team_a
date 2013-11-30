@@ -94,6 +94,8 @@ table {
 
 #createError {
     text-align: left;
-    margin-left: 130px;
-    color: red;
+    margin-left: 145px;
+    width: 350px;
+    background: #9d2932;
+    color: white;
 }
