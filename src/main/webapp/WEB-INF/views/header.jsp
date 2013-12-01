@@ -35,6 +35,9 @@
                             <li>
                                 <a href="<c:url value='/user/create' />" class="nav_link"><i class="icon-plus"></i> Create User</a>
                             </li>
+                            <li>
+                                <a href="<c:url value='/user/users' />" class="nav_link"><i class="icon-plus"></i> Users</a>
+                            </li>
                         </security:authorize>
                         <li>
                             <a href="<c:url value='/posts/create' />" class="nav_link"><i class="icon-plus"></i> Create Post</a>
