@@ -137,6 +137,15 @@ public class UserControllerTest {
         assertEquals("page should jump to user/profile", expected.getViewName(), result.getViewName());
     }
 
+    @Test
+    public void shouldJumpToUpdateProfileWhenUrlMatchUpdateUsername() {
+
+        result = userController.changeUsername(new ModelMap(), principal);
+        expected = new ModelAndView("user/updateProfile");
+
+        assertEquals("page should jump to user/updateProfile", expected.getViewName(), result.getViewName());
+    }
+
     private class UserMatcher extends ArgumentMatcher<User> {
 
         @Override

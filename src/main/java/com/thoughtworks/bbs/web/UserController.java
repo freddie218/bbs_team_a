@@ -56,6 +56,15 @@ public class UserController {
         return new ModelAndView("user/profile", map);
     }
 
+    @RequestMapping(value = {"/updateProfile"}, method = RequestMethod.GET)
+    public ModelAndView changeUsername(ModelMap model,Principal principal) {
+        User user = userService.getByUsername(principal.getName());
+        Map<String,User> map = new HashMap<String,User>();
+        map.put("user",user);
+
+        return new ModelAndView("user/updateProfile",map);
+    }
+
     @RequestMapping(value = {"/create"}, method = RequestMethod.POST)
     public ModelAndView processCreate(HttpServletRequest request) throws IOException {
         String username = request.getParameter("username");

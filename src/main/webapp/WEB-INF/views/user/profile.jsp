@@ -32,6 +32,7 @@
         </tr>
     </table>
     <a href="changePassword">Change Password</a>
+    <a href="updateProfile">Update Profile</a>
 </div>
 
 <div id="myPost">
@@ -57,7 +58,8 @@
                     </a>
                 </td>
                 <td><c:out value="${post.authorName}"/></td>
-                <td><c:out value="${post.createTime}"/></td>
+                <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+                <td><fmt:formatDate value="${post.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
             </tr>
         </c:forEach>
         </tbody>
