@@ -32,6 +32,7 @@
         </tr>
     </table>
     <a href="changePassword">Change Password</a>
+    <a href="updateProfile">Update Profile</a>
 </div>
 
 <div id="myPost">
