@@ -56,7 +56,7 @@ public class PostServiceImplTest {
     @Test
     public void shouldGetPostByAuthorName() {
         String authorName = "juntao";
-        List<Post> expectedPostList = new ArrayList();
+        List<Post> expectedPostList = new ArrayList<Post>();
         expectedPostList.add(new Post());
         when((mapper.findMainPostByAuthorName(authorName))).thenReturn(expectedPostList);
 
@@ -69,7 +69,7 @@ public class PostServiceImplTest {
     public void shouldGetAllPostByMainPost() {
         Long id = 1L;
 
-        List<Post> expectedPostList = new ArrayList();
+        List<Post> expectedPostList = new ArrayList<Post>();
         expectedPostList.add(new Post());
         when((mapper.findAllPostByMainPost(id))).thenReturn(expectedPostList);
 
@@ -80,7 +80,7 @@ public class PostServiceImplTest {
 
     @Test
     public void shouldGetAllPostsOrderByTime() {
-        List<Post> expectedPostList = new ArrayList();
+        List<Post> expectedPostList = new ArrayList<Post>();
         expectedPostList.add(new Post());
         expectedPostList.add(new Post());
         expectedPostList.add(new Post());
