@@ -17,7 +17,7 @@ public interface UserService {
 
     ServiceResult<User> update(User user);
 
-    boolean userVerify(User user, String password);
+    boolean passwordVerify(User user, String password);
 
     boolean password(User user, String newpass);
 }

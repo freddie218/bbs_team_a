@@ -87,68 +87,54 @@ public class UserControllerTest {
     }
 
     @Test
-    public void shouldJumpToCreateSuccessAfterCreateNew() {
-        Throwable th = null;
+    public void shouldJumpToShowUsersWhenUrlMatchUsers() {
 
-        expected = new ModelAndView("user/createSuccess");
-        try {
-            result = userController.processCreate(request);
-        } catch (IOException e) {
-            th = e;
-        }
+        result = userController.showAllUsers(new ModelMap());
+        expected = new ModelAndView("user/users");
 
-        assertEquals("page should jump to user/createSuccess", expected.getViewName(), result.getViewName());
-        assertNull("There should be no exceptions.", th);
+        assertEquals("page should jump to user/users", expected.getViewName(), result.getViewName());
     }
 
     @Test
-    public void shouldJumpToProfileAfterPasswordChangeSuccess() {
+    public void shouldJumpToCreateSuccessAfterCreateNew() throws IOException {
+        Throwable th = null;
+
+        expected = new ModelAndView("user/createSuccess");
+        result = userController.processCreate(request);
+
+        assertEquals("page should jump to user/createSuccess", expected.getViewName(), result.getViewName());
+    }
+
+    @Test
+    public void shouldJumpToProfileAfterPasswordChangeSuccess() throws IOException {
         Throwable th = null;
         ModelMap model = new ModelMap();
         when(request.getParameter("password")).thenReturn("123456");
         when(request.getParameter("confirmPassword")).thenReturn("1234567");
-        when(userService.userVerify(user, "123456")).thenReturn(true);
+        when(userService.passwordVerify(user, "123456")).thenReturn(true);
         when(userService.password(user, "1234567")).thenReturn(true);
 
 
         expected = new ModelAndView("user/profile");
-        try {
-            result = userController.processPasswordChange(request, principal, model);
-        } catch (IOException e) {
-           th = e;
-        }
-        verify(userService).password(eq(user), argThat(new PasswordMatcher()));
+        result = userController.processPasswordChange(request, principal, model);
+
+        verify(userService).password(user, "1234567");
         assertEquals("page should jump to user/profile", expected.getViewName(), result.getViewName());
-        assertNull("There should be no exceptions.", th);
     }
 
     @Test
-    public void shouldJumpToProfileAfterPasswordChangeFailed() {
+    public void shouldJumpToProfileAfterPasswordChangeFailed() throws IOException {
         Throwable th = null;
         ModelMap model = new ModelMap();
         when(request.getParameter("password")).thenReturn("12345678");
         when(request.getParameter("confirmPassword")).thenReturn("1234567");
-        when(userService.userVerify(user, "12345678")).thenReturn(false);
+        when(userService.passwordVerify(user, "12345678")).thenReturn(false);
 
         expected = new ModelAndView("user/profile");
-        try {
-            result = userController.processPasswordChange(request, principal, model);
-        } catch (IOException e) {
-            th = e;
-        }
-        verify(userService, times(0)).password(argThat(new UserMatcher()), argThat(new PasswordMatcher()));
+        result = userController.processPasswordChange(request, principal, model);
+
+        verify(userService, times(0)).password(argThat(new UserMatcher()), eq("1234567"));
         assertEquals("page should jump to user/profile", expected.getViewName(), result.getViewName());
-        assertNull("There should be no exceptions.", th);
-    }
-
-    private class PasswordMatcher extends ArgumentMatcher<String> {
-
-        @Override
-        public boolean matches(Object item) {
-            if(item != null && item instanceof String)
-                return true;
-            return false;
-        }
     }
 
     private class UserMatcher extends ArgumentMatcher<User> {

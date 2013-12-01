@@ -102,17 +102,18 @@ public class UserServiceImpl implements UserService {
                 session.commit();
             }catch (Exception e) {
                 errors.put("SqlError", e.getMessage());
+                throw e;
             }
             finally {
                 session.close();
             }
         }
         serviceResult = new ServiceResult<User>(errors, user);
-        return serviceResult;  //To change body of implemented methods use File | Settings | File Templates.
+        return serviceResult;
     }
 
     @Override
-    public boolean userVerify(User user, String password) {
+    public boolean passwordVerify(User user, String password) {
         return user.getPasswordHash().equals(password);
     }
 
@@ -123,4 +124,5 @@ public class UserServiceImpl implements UserService {
             return false;
         return true;
     }
+
 }
