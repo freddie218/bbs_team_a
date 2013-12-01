@@ -10,6 +10,7 @@ import com.thoughtworks.bbs.service.UserService;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +30,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAll() {
-        return null;
+        List<User> users = new ArrayList<User>();
+        SqlSession session = factory.openSession();
+            try{
+                UserMapper userMapper = session.getMapper(UserMapper.class);
+                users = userMapper.findAllUsers();
+            } finally {
+                session.close();
+            }
+
+        return users;
     }
 
     @Override

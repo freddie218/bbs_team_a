@@ -53,11 +53,22 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void shouldReturnFalseWhenPasswordIncorrect_TrueWhenCorrect() {
-        String password = user.getPasswordHash();
-        assertEquals(userService.userVerify(user, password), true);
+    public void shouldShowAllUsers(){
+        userService.getAll();
+
+        verify(userMapper).findAllUsers();
+    }
+
+    @Test
+    public void shouldReturnFalseWhenPasswordIncorrect() {
         String wrongPassword = "xxxxxxxxxx";
-        assertEquals(userService.userVerify(user, wrongPassword), false);
+        assertEquals(userService.passwordVerify(user, wrongPassword), false);
+    }
+
+    @Test
+    public void shouldReturnTrueWhenPasswordCorrect() {
+        String password = user.getPasswordHash();
+        assertEquals(userService.passwordVerify(user, password), true);
     }
 
     @Test

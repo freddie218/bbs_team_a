@@ -92,11 +92,18 @@ public class UserController {
         List<Post> myPosts = postService.findMainPostByAuthorNameSortedByCreateTime(principal.getName());
         model.addAttribute("myPosts", myPosts);
 
-        if (userService.userVerify(user, password) && userService.password(user, newPasswd)){
+        if (userService.passwordVerify(user, password) && userService.password(user, newPasswd)){
             model.addAttribute("success", "Password changed successfully.");
             return new ModelAndView("user/profile", map);
         }
         model.addAttribute("error", "Failed to change password.");
         return new ModelAndView("user/profile", map);
+    }
+
+    @RequestMapping(value = {"/users"}, method = RequestMethod.GET)
+    public ModelAndView showAllUsers(ModelMap map) {
+        List<User> users = userService.getAll();
+        map.put("users",  users);
+        return new ModelAndView("user/users", map);
     }
 }

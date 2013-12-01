@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import java.util.List;
+
 public interface UserMapper {
     @Insert(
             "INSERT INTO users(username, password, enabled) " +
@@ -27,4 +29,9 @@ public interface UserMapper {
                     "WHERE username = #{username}"
     )
     User findByUsername(String username);
+
+    @Select(
+            "SELECT id, username, password as passwordHash, enabled FROM users"
+    )
+    List<User> findAllUsers();
 }
