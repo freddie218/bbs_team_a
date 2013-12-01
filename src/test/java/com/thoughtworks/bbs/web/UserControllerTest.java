@@ -144,6 +144,15 @@ public class UserControllerTest {
         assertNull("There should be no exceptions.", th);
     }
 
+    @Test
+    public void shouldJumpToUpdateProfileWhenUrlMatchUpdateUsername() {
+
+        result = userController.changeUsername(new ModelMap(), principal);
+        expected = new ModelAndView("user/updateProfile");
+
+        assertEquals("page should jump to user/updateProfile", expected.getViewName(), result.getViewName());
+    }
+
     private class PasswordMatcher extends ArgumentMatcher<String> {
 
         @Override
