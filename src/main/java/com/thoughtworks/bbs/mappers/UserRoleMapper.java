@@ -13,8 +13,8 @@ public interface UserRoleMapper {
     void insert(UserRole userRole);
 
     @Select(
-        "SELECT (userid, rolename) FROM user_roles" +
-        "WHERE id=#{userId}"
+        "SELECT userid, rolename FROM user_roles " +
+        "WHERE userid=#{userId}"
     )
     UserRole get(Long userId);
 }
