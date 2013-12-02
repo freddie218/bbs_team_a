@@ -102,7 +102,6 @@ public class UserServiceImpl implements UserService {
                 session.commit();
             }catch (Exception e) {
                 errors.put("SqlError", e.getMessage());
-                throw e;
             }
             finally {
                 session.close();
