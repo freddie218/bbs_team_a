@@ -80,18 +80,17 @@ public class PostMapperTest extends MapperTestBase {
     public void shouldFindAllPostOrderByTime() {
         List<Post> before = postMapper.findAllPostsOrderByTime();
         Post post1 = new Post().setAuthorName("first").setTitle("I am a post").setContent("content").setCreateTime(new Date(2013,11,21))
-                .setModifyTime(new Date()).setCreatorId(1L).setModifierId(1L).setParentId(3L);
+                .setModifyTime(new Date()).setCreatorId(1L).setModifierId(1L).setParentId(0);
         Post post2 = new Post().setAuthorName("second").setTitle("I am a post").setContent("content").setCreateTime(new Date(2013,11,22))
-                .setModifyTime(new Date()).setCreatorId(1L).setModifierId(1L).setParentId(2L);
+                .setModifyTime(new Date()).setCreatorId(1L).setModifierId(1L).setParentId(1L);
         Post post3 = new Post().setAuthorName("third").setTitle("I am a post").setContent("content").setCreateTime(new Date(2013,11,23))
-                .setModifyTime(new Date()).setCreatorId(1L).setModifierId(1L).setParentId(3L);
+                .setModifyTime(new Date()).setCreatorId(1L).setModifierId(1L).setParentId(0);
         postMapper.insert(post1);
         postMapper.insert(post2);
         postMapper.insert(post3);
 
         List<Post> expectedResult = new ArrayList<Post>();
         expectedResult.add(post3);
-        expectedResult.add(post2);
         expectedResult.add(post1);
         expectedResult.addAll(before);
 
@@ -99,8 +98,7 @@ public class PostMapperTest extends MapperTestBase {
 
         assertThat(postResult.size(), is(expectedResult.size()));
         assertThat(postResult.get(0).getAuthorName(), is("third"));
-        assertThat(postResult.get(1).getAuthorName(), is("second"));
-        assertThat(postResult.get(2).getAuthorName(), is("first"));
+        assertThat(postResult.get(1).getAuthorName(), is("first"));
 
     }
 }
