@@ -56,6 +56,21 @@ public class UserController {
         return new ModelAndView("user/profile", map);
     }
 
+    @RequestMapping(value = {"/profile"}, method = RequestMethod.POST)
+    public ModelAndView processDeletePost(HttpServletRequest request, Principal principal, ModelMap model) {
+        String deletePostId = request.getParameter("deletePost");
+
+        List<Post> deletePostList = postService.findAllPostByMainPost(Long.parseLong(deletePostId));
+        for(int i = 0; i < deletePostList.size(); i++)
+        {
+            postService.delete(deletePostList.get(i));
+        }
+
+        List<Post> myPosts = postService.findMainPostByAuthorNameSortedByCreateTime(principal.getName());
+        model.addAttribute("myPosts", myPosts);
+        return new ModelAndView("user/profile");
+    }
+
     @RequestMapping(value = {"/updateProfile"}, method = RequestMethod.GET)
     public ModelAndView changeUsername(ModelMap model,Principal principal) {
         User user = userService.getByUsername(principal.getName());
@@ -115,4 +130,6 @@ public class UserController {
         map.put("users",  users);
         return new ModelAndView("user/users", map);
     }
+
+
 }
