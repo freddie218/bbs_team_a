@@ -60,11 +60,8 @@ public class UserController {
     public ModelAndView processDeletePost(HttpServletRequest request, Principal principal, ModelMap model) {
         String deletePostId = request.getParameter("deletePost");
 
-        List<Post> deletePostList = postService.findAllPostByMainPost(Long.parseLong(deletePostId));
-        for(int i = 0; i < deletePostList.size(); i++)
-        {
-            postService.delete(deletePostList.get(i));
-        }
+        Post postToDelete = postService.get(Long.parseLong(deletePostId));
+        postService.delete(postToDelete);
 
         List<Post> myPosts = postService.findMainPostByAuthorNameSortedByCreateTime(principal.getName());
         model.addAttribute("myPosts", myPosts);
