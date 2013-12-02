@@ -18,6 +18,13 @@
 			</div>
 		</div>
 	</c:when>
+	<c:when test="${not empty namesuccess}">
+        <div class="page-action">
+            <div class="alert alert-success col-sm-4">
+             User Profile updated successfully
+            </div>
+        </div>
+    </c:when>
 </c:choose>
 
 <div id="userInformation">
