@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
@@ -91,5 +92,28 @@ public class PostServiceImplTest {
         verify(mapper).findAllPostsOrderByTime();
         assertThat(returnedPostList, is(expectedPostList));
     }
+
+    @Test
+    public void shouldGetMyPostsOrderedByTime()
+    {
+        String authorName = "juntao";
+        List<Post> expectedPostList = new ArrayList<Post>();
+        Date date_1 = new Date();
+        date_1.setTime(1);
+        Date date_2 = new Date();
+        date_2.setTime(100000);
+        Post post1 = new Post().setAuthorName(authorName).setTitle("1").setContent("content1").setCreateTime(date_1)
+                .setModifyTime(new Date()).setCreatorId(1L).setModifierId(1L).setParentId(0);
+        Post post2 = new Post().setAuthorName(authorName).setTitle("2").setContent("content2").setCreateTime(date_2)
+                .setModifyTime(new Date()).setCreatorId(1L).setModifierId(1L).setParentId(0);
+        expectedPostList.add(post2);
+        expectedPostList.add(post1);
+        when((mapper.findMainPostByAuthorName(authorName))).thenReturn(expectedPostList);
+
+        List<Post> returnedPostList = postService.findMainPostByAuthorNameSortedByCreateTime(authorName);
+        assertThat(returnedPostList, is(expectedPostList));
+        verify(mapper).findMainPostByAuthorName(authorName);
+    }
+
 
 }

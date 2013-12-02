@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
@@ -75,6 +74,8 @@ public class UserControllerTest {
         expected = new ModelAndView("user/profile");
 
         assertEquals("page should jump to user/profile", expected.getViewName(), result.getViewName());
+
+        verify(postService).findMainPostByAuthorNameSortedByCreateTime(principal.getName());
     }
 
     @Test
