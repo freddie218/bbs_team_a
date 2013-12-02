@@ -50,7 +50,7 @@
             <th>Title</th>
             <th>Author</th>
             <th>Publish Time</th>
-            <th></th>
+            <th>Delete</th>
         </tr>
         </thead>
         <tbody>
@@ -67,11 +67,29 @@
                 <td><c:out value="${post.authorName}"/></td>
                 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
                 <td><fmt:formatDate value="${post.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+                <td><a href="javascript:void(0)" onclick="show_confirm('${post.postId}');">X</a></td>
             </tr>
         </c:forEach>
         </tbody>
     </table>
 
 </div>
+
+<script type="text/javascript">
+function show_confirm(deletePostId)
+{
+var r=confirm("Are you sure to delete this post?");
+if (r==true)
+  {
+      document.deletePostForm.deletePost.value = deletePostId;
+      document.deletePostForm.submit();
+  }
+}
+</script>
+
+<form name="deletePostForm" method="post" onsubmit="return form_validate();">
+     <input type="hidden" id="deletePost" name="deletePost">
+</form>
+
 
 <%@ include file="../footer.jsp" %>

@@ -147,6 +147,23 @@ public class UserControllerTest {
         assertEquals("page should jump to user/updateProfile", expected.getViewName(), result.getViewName());
     }
 
+    @Test
+    public void shouldDeleteThePost() {
+        List<Post> deletePostList = new ArrayList<Post>();
+        deletePostList.add(new Post());
+        when(request.getParameter("deletePost")).thenReturn("1");
+        when(postService.findAllPostByMainPost(Long.parseLong("1"))).thenReturn(deletePostList);
+
+        expected = new ModelAndView("user/profile");
+        result = userController.processDeletePost(request, principal, new ModelMap());
+
+        verify(postService).findAllPostByMainPost(Long.parseLong("1"));
+        verify(postService).delete(deletePostList.get(0));
+        verify(postService).findMainPostByAuthorNameSortedByCreateTime(principal.getName());
+
+
+    }
+
     private class UserMatcher extends ArgumentMatcher<User> {
 
         @Override
