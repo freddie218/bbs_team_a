@@ -8,6 +8,9 @@ import com.thoughtworks.bbs.service.impl.PostServiceImpl;
 import com.thoughtworks.bbs.service.impl.UserServiceImpl;
 import com.thoughtworks.bbs.util.MyBatisUtil;
 import com.thoughtworks.bbs.util.UserBuilder;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -123,16 +126,16 @@ public class UserController {
     }
 
     @RequestMapping(value = {"/updateProfile"}, method = RequestMethod.GET)
-    public ModelAndView changeUsername(ModelMap model,Principal principal,HttpServletRequest request) {
-        User user = userService.getByUsername(request.getParameter("username"));
+    public ModelAndView changeUsername(ModelMap model,Principal principal) {
+        User user = userService.getByUsername(principal.getName());
         Map<String,User> map = new HashMap<String,User>();
         map.put("user",user);
         return new ModelAndView("user/updateProfile",map);
     }
 
     @RequestMapping(value = {"/updateProfile"}, method = RequestMethod.POST)
-    public ModelAndView processUpdateUsername(HttpServletRequest request,ModelMap model) throws IOException {
-        User user = userService.getByUsername(request.getParameter("username"));
+    public ModelAndView processUpdateUsername(HttpServletRequest request,ModelMap model,Principal principal) throws IOException {
+        User user = userService.getByUsername(principal.getName());
         String newUsername = request.getParameter("newUsername");
         Map<String, User> map = new HashMap<String, User>();
         map.put("user", user);
@@ -142,6 +145,8 @@ public class UserController {
         if (isNewnameEmpty == false && newuser == null){
             user.setUserName(newUsername);
             userService.update(user);
+            Authentication authentication = new UsernamePasswordAuthenticationToken(newUsername,user.getPasswordHash());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
             map.clear();
             map.put("user",user);
             model.addAttribute("namesuccess", "User Profile updated successfully");

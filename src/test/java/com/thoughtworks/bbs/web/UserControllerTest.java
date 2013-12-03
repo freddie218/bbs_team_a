@@ -141,7 +141,7 @@ public class UserControllerTest {
     @Test
     public void shouldJumpToUpdateProfileWhenUrlMatchUpdateUsername() {
 
-        result = userController.changeUsername(new ModelMap(), principal,request);
+        result = userController.changeUsername(new ModelMap(), principal);
         expected = new ModelAndView("user/updateProfile");
 
         assertEquals("page should jump to user/updateProfile", expected.getViewName(), result.getViewName());
@@ -154,13 +154,12 @@ public class UserControllerTest {
         newUser.setUserName("newname");
         newUser.setPasswordHash(user.getPasswordHash());
 
-        when(request.getParameter("username")).thenReturn("username");
         when(request.getParameter("newUsername")).thenReturn("newname");
         when(userService.getByUsername("newname")).thenReturn(null);
         when(userService.getByUsername("username")).thenReturn(user);
 
         expected = new ModelAndView("user/profile");
-        result = userController.processUpdateUsername(request,model);
+        result = userController.processUpdateUsername(request,model,principal);
 
         verify(userService).update(argThat(new IsSameUserWith(newUser)));
         assertEquals("page should jump to user/profile", expected.getViewName(), result.getViewName());
@@ -173,13 +172,11 @@ public class UserControllerTest {
         existUser.setUserName("newname");
         existUser.setPasswordHash(user.getPasswordHash());
 
-        when(request.getParameter("username")).thenReturn("username");
-        when(userService.getByUsername("username")).thenReturn(user);
         when(request.getParameter("newUsername")).thenReturn("newname");
         when(userService.getByUsername("newname")).thenReturn(existUser);
 
         expected = new ModelAndView("user/updateProfile");
-        result = userController.processUpdateUsername(request,model);
+        result = userController.processUpdateUsername(request,model,principal);
 
         verify(userService, never()).update(argThat(new IsSameUserWith(user)));
         assertEquals("page should stay user/updateProfile", expected.getViewName(), result.getViewName());
@@ -190,13 +187,11 @@ public class UserControllerTest {
         ModelMap model = new ModelMap();
         User existUser = new User();
 
-        when(request.getParameter("username")).thenReturn("username");
-        when(userService.getByUsername("username")).thenReturn(user);
         when(request.getParameter("newUsername")).thenReturn("");
         when(userService.getByUsername("")).thenReturn(null);
 
         expected = new ModelAndView("user/updateProfile");
-        result = userController.processUpdateUsername(request,model);
+        result = userController.processUpdateUsername(request,model,principal);
 
         verify(userService, never()).update(argThat(new IsSameUserWith(user)));
         assertEquals("page should stay user/updateProfile", expected.getViewName(), result.getViewName());
