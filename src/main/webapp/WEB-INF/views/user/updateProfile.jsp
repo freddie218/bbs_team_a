@@ -2,20 +2,28 @@
 <c:set var="pageTitle" scope="request" value="updateProfile"/>
 
 <%@ include file="../header.jsp" %>
-<c:choose>
-    <c:when test="${not empty error}">
-        <div class="page-action">
-            <div class="alert alert-danger col-sm-4">
-                User Profile update failed
-            </div>
-        </div>
-    </c:when>
-</c:choose>
+<table>
+    <tr>
+        <td>
+            <c:choose>
+                <c:when test="${not empty error}">
+                    <div class="page-action" style="height:70px;width:400px">
+                        <div class="alert alert-danger col-sm-20">
+                            User Profile update failed
+                        </div>
+                    </div>
+                </c:when>
+            </c:choose>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p class="lead">Update Profile for ${user.userName}</p>
+        </td>
+    </tr>
+</table>
 <div id="newNameInformation">
     <table class="table">
-        <tr>
-            <p class="lead">Update Profile for ${user.userName}</p>
-        </tr>
         <tr>
             <form class="form-horizontal" method="post" name="updateProfile">
                 <td style= "width:100px">
@@ -24,17 +32,15 @@
                 <td>
                     <div class="controls">
                         <input type="text " id="newUsername" name="newUsername" placeholder="Username" style="height:40px;width:250px">
-                        </div>
-                        <div class="control-group">
-                            <div style="text-align:left" >
+                    </div>
+                    <div class="control-group">
+                        <div style="text-align:left" >
                             <button type="submit" class="btn btn-primary" >Change</button>
-                            </div>
                         </div>
                     </div>
                 </td>
             </form>
         </tr>
-        <tr>
     </table>
 </div>
 <%@ include file="../footer.jsp" %>

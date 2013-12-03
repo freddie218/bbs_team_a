@@ -39,7 +39,7 @@
         </tr>
     </table>
     <a href="changePassword">Change Password</a>
-    <a href="updateProfile">Update Profile</a>
+    <a href="updateProfile?username=${user.userName}">Update Profile</a>
 </div>
 
 <div id="myPost">
@@ -86,7 +86,6 @@ if (r==true)
   }
 }
 </script>
-
 <form name="deletePostForm" method="post" onsubmit="return form_validate();">
      <input type="hidden" id="deletePost" name="deletePost">
 </form>

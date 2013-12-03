@@ -72,15 +72,6 @@ public class UserController {
         return new ModelAndView("user/profile", map);
     }
 
-    @RequestMapping(value = {"/updateProfile"}, method = RequestMethod.GET)
-    public ModelAndView changeUsername(ModelMap model,Principal principal) {
-        User user = userService.getByUsername(principal.getName());
-        Map<String,User> map = new HashMap<String,User>();
-        map.put("user",user);
-
-        return new ModelAndView("user/updateProfile",map);
-    }
-
     @RequestMapping(value = {"/create"}, method = RequestMethod.POST)
     public ModelAndView processCreate(HttpServletRequest request) throws IOException {
         String username = request.getParameter("username");
@@ -132,5 +123,32 @@ public class UserController {
         return new ModelAndView("user/users", map);
     }
 
+    @RequestMapping(value = {"/updateProfile"}, method = RequestMethod.GET)
+    public ModelAndView changeUsername(ModelMap model,Principal principal,HttpServletRequest request) {
+        User user = userService.getByUsername(request.getParameter("username"));
+        Map<String,User> map = new HashMap<String,User>();
+        map.put("user",user);
+        return new ModelAndView("user/updateProfile",map);
+    }
 
+    @RequestMapping(value = {"/updateProfile"}, method = RequestMethod.POST)
+    public ModelAndView processUpdateUsername(HttpServletRequest request,ModelMap model) throws IOException {
+        User user = userService.getByUsername(request.getParameter("username"));
+        String newUsername = request.getParameter("newUsername");
+        Map<String, User> map = new HashMap<String, User>();
+        map.put("user", user);
+        boolean isNewnameEmpty ="".equals(newUsername);
+        User newuser= userService.getByUsername(newUsername);
+
+        if (isNewnameEmpty == false && newuser == null){
+            user.setUserName(newUsername);
+            userService.update(user);
+            map.clear();
+            map.put("user",user);
+            model.addAttribute("namesuccess", "User Profile updated successfully");
+            return new ModelAndView("user/profile", map);
+        }
+        model.addAttribute("error", "User Profile update failed");
+        return new ModelAndView("user/updateProfile", map);
+    }
 }
