@@ -157,6 +157,7 @@ public class UserController {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             map.clear();
             map.put("user",user);
+            model.addAttribute("myPosts", myPosts);
             model.addAttribute("namesuccess", "User Profile updated successfully");
             return new ModelAndView("user/profile", map);
         }
