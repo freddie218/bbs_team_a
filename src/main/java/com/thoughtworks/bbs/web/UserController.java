@@ -144,6 +144,14 @@ public class UserController {
 
         if (isNewnameEmpty == false && newuser == null){
             user.setUserName(newUsername);
+            List<Post> myPosts = postService.findMainPostByAuthorNameSortedByCreateTime(principal.getName());
+
+            for (int k = 0;k < myPosts.size();k++){
+                Post post = myPosts.get(k);
+                post.setAuthorName(newUsername);
+                postService.save(post);
+            }
+
             userService.update(user);
             Authentication authentication = new UsernamePasswordAuthenticationToken(newUsername,user.getPasswordHash());
             SecurityContextHolder.getContext().setAuthentication(authentication);

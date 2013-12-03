@@ -157,10 +157,13 @@ public class UserControllerTest {
         when(request.getParameter("newUsername")).thenReturn("newname");
         when(userService.getByUsername("newname")).thenReturn(null);
         when(userService.getByUsername("username")).thenReturn(user);
+        when(postService.findMainPostByAuthorNameSortedByCreateTime("username")).thenReturn(postList);
+
 
         expected = new ModelAndView("user/profile");
         result = userController.processUpdateUsername(request,model,principal);
 
+        verify(postService).save(post);
         verify(userService).update(argThat(new IsSameUserWith(newUser)));
         assertEquals("page should jump to user/profile", expected.getViewName(), result.getViewName());
     }
