@@ -75,19 +75,6 @@ public class PostServiceImpl implements PostService {
 
         try {
             PostMapper postMapper = session.getMapper(PostMapper.class);
-            List<Post> allPosts = findAllPostsOrderByTime();
-            List<Post> processorPosts = new ArrayList<Post>();
-            for (int i = 0 ; i < allPosts.size(); i++)
-            {
-                if(allPosts.get(i).getParentId().equals(post.getPostId()))
-                {
-                    processorPosts.add(allPosts.get(i));
-                }
-            }
-            for(int i = 0; i < processorPosts.size(); i++)
-            {
-                delete(processorPosts.get(i));
-            }
             postMapper.delete(post);
             session.commit();
         } finally {
@@ -137,6 +124,15 @@ public class PostServiceImpl implements PostService {
             }
         });
         return postByAuthorName;
+    }
+
+    @Override
+    public void deleteAllPostsByMainPost(Long postId) {
+        List<Post> allPosts = findAllPostByMainPost(postId);
+        for(Post p : allPosts)
+        {
+            delete(p);
+        }
     }
 
 }

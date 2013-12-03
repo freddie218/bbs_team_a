@@ -151,13 +151,11 @@ public class UserControllerTest {
     public void shouldDeleteThePost() {
         Post aPost = new Post();
         when(request.getParameter("deletePost")).thenReturn("1");
-        when(postService.get(Long.parseLong("1"))).thenReturn(aPost);
 
         expected = new ModelAndView("user/profile");
         result = userController.processDeletePost(request, principal, new ModelMap());
 
-        verify(postService).get(Long.parseLong("1"));
-        verify(postService).delete(aPost);
+        verify(postService).deleteAllPostsByMainPost(Long.parseLong("1"));
         verify(postService).findMainPostByAuthorNameSortedByCreateTime(principal.getName());
 
 

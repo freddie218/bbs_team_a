@@ -17,7 +17,6 @@
              <tr>
                  <td><c:out value="${user.userName}"/></td>
                  <td><c:out value="${user.enabled}"/></td>
-                 <td></td>
              </tr>
         </c:forEach>
     </tbody>

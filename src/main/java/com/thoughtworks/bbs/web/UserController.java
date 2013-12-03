@@ -64,8 +64,7 @@ public class UserController {
 
         String deletePostId = request.getParameter("deletePost");
 
-        Post postToDelete = postService.get(Long.parseLong(deletePostId));
-        postService.delete(postToDelete);
+        postService.deleteAllPostsByMainPost(Long.parseLong(deletePostId));
 
         List<Post> myPosts = postService.findMainPostByAuthorNameSortedByCreateTime(principal.getName());
         model.addAttribute("myPosts", myPosts);
