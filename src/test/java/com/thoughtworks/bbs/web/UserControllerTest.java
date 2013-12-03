@@ -177,11 +177,14 @@ public class UserControllerTest {
 
         when(request.getParameter("newUsername")).thenReturn("newname");
         when(userService.getByUsername("newname")).thenReturn(existUser);
+        when(postService.findMainPostByAuthorNameSortedByCreateTime("username")).thenReturn(postList);
+
 
         expected = new ModelAndView("user/updateProfile");
         result = userController.processUpdateUsername(request,model,principal);
 
         verify(userService, never()).update(argThat(new IsSameUserWith(user)));
+        verify(postService,never()).save(post);
         assertEquals("page should stay user/updateProfile", expected.getViewName(), result.getViewName());
     }
 
@@ -192,11 +195,13 @@ public class UserControllerTest {
 
         when(request.getParameter("newUsername")).thenReturn("");
         when(userService.getByUsername("")).thenReturn(null);
+        result = userController.processUpdateUsername(request,model,principal);
 
         expected = new ModelAndView("user/updateProfile");
         result = userController.processUpdateUsername(request,model,principal);
 
         verify(userService, never()).update(argThat(new IsSameUserWith(user)));
+        verify(postService,never()).save(post);
         assertEquals("page should stay user/updateProfile", expected.getViewName(), result.getViewName());
     }
 
