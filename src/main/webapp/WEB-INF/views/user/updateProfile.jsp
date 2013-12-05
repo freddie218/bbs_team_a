@@ -7,8 +7,8 @@
         <td>
             <c:choose>
                 <c:when test="${not empty error}">
-                    <div class="page-action" style="height:70px;width:400px">
-                        <div class="alert alert-danger col-sm-20">
+                    <div style="font-size: 16pt; margin-bottom: 10px; border-radius: 5px;">
+                        <div style="background-color:red; width:530px; text-align:center;" >
                             User Profile update failed
                         </div>
                     </div>

@@ -19,8 +19,8 @@
 		</div>
 	</c:when>
 	<c:when test="${not empty namesuccess}">
-        <div class="page-action">
-            <div class="alert alert-success col-sm-4">
+        <div style="font-size: 16pt; margin-bottom: 10px; border-radius: 5px;">
+            <div style="background-color:green; width:530px; text-align:center;">
              User Profile updated successfully
             </div>
         </div>
