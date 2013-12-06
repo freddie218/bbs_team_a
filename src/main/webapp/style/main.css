@@ -99,3 +99,10 @@ table {
     background: #9d2932;
     color: white;
 }
+
+#replyPostError {
+    text-align: left;
+    width: 350px;
+    background: #9d2932;
+    color: white;
+}
