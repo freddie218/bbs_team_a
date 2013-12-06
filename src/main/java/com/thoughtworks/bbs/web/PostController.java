@@ -47,10 +47,38 @@ public class PostController {
         return "posts/show";
     }
 
+    @RequestMapping(value = {"/{postId}"}, method = RequestMethod.POST)
+    public ModelAndView processReplyPost(@PathVariable("postId") Long postId, @ModelAttribute Post post, HttpServletRequest request, Principal principal,Model model) {
+        String title = request.getParameter("title");
+        String content = request.getParameter("content");
+        User currentUser = userService.getByUsername(principal.getName());
+
+        if(isContentEmpty(content)){
+            model.addAttribute("error","true");
+            model.addAttribute("mainPost", postService.get(postId));
+            model.addAttribute("posts", postService.findAllPostByMainPost(postId));
+            return new ModelAndView("posts/show");
+        }
+        PostBuilder builder = new PostBuilder();
+        builder.title(title).content(content).author(currentUser.getUserName()).parentId(postId).creatorId(currentUser.getId())
+                .modifierId(currentUser.getId()).createTime(new Date()).modifyTime(new Date());
+
+        postService.save(builder.build());
+
+        model.addAttribute("mainPost", postService.get(postId));
+        model.addAttribute("posts", postService.findAllPostByMainPost(postId));
+        return new ModelAndView("posts/show");
+    }
+    public boolean isContentEmpty(String content){
+        return content.isEmpty();
+    }
+
+
     @RequestMapping(value = {"/create"}, method = RequestMethod.GET)
     public ModelAndView createPostForm(ModelMap model, Principal principal) {
         return new ModelAndView("posts/create");
     }
+
 
     @RequestMapping(value = {"/create"}, method = RequestMethod.POST)
     public ModelAndView processCreate(HttpServletRequest request, Principal principal,Model model) throws IOException {
@@ -70,6 +98,7 @@ public class PostController {
            return new ModelAndView("posts/create");
         }
 
+
         PostBuilder builder = new PostBuilder();
         builder.title(title).content(content).author(currentUser.getUserName()).parentId(parentIdLong).creatorId(currentUser.getId())
                 .modifierId(currentUser.getId()).createTime(new Date()).modifyTime(new Date());
@@ -83,4 +112,5 @@ public class PostController {
     public boolean isTitleOrContentEmpty(String title, String content){
         return title.isEmpty() || content.isEmpty();
     }
+
 }
