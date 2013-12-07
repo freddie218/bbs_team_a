@@ -3,19 +3,7 @@
 
 <%@ include file="../header.jsp" %>
 
-    <c:choose>
-        <c:when test="${not empty error}">
-            <div id="replyPostError" class="page-action create-error">
-                Content cannot be empty!
-                ${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}
-            </div>
-        </c:when>
-        <c:otherwise>
-            <div id="createHint" class="page-action">
 
-            </div>
-        </c:otherwise>
-    </c:choose>
 
 
 <table class="table">
@@ -41,6 +29,19 @@
 </table>
 
 </br>
+     <c:choose>
+        <c:when test="${not empty error}">
+            <div id="replyPostError" class="page-action create-error">
+                Content cannot be empty!
+                ${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}
+            </div>
+        </c:when>
+        <c:otherwise>
+            <div id="createHint" class="page-action">
+
+            </div>
+        </c:otherwise>
+    </c:choose>
 
 <div id="createPanel">
     <form name="replyPost" id="replyPost" method="post">
