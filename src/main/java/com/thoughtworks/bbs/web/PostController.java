@@ -61,7 +61,7 @@ public class PostController {
         }
         PostBuilder builder = new PostBuilder();
         builder.title(title).content(content).author(currentUser.getUserName()).parentId(postId).creatorId(currentUser.getId())
-                .modifierId(currentUser.getId()).createTime(new Date()).modifyTime(new Date());
+                .modifierId(currentUser.getId()).createTime(new Date()).modifyTime(builder.build().getCreateTime());
 
         postService.save(builder.build());
 
@@ -69,7 +69,7 @@ public class PostController {
         model.addAttribute("posts", postService.findAllPostByMainPost(postId));
         return new ModelAndView("posts/show");
     }
-    public boolean isContentEmpty(String content){
+    private boolean isContentEmpty(String content){
         return content.isEmpty();
     }
 
@@ -101,7 +101,7 @@ public class PostController {
 
         PostBuilder builder = new PostBuilder();
         builder.title(title).content(content).author(currentUser.getUserName()).parentId(parentIdLong).creatorId(currentUser.getId())
-                .modifierId(currentUser.getId()).createTime(new Date()).modifyTime(new Date());
+                .modifierId(currentUser.getId()).createTime(new Date()).modifyTime(builder.build().getCreateTime());
 
         postService.save(builder.build());
 
@@ -109,7 +109,7 @@ public class PostController {
         return new ModelAndView("home");
     }
 
-    public boolean isTitleOrContentEmpty(String title, String content){
+    private boolean isTitleOrContentEmpty(String title, String content){
         return title.isEmpty() || content.isEmpty();
     }
 
