@@ -29,7 +29,7 @@ import static org.mockito.Mockito.when;
  * To change this template use File | Settings | File Templates.
  */
 public class PostControllerTest {
-    private PostService postservice;
+    private PostService postService;
     private UserService userService;
     private PostController postController;
     private HttpServletRequest request;
@@ -43,7 +43,7 @@ public class PostControllerTest {
 
     @Before
     public void setup(){
-        postservice = mock(PostServiceImpl.class);
+        postService = mock(PostServiceImpl.class);
         userService = mock(UserServiceImpl.class);
         request = mock(HttpServletRequest.class);
 
@@ -58,7 +58,7 @@ public class PostControllerTest {
         model = new ExtendedModelMap();
         principal = new PrincipalImpl("name");
 
-        postController = new PostController(postservice,userService);
+        postController = new PostController(postService,userService);
 
     }
 
@@ -113,5 +113,11 @@ public class PostControllerTest {
         assertEquals("page should jump to posts/create",expected.getViewName(),result.getViewName());
 
     }
+
+
+
+
+
+
 
 }
