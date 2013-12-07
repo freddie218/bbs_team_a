@@ -1,5 +1,6 @@
 package com.thoughtworks.bbs.web;
 
+import com.thoughtworks.bbs.model.Post;
 import com.thoughtworks.bbs.model.User;
 import com.thoughtworks.bbs.service.PostService;
 import com.thoughtworks.bbs.service.UserService;
@@ -18,7 +19,9 @@ import java.io.IOException;
 import java.security.Principal;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
@@ -114,7 +117,46 @@ public class PostControllerTest {
 
     }
 
+    @Test
+    public void shouldToPostShowWhenReplyPostSuccess() throws IOException {
 
+        when(userService.getByUsername("")).thenReturn(null);
+
+        when(request.getParameter("title")).thenReturn("Re");
+        when(request.getParameter("content")).thenReturn("OK");
+
+        Long postId = 1L;
+            result = postController.processReplyPost(postId, null,request,principal,model);
+        expected = new ModelAndView("posts/show");
+
+        assertEquals("page should stay posts/show",expected.getViewName(),result.getViewName());
+
+    }
+
+
+    @Test
+    public void shouldToPostShowWhenReplyPostError() throws IOException {
+
+        when(userService.getByUsername("")).thenReturn(null);
+
+        when(request.getParameter("title")).thenReturn("Re");
+        when(request.getParameter("content")).thenReturn("");
+        Long postId = 1L;
+        result = postController.processReplyPost(postId, null,request,principal,model);
+        expected = new ModelAndView("posts/show");
+
+        assertEquals("page should stay posts/show",expected.getViewName(),result.getViewName());
+
+    }
+
+    @Test
+    public void shouldShowWarningWhenReplyPostError() {
+        when(request.getParameter("title")).thenReturn("Re");
+        when(request.getParameter("content")).thenReturn("");
+        Long postId = 1L;
+        postController.processReplyPost(postId,null,request,principal,model);
+        assertTrue(model.containsAttribute("error"));
+    }
 
 
 

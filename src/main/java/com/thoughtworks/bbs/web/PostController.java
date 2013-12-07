@@ -55,9 +55,6 @@ public class PostController {
 
         if(isContentEmpty(content)){
             model.addAttribute("error","true");
-            model.addAttribute("mainPost", postService.get(postId));
-            model.addAttribute("posts", postService.findAllPostByMainPost(postId));
-            return new ModelAndView("posts/show");
         }
         PostBuilder builder = new PostBuilder();
         builder.title(title).content(content).author(currentUser.getUserName()).parentId(postId).creatorId(currentUser.getId())
