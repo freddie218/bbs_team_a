@@ -2,6 +2,7 @@ package com.thoughtworks.bbs.web;
 
 import com.thoughtworks.bbs.model.Post;
 import com.thoughtworks.bbs.model.User;
+import com.thoughtworks.bbs.model.UserRole;
 import com.thoughtworks.bbs.service.PostService;
 import com.thoughtworks.bbs.service.UserService;
 import com.thoughtworks.bbs.service.impl.PostServiceImpl;
@@ -123,6 +124,17 @@ public class UserController {
         Map <User,String> usersWithRoles= userService.getAllUsersWithRole();
         map.put("usersWithRoles",usersWithRoles);
         return new ModelAndView("user/users", map);
+    }
+
+    @RequestMapping(value = {"/users"}, method = RequestMethod.POST)
+    public ModelAndView authoriseUser(HttpServletRequest request,ModelMap model) {
+        long userId =Long.parseLong(request.getParameter("authoriseUserId")) ;
+        UserRole userRole = userService.getUserRolebyId(userId);
+        userRole.setRoleName("ROLE_ADMIN");
+        userService.updateUserRole(userRole);
+        Map <User,String> usersWithRoles= userService.getAllUsersWithRole();
+        model.put("usersWithRoles",usersWithRoles);
+        return new ModelAndView("user/users", model);
     }
 
     @RequestMapping(value = {"/updateProfile"}, method = RequestMethod.GET)

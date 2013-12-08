@@ -126,6 +126,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserRole getUserRolebyId(long id){
+        SqlSession session = factory.openSession();
+        UserRole userRole = null;
+
+        try{
+             UserRoleMapper mapper = session.getMapper(UserRoleMapper.class);
+             userRole = mapper.get(id);
+
+        } finally {
+            session.close();
+        }
+        return  userRole;
+    }
+
+    @Override
     public Map<User,String> getAllUsersWithRole(){
         List<User> users = getAll();
         Map <User,String> userWithRole= new HashMap<User,String>();
@@ -142,4 +157,21 @@ public class UserServiceImpl implements UserService {
         }
         return  userWithRole;
     }
+
+    @Override
+    public void updateUserRole(UserRole userRole) {
+        SqlSession session = factory.openSession();
+        ServiceResult<User> serviceResult = null;
+
+            try {
+                UserRoleMapper mapper = session.getMapper(UserRoleMapper.class);;
+                mapper.update(userRole);
+                session.commit();
+            }
+            finally {
+                session.close();
+            }
+    }
+
+
 }

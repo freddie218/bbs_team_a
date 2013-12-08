@@ -1,6 +1,7 @@
 package com.thoughtworks.bbs.service;
 
 import com.thoughtworks.bbs.model.User;
+import com.thoughtworks.bbs.model.UserRole;
 
 import java.util.List;
 import java.util.Map;
@@ -22,5 +23,9 @@ public interface UserService {
 
     boolean password(User user, String newpass);
 
+    UserRole getUserRolebyId(long id);
+
     Map<User,String> getAllUsersWithRole();
+
+    void updateUserRole(UserRole userRole);
 }

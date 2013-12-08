@@ -3,6 +3,7 @@ package com.thoughtworks.bbs.mappers;
 import com.thoughtworks.bbs.model.UserRole;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 public interface UserRoleMapper {
 
@@ -17,4 +18,11 @@ public interface UserRoleMapper {
         "WHERE userid=#{userId}"
     )
     UserRole get(Long userId);
+
+    @Update(
+            "UPDATE user_roles " +
+                    "SET rolename=#{roleName}" +
+                    "WHERE userid=#{userId}"
+    )
+    void update(UserRole userRole);
 }

@@ -29,6 +29,7 @@
                     </c:if>
                     <c:if test="${map.value=='ROLE_REGULAR'}">
                         User
+                        <a href="javascript:void(0)" onclick="show_confirm('${map.key.id}');">X</a>
                     </c:if>
                 </td>
             </tr>
@@ -36,5 +37,20 @@
     </tbody>
     </table>
 </div>
+
+<script type="text/javascript">
+function show_confirm(authoriseUserId)
+{
+var r=confirm("Are you sure to authorise this user?");
+if (r==true)
+  {
+      document.authoriseUserForm.authoriseUserId.value = authoriseUserId;
+      document.authoriseUserForm.submit();
+  }
+}
+</script>
+<form name="authoriseUserForm" method="post" onsubmit="return form_validate();">
+     <input type="hidden" id="authoriseUserId" name="authoriseUserId">
+</form>
 
 <%@ include file="../footer.jsp" %>
