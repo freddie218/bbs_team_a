@@ -13,12 +13,6 @@
         </tr>
     </thead>
     <tbody>
-        <c:forEach var="user" items="${users}" varStatus="row">
-             <tr>
-                 <td><c:out value="${user.userName}"/></td>
-                 <td><c:out value="${user.enabled}"/></td>
-             </tr>
-        </c:forEach>
         <c:forEach var="map" items="${usersWithRoles}" varStatus="row">
             <tr>
                 <td><c:out value="${map.key.userName}"/></td>
