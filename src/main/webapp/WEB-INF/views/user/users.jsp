@@ -9,7 +9,7 @@
         <tr>
             <th>Username</th>
             <th>Enable</th>
-            <th></th>
+            <th>Role</th>
         </tr>
     </thead>
     <tbody>
@@ -19,6 +19,20 @@
                  <td><c:out value="${user.enabled}"/></td>
              </tr>
         </c:forEach>
+        <c:forEach var="map" items="${usersWithRoles}" varStatus="row">
+            <tr>
+                <td><c:out value="${map.key.userName}"/></td>
+                <td><c:out value="${map.key.enabled}"/></td>
+                <td>
+                    <c:if test="${map.value=='ROLE_ADMIN'}">
+                        Administrator
+                    </c:if>
+                    <c:if test="${map.value=='ROLE_REGULAR'}">
+                        User
+                    </c:if>
+                </td>
+            </tr>
+            </c:forEach>
     </tbody>
     </table>
 </div>

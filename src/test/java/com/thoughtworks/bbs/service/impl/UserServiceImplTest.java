@@ -3,10 +3,14 @@ package com.thoughtworks.bbs.service.impl;
 import com.thoughtworks.bbs.mappers.UserMapper;
 import com.thoughtworks.bbs.mappers.UserRoleMapper;
 import com.thoughtworks.bbs.model.User;
+import com.thoughtworks.bbs.model.UserRole;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
@@ -82,5 +86,21 @@ public class UserServiceImplTest {
         verify(userMapper).update(user);
         assertEquals(userService.getByUsername(user.getUserName()).getPasswordHash(), "newpass");
         assertEquals(ret, true);
+    }
+
+    @Test
+    public void  shouldReturnAllUsersWhithRoleWhenInvoked(){
+        List<User> users = new ArrayList<User>();
+        users.add(user);
+        UserRole userRole = new UserRole();
+        userRole.setUserId(1L);
+        userRole.setRoleName("admin");
+
+        when(userMapper.findAllUsers()).thenReturn(users);
+        when(userRoleMapper.get(user.getId())).thenReturn(userRole);
+
+        userService.getAllUsersWithRole();
+        verify(userMapper).findAllUsers();
+        verify(userRoleMapper).get(user.getId());
     }
 }

@@ -120,8 +120,8 @@ public class UserController {
 
     @RequestMapping(value = {"/users"}, method = RequestMethod.GET)
     public ModelAndView showAllUsers(ModelMap map) {
-        List<User> users = userService.getAll();
-        map.put("users",  users);
+        Map <User,String> usersWithRoles= userService.getAllUsersWithRole();
+        map.put("usersWithRoles",usersWithRoles);
         return new ModelAndView("user/users", map);
     }
 

@@ -3,6 +3,7 @@ package com.thoughtworks.bbs.service;
 import com.thoughtworks.bbs.model.User;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserService {
     User get(long id);
@@ -20,4 +21,6 @@ public interface UserService {
     boolean passwordVerify(User user, String password);
 
     boolean password(User user, String newpass);
+
+    Map<User,String> getAllUsersWithRole();
 }
