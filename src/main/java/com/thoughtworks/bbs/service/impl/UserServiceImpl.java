@@ -25,7 +25,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User get(long id) {
-        return null;
+        SqlSession session = factory.openSession();
+        User user = null;
+
+        try{
+            UserMapper mapper = session.getMapper(UserMapper.class);
+            user = mapper.findByUserId(id);
+            if(user == null)
+                System.out.println("user is null");
+        } finally {
+            session.close();
+        }
+
+        return user;
     }
 
     @Override

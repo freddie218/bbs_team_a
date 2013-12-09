@@ -83,4 +83,11 @@ public class UserServiceImplTest {
         assertEquals(userService.getByUsername(user.getUserName()).getPasswordHash(), "newpass");
         assertEquals(ret, true);
     }
+
+    @Test
+    public void shouldReturnUserWhenGetUserId() {
+        Long userId = 1L;
+        userService.get(userId);
+        verify(userMapper).findByUserId(userId);
+    }
 }
