@@ -18,6 +18,8 @@ import java.util.Map;
 public class UserServiceImpl implements UserService {
     private UserValidator validator;
     private SqlSessionFactory factory;
+    String ROLE_ADMIN = "ROLE_ADMIN";
+    String ROLE_REGULAR = "ROLE_REGULAR";
 
     public UserServiceImpl(SqlSessionFactory factory) {
         this.factory = factory;
@@ -69,7 +71,7 @@ public class UserServiceImpl implements UserService {
 
                 UserRole userRole = new UserRole();
                 userRole.setUserId(user.getId());
-                userRole.setRoleName("ROLE_REGULAR");
+                userRole.setRoleName(ROLE_REGULAR);
 
                 userRoleMapper.insert(userRole);
 
@@ -138,7 +140,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserRole getUserRolebyId(long id){
+    public UserRole getUserRoleById(long id){
         SqlSession session = factory.openSession();
         UserRole userRole = null;
 
@@ -183,6 +185,13 @@ public class UserServiceImpl implements UserService {
             finally {
                 session.close();
             }
+    }
+
+    @Override
+    public void authoriseUser(long userId) {
+        UserRole userRole = getUserRoleById(userId);
+        userRole.setRoleName(ROLE_ADMIN);
+        updateUserRole(userRole);
     }
 
 

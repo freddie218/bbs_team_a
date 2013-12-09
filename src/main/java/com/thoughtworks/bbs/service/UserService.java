@@ -23,9 +23,11 @@ public interface UserService {
 
     boolean password(User user, String newpass);
 
-    UserRole getUserRolebyId(long id);
+    UserRole getUserRoleById(long id);
 
     Map<User,String> getAllUsersWithRole();
 
     void updateUserRole(UserRole userRole);
+
+    void authoriseUser(long userId);
 }

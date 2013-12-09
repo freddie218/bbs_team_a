@@ -131,10 +131,7 @@ public class UserController {
 
     @RequestMapping(value = {"/users"}, method = RequestMethod.POST)
     public ModelAndView authoriseUser(HttpServletRequest request,ModelMap model) {
-        long userId =Long.parseLong(request.getParameter("authoriseUserId")) ;
-        UserRole userRole = userService.getUserRolebyId(userId);
-        userRole.setRoleName("ROLE_ADMIN");
-        userService.updateUserRole(userRole);
+        userService.authoriseUser(Long.parseLong(request.getParameter("authoriseUserId")));
         Map <User,String> usersWithRoles= userService.getAllUsersWithRole();
         model.put("usersWithRoles",usersWithRoles);
         return new ModelAndView("user/users", model);

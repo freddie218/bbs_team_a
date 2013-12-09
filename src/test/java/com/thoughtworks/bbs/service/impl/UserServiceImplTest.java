@@ -10,7 +10,9 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
@@ -110,23 +112,34 @@ public class UserServiceImplTest {
         when(userMapper.findAllUsers()).thenReturn(users);
         when(userRoleMapper.get(user.getId())).thenReturn(userRole);
 
-        userService.getAllUsersWithRole();
+        Map<User,String> result = userService.getAllUsersWithRole();
+        Map<User,String> expect = new HashMap<User, String>();
+        expect.put(user,userRole.getRoleName());
+        assertEquals(result,expect);
         verify(userMapper).findAllUsers();
         verify(userRoleMapper).get(user.getId());
     }
 
     @Test
     public void shouldRuturnUserRoleWhenInvoked(){
-        userService.getUserRolebyId(user.getId());
+        userService.getUserRoleById(user.getId());
 
         verify(userRoleMapper).get(user.getId());
     }
 
     @Test
-    public void  shouldUpdateUserRoleWhenInvoked(){
+    public void shouldUpdateUserRoleWhenInvokeUpdateUserRole(){
         userService.updateUserRole(userRole);
 
         verify(userRoleMapper).update(userRole);
 
+    }
+
+    @Test
+    public void shouldUpdateUserRoleWhenInvokeAuthoriseUser(){
+        when(userRoleMapper.get(userRole.getUserId())).thenReturn(userRole);
+
+        userService.authoriseUser(userRole.getUserId());
+        verify(userRoleMapper).update(userRole);
     }
 }

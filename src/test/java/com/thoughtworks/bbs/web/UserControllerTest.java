@@ -231,18 +231,11 @@ public class UserControllerTest {
 
     @Test
     public void shouldAuthoriseUser (){
-        UserRole updatedUserRole = new UserRole();
-        updatedUserRole.setUserId(user.getId());
-        updatedUserRole.setRoleName("ROLE_ADMIN");
         expected = new ModelAndView("user/users");
-
         when(request.getParameter("authoriseUserId")).thenReturn("1");
-        when(userService.getUserRolebyId(1L)).thenReturn(userRole);
         result = userController.authoriseUser(request,new ModelMap());
 
-        verify(userService).getUserRolebyId(1L);
-        verify(userService).updateUserRole(argThat(new UserRoleMatcher(updatedUserRole)));
-        verify(userService).getAllUsersWithRole();
+        verify(userService).authoriseUser(1L);
         assertEquals("page should stay user/users", expected.getViewName(), result.getViewName());
     }
 

@@ -43,7 +43,7 @@ if (r==true)
   }
 }
 </script>
-<form name="authoriseUserForm" method="post" onsubmit="return form_validate();">
+<form name="authoriseUserForm" method="post" onsubmit="return true;">
      <input type="hidden" id="authoriseUserId" name="authoriseUserId">
 </form>
 
