@@ -23,7 +23,7 @@
                     </c:if>
                     <c:if test="${map.value=='ROLE_REGULAR'}">
                         User
-                        <a href="javascript:void(0)" onclick="show_confirm('${map.key.id}');">X</a>
+                        <a href="javascript:void(0)" onclick="show_confirm('${map.key.id}');"><span class="text-primary">&uarr;</span></a>
                     </c:if>
                 </td>
             </tr>
