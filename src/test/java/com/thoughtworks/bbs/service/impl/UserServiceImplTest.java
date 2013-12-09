@@ -142,4 +142,11 @@ public class UserServiceImplTest {
         userService.authoriseUser(userRole.getUserId());
         verify(userRoleMapper).update(userRole);
     }
+
+    @Test
+    public void  returnFalseWhenUserDisabled() {
+        boolean result = userService.disable(user);
+        assertEquals(result, true);
+    }
+
 }

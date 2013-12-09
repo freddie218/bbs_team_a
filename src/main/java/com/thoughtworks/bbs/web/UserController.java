@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.Console;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.HashMap;
@@ -125,7 +126,7 @@ public class UserController {
     @RequestMapping(value = {"/users"}, method = RequestMethod.GET)
     public ModelAndView showAllUsers(ModelMap map) {
         Map <User,String> usersWithRoles= userService.getAllUsersWithRole();
-        map.put("usersWithRoles",usersWithRoles);
+        map.put("usersWithRoles", usersWithRoles);
         return new ModelAndView("user/users", map);
     }
 
@@ -135,6 +136,17 @@ public class UserController {
         Map <User,String> usersWithRoles= userService.getAllUsersWithRole();
         model.put("usersWithRoles",usersWithRoles);
         return new ModelAndView("user/users", model);
+    }
+
+    @RequestMapping(value = {"/disableUser"}, method = RequestMethod.POST)
+    public ModelAndView processUserDisable(HttpServletRequest request, ModelMap model) {
+        String userName = request.getParameter("userName");
+        User user = userService.getByUsername(userName);
+        userService.disable(user);
+        Map<String,User> map = new HashMap<String,User>();
+        Map <User,String> usersWithRoles= userService.getAllUsersWithRole();
+        model.put("usersWithRoles",usersWithRoles);
+        return new ModelAndView("user/users",map);
     }
 
     @RequestMapping(value = {"/updateProfile"}, method = RequestMethod.GET)
@@ -188,6 +200,6 @@ public class UserController {
         map.put("myPosts", posts);
         map.put("showUser", showUser);
         return new ModelAndView("user/profile", map);
-
     }
+
 }
