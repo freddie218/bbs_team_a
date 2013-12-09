@@ -11,6 +11,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -135,5 +136,54 @@ public class UserServiceImpl implements UserService {
             return false;
         return true;
     }
+
+    @Override
+    public UserRole getUserRolebyId(long id){
+        SqlSession session = factory.openSession();
+        UserRole userRole = null;
+
+        try{
+             UserRoleMapper mapper = session.getMapper(UserRoleMapper.class);
+             userRole = mapper.get(id);
+
+        } finally {
+            session.close();
+        }
+        return  userRole;
+    }
+
+    @Override
+    public Map<User,String> getAllUsersWithRole(){
+        List<User> users = getAll();
+        Map <User,String> userWithRole= new HashMap<User,String>();
+        SqlSession session = factory.openSession();
+
+        try{
+            for (User user:users){
+                UserRoleMapper mapper = session.getMapper(UserRoleMapper.class);
+                UserRole userRole = mapper.get(user.getId());
+                userWithRole.put(user,userRole.getRoleName());
+            }
+        } finally {
+            session.close();
+        }
+        return  userWithRole;
+    }
+
+    @Override
+    public void updateUserRole(UserRole userRole) {
+        SqlSession session = factory.openSession();
+        ServiceResult<User> serviceResult = null;
+
+            try {
+                UserRoleMapper mapper = session.getMapper(UserRoleMapper.class);;
+                mapper.update(userRole);
+                session.commit();
+            }
+            finally {
+                session.close();
+            }
+    }
+
 
 }

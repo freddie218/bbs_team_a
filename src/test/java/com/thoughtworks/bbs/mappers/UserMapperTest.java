@@ -41,11 +41,9 @@ public class UserMapperTest extends MapperTestBase{
 
     @Test
     public void shouldFindUserById() {
-        User user = new UserBuilder().userName("yj").password("111").build();
-        int before = userMapper.findAllUsers().size();
-        userMapper.insert(user);
+        User user = userMapper.findByUsername("juntao");
         assertThat("should find user by user id", true,
-              is(new IsSameUserWith(userMapper.findByUserId(before + 1)).matches(userMapper.findByUsername("yj"))));
+              is(new IsSameUserWith(userMapper.findByUserId(user.getId())).matches(user)));
     }
 
     class IsSameUserWith extends ArgumentMatcher<User> {

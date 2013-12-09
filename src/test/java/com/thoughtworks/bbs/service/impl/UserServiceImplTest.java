@@ -3,10 +3,14 @@ package com.thoughtworks.bbs.service.impl;
 import com.thoughtworks.bbs.mappers.UserMapper;
 import com.thoughtworks.bbs.mappers.UserRoleMapper;
 import com.thoughtworks.bbs.model.User;
+import com.thoughtworks.bbs.model.UserRole;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
@@ -18,6 +22,7 @@ public class UserServiceImplTest {
     private SqlSession session;
     private SqlSessionFactory sessionFactory;
     private UserRoleMapper userRoleMapper;
+    private UserRole userRole;
 
     @Before
     public void setup(){
@@ -36,6 +41,12 @@ public class UserServiceImplTest {
         user = new User();
         user.setUserName("user");
         user.setPasswordHash("password");
+        user.setId(1L);
+
+        userRole = new UserRole();
+        userRole.setUserId(1L);
+        userRole.setRoleName("ROLE_REGULAR");
+
     }
 
     @Test
@@ -89,5 +100,33 @@ public class UserServiceImplTest {
         Long userId = 1L;
         userService.get(userId);
         verify(userMapper).findByUserId(userId);
+    }
+
+    @Test
+    public void  shouldReturnAllUsersWhithRoleWhenInvoked(){
+        List<User> users = new ArrayList<User>();
+        users.add(user);
+
+        when(userMapper.findAllUsers()).thenReturn(users);
+        when(userRoleMapper.get(user.getId())).thenReturn(userRole);
+
+        userService.getAllUsersWithRole();
+        verify(userMapper).findAllUsers();
+        verify(userRoleMapper).get(user.getId());
+    }
+
+    @Test
+    public void shouldRuturnUserRoleWhenInvoked(){
+        userService.getUserRolebyId(user.getId());
+
+        verify(userRoleMapper).get(user.getId());
+    }
+
+    @Test
+    public void  shouldUpdateUserRoleWhenInvoked(){
+        userService.updateUserRole(userRole);
+
+        verify(userRoleMapper).update(userRole);
+
     }
 }
