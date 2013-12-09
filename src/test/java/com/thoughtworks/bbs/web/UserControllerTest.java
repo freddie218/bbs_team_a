@@ -2,6 +2,7 @@ package com.thoughtworks.bbs.web;
 
 import com.thoughtworks.bbs.model.Post;
 import com.thoughtworks.bbs.model.User;
+import com.thoughtworks.bbs.model.UserRole;
 import com.thoughtworks.bbs.service.PostService;
 import com.thoughtworks.bbs.service.UserService;
 import com.thoughtworks.bbs.service.impl.UserServiceImpl;
@@ -33,6 +34,7 @@ public class UserControllerTest {
     private ModelAndView expected;
     private ModelAndView result;
     private List<Post> postList;
+    private UserRole userRole;
 
     @Before
     public void setup() {
@@ -44,6 +46,11 @@ public class UserControllerTest {
         user = new User();
         user.setUserName("username");
         user.setPasswordHash("123456");
+        user.setId(1L);
+
+        userRole = new UserRole();
+        userRole.setUserId(1L);
+        userRole.setRoleName("ROLE_REGULAR");
 
         post = new Post();
         post.setAuthorName("username").setTitle("username").setContent("username");
@@ -219,6 +226,23 @@ public class UserControllerTest {
 
     }
 
+    @Test
+    public void shouldAuthoriseUser (){
+        UserRole updatedUserRole = new UserRole();
+        updatedUserRole.setUserId(user.getId());
+        updatedUserRole.setRoleName("ROLE_ADMIN");
+        expected = new ModelAndView("user/users");
+
+        when(request.getParameter("authoriseUserId")).thenReturn("1");
+        when(userService.getUserRolebyId(1L)).thenReturn(userRole);
+        result = userController.authoriseUser(request,new ModelMap());
+
+        verify(userService).getUserRolebyId(1L);
+        verify(userService).updateUserRole(argThat(new UserRoleMatcher(updatedUserRole)));
+        verify(userService).getAllUsersWithRole();
+        assertEquals("page should stay user/users", expected.getViewName(), result.getViewName());
+    }
+
     private class UserMatcher extends ArgumentMatcher<User> {
 
         @Override
@@ -240,6 +264,20 @@ public class UserControllerTest {
         public boolean matches(Object userToMatch) {
             return ((User) userToMatch).getUserName().equals(user.getUserName())
                     && ((User) userToMatch).getPasswordHash().equals(user.getPasswordHash());
+        }
+    }
+
+    class UserRoleMatcher extends ArgumentMatcher<UserRole> {
+        private UserRole userRole;
+
+        UserRoleMatcher(UserRole userRole) {
+            this.userRole = userRole;
+        }
+
+        @Override
+        public boolean matches(Object userroleToMatch) {
+            return ((UserRole) userroleToMatch).getUserId().equals(userRole.getUserId())
+                    && ((UserRole) userroleToMatch).getRoleName().equals(userRole.getRoleName());
         }
     }
 }

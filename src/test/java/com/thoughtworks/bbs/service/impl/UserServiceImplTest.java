@@ -22,6 +22,7 @@ public class UserServiceImplTest {
     private SqlSession session;
     private SqlSessionFactory sessionFactory;
     private UserRoleMapper userRoleMapper;
+    private UserRole userRole;
 
     @Before
     public void setup(){
@@ -40,6 +41,12 @@ public class UserServiceImplTest {
         user = new User();
         user.setUserName("user");
         user.setPasswordHash("password");
+        user.setId(1L);
+
+        userRole = new UserRole();
+        userRole.setUserId(1L);
+        userRole.setRoleName("ROLE_REGULAR");
+
     }
 
     @Test
@@ -92,9 +99,6 @@ public class UserServiceImplTest {
     public void  shouldReturnAllUsersWhithRoleWhenInvoked(){
         List<User> users = new ArrayList<User>();
         users.add(user);
-        UserRole userRole = new UserRole();
-        userRole.setUserId(1L);
-        userRole.setRoleName("admin");
 
         when(userMapper.findAllUsers()).thenReturn(users);
         when(userRoleMapper.get(user.getId())).thenReturn(userRole);
@@ -102,5 +106,19 @@ public class UserServiceImplTest {
         userService.getAllUsersWithRole();
         verify(userMapper).findAllUsers();
         verify(userRoleMapper).get(user.getId());
+    }
+
+    @Test
+    public void shouldRuturnUserRoleWhenInvoked(){
+        userService.getUserRolebyId(user.getId());
+
+        verify(userRoleMapper).get(user.getId());
+    }
+
+    @Test
+    public void  shouldUpdateUserRoleWhenInvoked(){
+        userService.updateUserRole(userRole);
+
+        verify(userRoleMapper).update(userRole);
     }
 }
