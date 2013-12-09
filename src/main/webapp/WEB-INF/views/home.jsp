@@ -13,16 +13,19 @@
     </tr>
     </thead>
     <tbody>
-    <c:forEach var="post" items="${posts}" varStatus="row">
+
+    <c:forEach items="${posts}" varStatus="row">
         <tr>
             <td>
-                <a href="<c:url value='/posts/${post.postId}' />">
-                    <c:out value="${post.title}"/>
+                <a href="<c:url value='/posts/${posts[row.index].postId}' />">
+                    <c:out value="${posts[row.index].title}"/>
                 </a>
             </td>
-            <td><c:out value="${post.authorName}"/></td>
+               <td>
+               <a href="<c:url value='/user/${users[row.index].id}' />">
+               <c:out value="${posts[row.index].authorName}"/></td>
             <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-            <td><fmt:formatDate value="${post.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/> </td>
+            <td><fmt:formatDate value="${posts[row.index].createTime}" pattern="yyyy-MM-dd HH:mm:ss"/> </td>
         </tr>
     </c:forEach>
     </tbody>

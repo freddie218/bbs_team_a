@@ -1,8 +1,11 @@
 package com.thoughtworks.bbs.web;
 
 import com.thoughtworks.bbs.model.Post;
+import com.thoughtworks.bbs.model.User;
 import com.thoughtworks.bbs.service.PostService;
+import com.thoughtworks.bbs.service.UserService;
 import com.thoughtworks.bbs.service.impl.PostServiceImpl;
+import com.thoughtworks.bbs.service.impl.UserServiceImpl;
 import com.thoughtworks.bbs.util.PostBuilder;
 import com.thoughtworks.bbs.util.UserBuilder;
 import org.junit.Before;
@@ -28,6 +31,7 @@ import static org.mockito.Mockito.*;
  */
 public class HomeControllerTest {
     private PostService service;
+    private UserService userService;
     private HomeController controller;
     private Principal principal;
     private Model model;
@@ -37,7 +41,8 @@ public class HomeControllerTest {
     @Before
     public void setup() {
         service = mock(PostServiceImpl.class);
-        controller = new HomeController(service);
+        userService = mock(UserServiceImpl.class);
+        controller = new HomeController(service,userService);
 
         model = new ExtendedModelMap();
         userBuilder = new UserBuilder();
@@ -62,17 +67,25 @@ public class HomeControllerTest {
     public void  shouldReturnHomeWhenGetPrincipalNotNull() {
         principal = new PrincipalImpl(userBuilder.build().getUserName());
         List<Post> expectedPosts = new ArrayList<Post>();
-        expectedPosts.add(new Post());
+        expectedPosts.add(new Post().setAuthorName("huan"));
         when(service.findAllPostsOrderByTime()).thenReturn(expectedPosts);
+        User user = new UserBuilder().userName("huan").build();
+        when(userService.getByUsername("huan")).thenReturn(user);
+        List<User> users = new ArrayList<User>();
+        users.add(user);
         String expectedUrl = "home";
         Model expectedModel = new ExtendedModelMap();
         expectedModel.addAttribute("posts", expectedPosts);
+        expectedModel.addAttribute("users", users);
 
         String resultUrl = controller.get(model, postBuilder.build(), principal);
         verify(service).findAllPostsOrderByTime();
         assertThat(resultUrl, is(expectedUrl));
         assertThat(model, is(expectedModel));
     }
+
+
+
 
 
 }
