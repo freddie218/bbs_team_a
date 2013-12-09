@@ -4,6 +4,7 @@ import com.thoughtworks.bbs.model.User;
 import com.thoughtworks.bbs.util.UserBuilder;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentMatcher;
 
 import java.util.List;
 
@@ -38,4 +39,26 @@ public class UserMapperTest extends MapperTestBase{
 
     }
 
+    @Test
+    public void shouldFindUserById() {
+        User user = new UserBuilder().userName("yj").password("111").build();
+        int before = userMapper.findAllUsers().size();
+        userMapper.insert(user);
+        assertThat("should find user by user id", true,
+              is(new IsSameUserWith(userMapper.findByUserId(before + 1)).matches(userMapper.findByUsername("yj"))));
+    }
+
+    class IsSameUserWith extends ArgumentMatcher<User> {
+        private User user;
+
+        IsSameUserWith(User user) {
+            this.user = user;
+        }
+
+        @Override
+        public boolean matches(Object userToMatch) {
+            return ((User) userToMatch).getUserName().equals(user.getUserName())
+                    && ((User) userToMatch).getPasswordHash().equals(user.getPasswordHash());
+        }
+    }
 }

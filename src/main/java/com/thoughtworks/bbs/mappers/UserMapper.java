@@ -34,4 +34,13 @@ public interface UserMapper {
             "SELECT id, username, password as passwordHash, enabled FROM users"
     )
     List<User> findAllUsers();
+
+
+    @Select(
+            "SELECT id, username, password as passwordHash, enabled " +
+                    "FROM users " +
+                    "WHERE id = #{id}"
+    )
+    User findByUserId(long id);
+
 }
