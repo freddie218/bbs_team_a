@@ -31,19 +31,46 @@
     <table class="table">
         <tr>
             <td>Name</td>
-            <td>${user.userName}</td>
+            <c:if test="${empty showUser}">
+                <td>${user.userName}</td>
+            </c:if>
+            <c:if test="${not empty showUser}">
+                <td>${showUser.userName}</td>
+            </c:if>
         </tr>
         <tr>
             <td>Enable</td>
             <td>${user.enabled}</td>
         </tr>
     </table>
-    <a href="changePassword">Change Password</a>
-    <a href="updateProfile">Update Profile</a>
+
+
+        <c:if test="${showUser.id==user.id}">
+            <a href="changePassword">Change Password</a>
+            <a href="updateProfile">Update Profile</a>
+        </c:if>
+        <c:if test="${empty showUser}">
+            <a href="changePassword">Change Password</a>
+            <a href="updateProfile">Update Profile</a>
+        </c:if>
+
 </div>
 
 <div id="myPost">
-    <h2> My Posts</h2>
+    <c:choose>
+    <c:when test="${empty showUser}">
+         <h2>My Posts</h2>
+    </c:when>
+    <c:otherwise>
+       <c:if test="${showUser.id!=user.id}">
+          <h2>Posts</h2>
+       </c:if>
+       <c:if test="${showUser.id==user.id}">
+          <h2>My Posts</h2>
+       </c:if>
+    </c:otherwise>
+    </c:choose>
+
     <table class="table table-striped">
         <thead>
         <tr>

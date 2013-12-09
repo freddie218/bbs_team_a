@@ -5,6 +5,7 @@ import com.thoughtworks.bbs.model.User;
 import com.thoughtworks.bbs.service.PostService;
 import com.thoughtworks.bbs.service.UserService;
 import com.thoughtworks.bbs.service.impl.UserServiceImpl;
+import com.thoughtworks.bbs.util.UserBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentMatcher;
@@ -17,6 +18,8 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
@@ -224,10 +227,10 @@ public class UserControllerTest {
         @Override
         public boolean matches(Object arg) {
             if( null == arg || !(arg instanceof User) )
-                return  false;
-            return ((User) arg).getUserName().equals("username");
-        }
-    }
+            return  false;
+    return ((User) arg).getUserName().equals("username");
+}
+}
 
     class IsSameUserWith extends ArgumentMatcher<User> {
         private User user;
@@ -242,4 +245,18 @@ public class UserControllerTest {
                     && ((User) userToMatch).getPasswordHash().equals(user.getPasswordHash());
         }
     }
+
+    @Test
+    public void shouldShowUserProfileWhenClickPostAuthorName() {
+        Long id = 22L;
+        when(principal.getName()).thenReturn("loginhuan");
+        when(userService.get(id)).thenReturn(new UserBuilder().id(22L).userName("yj").password("11").build());
+        ModelMap model = new ModelMap();
+        ModelAndView result = userController.showUserProfile(id, principal, model);
+        expected = new ModelAndView("user/profile");
+        assertThat("should show user profile when click post author name",result.getViewName(), is(expected.getViewName()));
+
+
+    }
+
 }

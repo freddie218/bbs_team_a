@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -20,7 +21,9 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.security.Principal;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/user")
@@ -163,5 +166,19 @@ public class UserController {
         }
         model.addAttribute("error", "User Profile update failed");
         return new ModelAndView("user/updateProfile", map);
+    }
+
+    @RequestMapping(value = {"/{id}"}, method = RequestMethod.GET)
+    public ModelAndView showUserProfile(@PathVariable("id") Long id, Principal principal, ModelMap model) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        User showUser = userService.get(id);
+        User user = userService.getByUsername(principal.getName());
+
+        List<Post> posts = postService.findMainPostByAuthorNameSortedByCreateTime(showUser.getUserName());
+        map.put("user",user);
+        map.put("myPosts", posts);
+        map.put("showUser", showUser);
+        return new ModelAndView("user/profile", map);
+
     }
 }
