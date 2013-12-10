@@ -161,4 +161,11 @@ public class UserServiceImplTest {
                     && ((UserRole) userroleToMatch).getRoleName().equals(userRole.getRoleName());
         }
     }
+
+    @Test
+    public void  returnFalseWhenUserDisabled() {
+        boolean result = userService.disable(user);
+        assertEquals(result, true);
+    }
+
 }

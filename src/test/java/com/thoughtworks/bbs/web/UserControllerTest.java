@@ -239,15 +239,23 @@ public class UserControllerTest {
         assertEquals("page should stay user/users", expected.getViewName(), result.getViewName());
     }
 
+    @Test
+    public void shouldJumpToUsersAfterDiasbleUserSuccess(){
+        expected = new ModelAndView("user/users");
+        result = userController.processUserDisable(request, new ModelMap());
+        assertEquals("page should jump to user/users", expected.getViewName(), result.getViewName());
+
+    }
+
     private class UserMatcher extends ArgumentMatcher<User> {
 
         @Override
         public boolean matches(Object arg) {
             if( null == arg || !(arg instanceof User) )
-            return  false;
-    return ((User) arg).getUserName().equals("username");
-}
-}
+                 return  false;
+            return ((User) arg).getUserName().equals("username");
+         }
+    }
 
     class IsSameUserWith extends ArgumentMatcher<User> {
         private User user;

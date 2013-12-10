@@ -194,5 +194,14 @@ public class UserServiceImpl implements UserService {
         updateUserRole(userRole);
     }
 
+    @Override
+    public boolean disable(User user) {
+        if(user==null) return false;
+        user.setEnabled(false);
+        if(update(user).hasErrors())
+            return false;
+        return true;
+    }
+
 
 }

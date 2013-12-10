@@ -30,4 +30,6 @@ public interface UserService {
     void updateUserRole(UserRole userRole);
 
     void authoriseUser(long userId);
+
+    boolean disable(User user);
 }
