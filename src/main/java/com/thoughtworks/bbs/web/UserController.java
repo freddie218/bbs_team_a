@@ -146,7 +146,7 @@ public class UserController {
         Map<String,User> map = new HashMap<String,User>();
         Map <User,String> usersWithRoles= userService.getAllUsersWithRole();
         model.put("usersWithRoles",usersWithRoles);
-        return new ModelAndView("user/users",map);
+        return new ModelAndView("redirect:users",map);
     }
 
     @RequestMapping(value = {"/updateProfile"}, method = RequestMethod.GET)
