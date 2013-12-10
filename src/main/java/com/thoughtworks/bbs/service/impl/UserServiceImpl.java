@@ -107,7 +107,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public ServiceResult<User> update(User user) {
         SqlSession session = factory.openSession();
-        ServiceResult<User> serviceResult = null;
         Map<String, String> errors = validator.validate(user);
 
         if(errors.isEmpty()) {
@@ -115,15 +114,12 @@ public class UserServiceImpl implements UserService {
                 UserMapper mapper = session.getMapper(UserMapper.class);
                 mapper.update(user);
                 session.commit();
-            }catch (Exception e) {
-                errors.put("SqlError", e.getMessage());
             }
             finally {
                 session.close();
             }
         }
-        serviceResult = new ServiceResult<User>(errors, user);
-        return serviceResult;
+        return new ServiceResult<User>(errors, user);
     }
 
     @Override
