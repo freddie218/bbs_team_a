@@ -196,11 +196,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean disable(User user) {
-        if(user==null) return false;
-        user.setEnabled(false);
-        if(update(user).hasErrors())
-            return false;
-        return true;
+        if( user != null && user.isEnabled()) {
+            user.setEnabled(false);
+            if(!update(user).hasErrors())
+                return true;
+        }
+        return false;
     }
 
 
