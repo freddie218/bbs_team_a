@@ -240,10 +240,12 @@ public class UserControllerTest {
     }
 
     @Test
-    public void shouldJumpToUsersAfterDiasbleUserSuccess(){
-        expected = new ModelAndView("user/users");
+    public void shouldJumpToUsersAfterDisableUserSuccess(){
+        expected = new ModelAndView("redirect:users");
         result = userController.processUserDisable(request, new ModelMap());
-        assertEquals("page should jump to user/users", expected.getViewName(), result.getViewName());
+
+        verify(userService).disable(any(User.class));
+        assertEquals("page should be at user/users", expected.getViewName(), result.getViewName());
 
     }
 

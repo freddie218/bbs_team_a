@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 public class UserServiceImplTest {
@@ -163,9 +165,26 @@ public class UserServiceImplTest {
     }
 
     @Test
-    public void  returnFalseWhenUserDisabled() {
-        boolean result = userService.disable(user);
-        assertEquals(result, true);
+    public void  shouldReturnTrueWhenUserDisabledSuccess() {
+        user.setEnabled(true);
+
+        User disabledUser = new User();
+        disabledUser.setEnabled(false);
+        disabledUser.setUserName("user");
+        when(userMapper.findByUsername("user")).thenReturn(disabledUser);
+
+        assertTrue(userService.disable(user));
+        verify(userMapper).update(user);
+        assertFalse(userService.getByUsername("user").isEnabled());
+    }
+
+    @Test
+    public void  shouldReturnFalseWhenUserDisabledFailed() {
+        user.setEnabled(false);
+
+        assertFalse("should return false when given null user", userService.disable(null));
+        assertFalse("should return false when given disabled user", userService.disable(user));
+        verify(userMapper, never()).update(user);
     }
 
 }
