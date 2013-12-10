@@ -276,17 +276,4 @@ public class UserControllerTest {
 
     }
 
-    class UserRoleMatcher extends ArgumentMatcher<UserRole> {
-        private UserRole userRole;
-
-        UserRoleMatcher(UserRole userRole) {
-            this.userRole = userRole;
-        }
-
-        @Override
-        public boolean matches(Object userroleToMatch) {
-            return ((UserRole) userroleToMatch).getUserId().equals(userRole.getUserId())
-                    && ((UserRole) userroleToMatch).getRoleName().equals(userRole.getRoleName());
-        }
-    }
 }

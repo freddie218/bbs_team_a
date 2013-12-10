@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentMatcher;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -132,14 +133,32 @@ public class UserServiceImplTest {
         userService.updateUserRole(userRole);
 
         verify(userRoleMapper).update(userRole);
-
     }
 
     @Test
     public void shouldUpdateUserRoleWhenInvokeAuthoriseUser(){
+        UserRole updatedUserRole = new UserRole();
+        updatedUserRole.setUserId(1L);
+        updatedUserRole.setRoleName("ROLE_ADMIN");
+
         when(userRoleMapper.get(userRole.getUserId())).thenReturn(userRole);
 
         userService.authoriseUser(userRole.getUserId());
-        verify(userRoleMapper).update(userRole);
+        verify(userRoleMapper).get(userRole.getUserId());
+        verify(userRoleMapper).update(argThat(new  UserRoleMatcher(updatedUserRole)));
+    }
+
+    class UserRoleMatcher extends ArgumentMatcher<UserRole> {
+        private UserRole userRole;
+
+        UserRoleMatcher(UserRole userRole) {
+            this.userRole = userRole;
+        }
+
+        @Override
+        public boolean matches(Object userroleToMatch) {
+            return ((UserRole) userroleToMatch).getUserId().equals(userRole.getUserId())
+                    && ((UserRole) userroleToMatch).getRoleName().equals(userRole.getRoleName());
+        }
     }
 }
