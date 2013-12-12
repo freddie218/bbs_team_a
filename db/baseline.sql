@@ -37,6 +37,7 @@ CREATE TABLE `post` (
   `modify_time` datetime NOT NULL,
   `creator_id` int(11) NOT NULL,
   `modifier_id` int(11) NOT NULL,
+  `liked_time` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -49,6 +50,29 @@ LOCK TABLES `post` WRITE;
 /*!40000 ALTER TABLE `post` DISABLE KEYS */;
 /*!40000 ALTER TABLE `post` ENABLE KEYS */;
 UNLOCK TABLES;
+
+
+--
+-- Table structure for table `user_roles`
+--
+DROP TABLE IF EXISTS `likes_table`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `likes_table` (
+  `post_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_roles`
+--
+
+LOCK TABLE `likes_table` WRITE;
+/*!40000 ALTER TABLE `likes_table` DISABLE KEYS */;
+/*!40000 ALTER TABLE `likes_table` ENABLE KEYS */;
+UNLOCK TABLES;
+
 
 --
 -- Table structure for table `user_roles`

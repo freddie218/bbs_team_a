@@ -14,7 +14,7 @@
     </thead>
     <tbody>
 
-    <c:forEach items="${posts}" varStatus="row">
+    <c:forEach var="post" items="${posts}" varStatus="row">
         <tr>
             <td>
                 <a href="<c:url value='/posts/${posts[row.index].postId}' />">
