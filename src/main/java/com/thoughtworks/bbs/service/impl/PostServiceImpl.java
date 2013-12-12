@@ -75,6 +75,12 @@ public class PostServiceImpl implements PostService {
 
         try {
             PostMapper postMapper = session.getMapper(PostMapper.class);
+            if(post.getParentId().equals(0L)) {
+                List<Post> subPosts = findAllPostByMainPost(post.getPostId());
+                for (Post subPost : subPosts) {
+                    postMapper.delete(subPost);
+                }
+            }
             postMapper.delete(post);
             session.commit();
         } finally {
@@ -124,15 +130,6 @@ public class PostServiceImpl implements PostService {
             }
         });
         return postByAuthorName;
-    }
-
-    @Override
-    public void deleteAllPostsByMainPost(Long postId) {
-        List<Post> allPosts = findAllPostByMainPost(postId);
-        for(Post p : allPosts)
-        {
-            delete(p);
-        }
     }
 
 }

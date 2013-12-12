@@ -218,12 +218,14 @@ public class UserControllerTest {
     @Test
     public void shouldDeleteThePost() {
         Post aPost = new Post();
+        aPost.setPostId(1L);
+        when(postService.get(1L)).thenReturn(aPost);
         when(request.getParameter("deletePost")).thenReturn("1");
 
         expected = new ModelAndView("user/profile");
         result = userController.processDeletePost(request, principal, new ModelMap());
 
-        verify(postService).deleteAllPostsByMainPost(Long.parseLong("1"));
+        verify(postService).delete(aPost);
         verify(postService).findMainPostByAuthorNameSortedByCreateTime(principal.getName());
 
 
@@ -289,11 +291,13 @@ public class UserControllerTest {
     @Test
     public void shouldDeletePostWhenClickDeleteAndUserIsShowUser() {
         Post aPost = new Post();
+        aPost.setPostId(1L);
+        when(postService.get(1L)).thenReturn(aPost);
         when(request.getParameter("deletePost")).thenReturn("1");
         expected = new ModelAndView("user/profile");
         result = userController.DeletePost(request, principal, new ModelMap());
 
-        verify(postService).deleteAllPostsByMainPost(Long.parseLong("1"));
+        verify(postService).delete(aPost);
         verify(postService).findMainPostByAuthorNameSortedByCreateTime(principal.getName());
     }
 

@@ -20,6 +20,4 @@ public interface PostService {
 
     List<Post> findMainPostByAuthorNameSortedByCreateTime(String authorName);
 
-    void deleteAllPostsByMainPost(Long postId);
-
 }
