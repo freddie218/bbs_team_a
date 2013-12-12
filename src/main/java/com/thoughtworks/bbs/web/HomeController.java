@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
@@ -37,8 +36,9 @@ public class HomeController {
         userService = new UserServiceImpl(MyBatisUtil.getSqlSessionFactory());
         postLikeService = new PostLikeServiceImpl(MyBatisUtil.getSqlSessionFactory());
     }
+
     public HomeController(PostService service, UserService userService, PostLikeService postLikeService) {
-        postService = service;
+        this.postService = service;
         this.userService = userService;
         this.postLikeService = postLikeService;
     }
@@ -72,7 +72,7 @@ public class HomeController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ModelAndView likeProcess(HttpServletRequest request, Principal principal, RedirectAttributesModelMap model)
+    public ModelAndView likeProcess(HttpServletRequest request, Principal principal, Model model)
     {
         String likedPostID = request.getParameter("likePost");
         Long userID = userService.getByUsername(principal.getName()).getId();
@@ -87,8 +87,8 @@ public class HomeController {
             User user = userService.getByUsername(name);
             users.add(user);
         }
-        model.addFlashAttribute("posts",posts);
-        model.addFlashAttribute("users",users);
+        model.addAttribute("posts",posts);
+        model.addAttribute("users",users);
 
         Map<Post, Boolean> postsWithLike = new HashMap<Post, Boolean>();
         for(Post aPost : posts)
@@ -97,8 +97,8 @@ public class HomeController {
             postsWithLike.put(aPost, postLikeService.isLiked(user_ID, aPost.getPostId()));
         }
 
-        model.addFlashAttribute("postsWithLike", postsWithLike);
+        model.addAttribute("postsWithLike", postsWithLike);
 
-        return new ModelAndView("redirect:/");
+        return new ModelAndView("home");
     }
 }

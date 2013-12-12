@@ -77,7 +77,17 @@
             <th>Title</th>
             <th>Author</th>
             <th>Publish Time</th>
-            <th>Delete</th>
+            <c:choose>
+                <c:when test="${empty showUser}">
+                     <th>Delete</th>
+                </c:when>
+                <c:otherwise>
+                   <c:if test="${showUser.id==user.id}">
+                      <th>Delete</th>
+                   </c:if>
+                </c:otherwise>
+            </c:choose>
+
         </tr>
         </thead>
         <tbody>
@@ -94,7 +104,18 @@
                 <td><c:out value="${post.authorName}"/></td>
                 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
                 <td><fmt:formatDate value="${post.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                <td><a href="javascript:void(0)" onclick="show_confirm('${post.postId}');">X</a></td>
+
+                 <c:choose>
+                    <c:when test="${empty showUser}">
+                         <td><a href="javascript:void(0)" onclick="show_confirm('${post.postId}');">X</a></td>
+                    </c:when>
+                         <c:otherwise>
+                            <c:if test="${showUser.id==user.id}">
+                               <td><a href="javascript:void(0)" onclick="show_confirm('${post.postId}');">X</a></td>
+                            </c:if>
+                         </c:otherwise>
+                 </c:choose>
+
             </tr>
         </c:forEach>
         </tbody>

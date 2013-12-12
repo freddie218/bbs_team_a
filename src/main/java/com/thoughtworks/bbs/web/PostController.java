@@ -47,7 +47,7 @@ public class PostController {
 
     public PostController (PostService postService,UserService userService, PostLikeService postLikeService)
     {
-        this.postLikeService = postLikeService;
+        this.postService = postService;
         this.userService = userService;
         this.postLikeService = postLikeService;
     }
@@ -106,7 +106,6 @@ public class PostController {
            model.addFlashAttribute("error","true");
            return new ModelAndView("redirect:posts/create");
         }
-
 
         PostBuilder builder = new PostBuilder();
         builder.title(title).content(content).author(currentUser.getUserName()).parentId(parentIdLong).creatorId(currentUser.getId())

@@ -286,4 +286,15 @@ public class UserControllerTest {
 
     }
 
+    @Test
+    public void shouldDeletePostWhenClickDeleteAndUserIsShowUser() {
+        Post aPost = new Post();
+        when(request.getParameter("deletePost")).thenReturn("1");
+        expected = new ModelAndView("user/profile");
+        result = userController.DeletePost(request, principal, new ModelMap());
+
+        verify(postService).deleteAllPostsByMainPost(Long.parseLong("1"));
+        verify(postService).findMainPostByAuthorNameSortedByCreateTime(principal.getName());
+    }
+
 }
