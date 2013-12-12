@@ -34,8 +34,6 @@ public class UserServiceImpl implements UserService {
         try{
             UserMapper mapper = session.getMapper(UserMapper.class);
             user = mapper.findByUserId(id);
-            if(user == null)
-                System.out.println("user is null");
         } finally {
             session.close();
         }
