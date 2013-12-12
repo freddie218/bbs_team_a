@@ -66,4 +66,16 @@ public class PostLikeMapperTest extends MapperTestBase{
         List<PostLike> result = postLikeMapper.getPostLikeByPostID(1L);
         assertEquals(result.size(), before + 2);
     }
+
+
+    @Test
+    public void shouldDeleteLikePost()
+    {
+        int before = postLikeMapper.getAll().size();
+        PostLike newPostLike = new PostLike().setUserID(10L).setPostID(20L);
+        postLikeMapper.insert(newPostLike);
+        postLikeMapper.delete(newPostLike);
+        int result = postLikeMapper.getAll().size();
+        assertEquals(result, before);
+    }
 }

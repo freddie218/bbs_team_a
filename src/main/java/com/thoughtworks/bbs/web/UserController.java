@@ -1,9 +1,12 @@
 package com.thoughtworks.bbs.web;
 
 import com.thoughtworks.bbs.model.Post;
+import com.thoughtworks.bbs.model.PostLike;
 import com.thoughtworks.bbs.model.User;
+import com.thoughtworks.bbs.service.PostLikeService;
 import com.thoughtworks.bbs.service.PostService;
 import com.thoughtworks.bbs.service.UserService;
+import com.thoughtworks.bbs.service.impl.PostLikeServiceImpl;
 import com.thoughtworks.bbs.service.impl.PostServiceImpl;
 import com.thoughtworks.bbs.service.impl.UserServiceImpl;
 import com.thoughtworks.bbs.util.MyBatisUtil;
@@ -30,10 +33,12 @@ import java.util.Map;
 public class UserController {
     private UserService userService;
     private PostService postService;
+    private PostLikeService postLikeService;
 
     public UserController() {
         userService = new UserServiceImpl(MyBatisUtil.getSqlSessionFactory());
         postService = new PostServiceImpl(MyBatisUtil.getSqlSessionFactory());
+        postLikeService = new PostLikeServiceImpl(MyBatisUtil.getSqlSessionFactory());
     }
 
     public UserController setPostService(PostService postService){
@@ -43,6 +48,12 @@ public class UserController {
 
     public UserController setUserService(UserService userService) {
         this.userService = userService;
+        return this;
+    }
+
+    public UserController setPostLikeService(PostLikeService postLikeService)
+    {
+        this.postLikeService = postLikeService;
         return this;
     }
 
@@ -122,7 +133,7 @@ public class UserController {
     public ModelAndView authoriseUser(HttpServletRequest request,ModelMap model) {
         userService.authoriseUser(Long.parseLong(request.getParameter("authoriseUserId")));
         Map <User,String> usersWithRoles= userService.getAllUsersWithRole();
-        model.put("usersWithRoles",usersWithRoles);
+        model.put("usersWithRoles", usersWithRoles);
         return new ModelAndView("user/users", model);
     }
 
@@ -202,10 +213,20 @@ public class UserController {
 
         String deletePostId = request.getParameter("deletePost");
         postService.delete(postService.get(new Long(deletePostId)));
+        deleteRelatedPostLike(deletePostId);
 
         List<Post> myPosts = postService.findMainPostByAuthorNameSortedByCreateTime(principal.getName());
         model.addAttribute("myPosts", myPosts);
         return new ModelAndView("user/profile", map);
+    }
+
+    private void deleteRelatedPostLike(String postID)
+    {
+        List<PostLike> likeListByPostID = postLikeService.getPostLikeByPostID(Long.parseLong(postID));
+        for(PostLike aLike : likeListByPostID)
+        {
+            postLikeService.deletePostLike(aLike);
+        }
     }
 
 }

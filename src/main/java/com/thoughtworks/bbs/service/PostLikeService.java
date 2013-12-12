@@ -14,4 +14,6 @@ public interface PostLikeService {
     void save(PostLike alike);
 
     Boolean isLiked(Long userID, Long postID);
+
+    void deletePostLike(PostLike alike);
 }

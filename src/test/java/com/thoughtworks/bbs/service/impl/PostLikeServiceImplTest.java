@@ -103,4 +103,14 @@ public class PostLikeServiceImplTest {
 
         assertEquals(expected, result);
     }
+
+    @Test
+    public void shouldDeletePostLike()
+    {
+        PostLike aPostLike = new PostLike().setUserID(1L).setUserID(10L);
+        postLikeService.save(aPostLike);
+
+        postLikeService.deletePostLike(aPostLike);
+        verify(postLikeMapper).delete(aPostLike);
+    }
 }

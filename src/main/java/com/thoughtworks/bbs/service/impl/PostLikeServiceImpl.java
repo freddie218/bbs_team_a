@@ -79,4 +79,18 @@ public class PostLikeServiceImpl implements PostLikeService{
         }
         return false;
     }
+
+    @Override
+    public void deletePostLike(PostLike alike) {
+        SqlSession session = factory.openSession();
+        try
+        {
+            PostLikeMapper postLikeMapper = session.getMapper(PostLikeMapper.class);
+            postLikeMapper.delete(alike);
+            session.commit();
+        } finally
+        {
+            session.close();
+        }
+    }
 }

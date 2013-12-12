@@ -2,6 +2,7 @@ package com.thoughtworks.bbs.mappers;
 
 
 import com.thoughtworks.bbs.model.PostLike;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 
@@ -34,4 +35,9 @@ public interface PostLikeMapper {
                     "FROM likes_table "
     )
     List<PostLike> getAll();
+
+    @Delete(
+            "DELETE FROM likes_table WHERE post_id=#{postID} and user_id=#{userID}"
+    )
+    void delete(PostLike aPostLike);
 }
