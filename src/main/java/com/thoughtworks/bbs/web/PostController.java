@@ -98,7 +98,7 @@ public class PostController {
 
         PostBuilder builder = new PostBuilder();
         builder.title(title).content(content).author(currentUser.getUserName()).parentId(parentIdLong).creatorId(currentUser.getId())
-                .modifierId(currentUser.getId()).createTime(new Date()).modifyTime(builder.build().getCreateTime());
+                .modifierId(currentUser.getId()).createTime(new Date()).modifyTime(builder.build().getCreateTime()).likedTime(0L);
 
         postService.save(builder.build());
 
