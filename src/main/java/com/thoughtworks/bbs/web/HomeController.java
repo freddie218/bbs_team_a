@@ -78,6 +78,11 @@ public class HomeController {
         Long userID = userService.getByUsername(principal.getName()).getId();
         PostLike aPostLike = new PostLike().setPostID(Long.parseLong(likedPostID)).setUserID(userID);
 
+        Long like_time = postService.get(Long.parseLong(likedPostID)).getLiked_time();
+        like_time++;
+        Post newPost = postService.get(Long.parseLong(likedPostID)).setLikeTime(like_time);
+        postService.save(newPost);
+
         postLikeService.save(aPostLike);
 
         List<Post> posts = postService.findAllPostsOrderByTime();
