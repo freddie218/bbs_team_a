@@ -13,6 +13,9 @@
             <th>Author</th>
             <th>Publish Time</th>
             <th>Content</th>
+            <th>Liked</th>
+            <th>Operations</th>
+            <th></th>
         </tr>
     </thead>
 
@@ -24,10 +27,38 @@
                 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
                 <td><fmt:formatDate value="${post.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                 <td><c:out value="${post.content}"/></td>
+                <td>
+                    <c:if test="${row.index==0}">
+                        <c:out value="${post.liked_time} times"/>
+                    </c:if>
+                </td>
+                <td>
+                    <c:if test="${row.index==0}">
+                        <c:choose>
+                           <c:when test="${not like}">
+                              <a href="javascript:void(0)" onclick="like_confirm('${post.postId}');">Like</a>
+                           </c:when>
+                           <c:otherwise><td>Liked</td></c:otherwise>
+                        </c:choose>
+                    </c:if>
+                </td>
             </tr>
         </c:forEach>
     </tbody>
 </table>
+
+<script type="text/javascript">
+function like_confirm(likedPostId)
+{
+    alert("you liked this post")
+    document.LikePostForm.likePost.value = likedPostId;
+    document.LikePostForm.submit();
+}
+
+</script>
+<form name="LikePostForm" method="post" action="likeProcess" onsubmit="return form_validate();">
+     <input type="hidden" id="likePost" name="likePost">
+</form>
 
 </br>
      <c:choose>
@@ -48,6 +79,7 @@
     <form name="replyPost" id="replyPost" method="post">
         <input type="hidden" id="parentId" name="parentId" value="${mainPost.postId}" />
         <input type="hidden" id="title" name="title" value="Re: ${mainPost.title}" />
+        <input type="hidden" id="likePost" name="likePost" />
         <textarea name="content" id="content"  placeholder="post content" cols="100" rows="6"></textarea>
         <button type="submit" class="btn">Create</button>
     </form>

@@ -1,6 +1,7 @@
 package com.thoughtworks.bbs.web;
 
 import com.thoughtworks.bbs.model.Post;
+import com.thoughtworks.bbs.model.PostLike;
 import com.thoughtworks.bbs.model.User;
 import com.thoughtworks.bbs.service.PostLikeService;
 import com.thoughtworks.bbs.service.PostService;
@@ -56,6 +57,9 @@ public class PostController {
     public String get(@PathVariable("postId") Long postId, Model model, @ModelAttribute Post post, Principal principal) {
         model.addAttribute("mainPost", postService.get(postId));
         model.addAttribute("posts", postService.findAllPostByMainPost(postId));
+
+        Long userID = userService.getByUsername(principal.getName()).getId();
+        model.addAttribute("like", postLikeService.isLiked(userID, postId));
         return "posts/show";
     }
 
@@ -76,8 +80,31 @@ public class PostController {
 
         model.addAttribute("mainPost", postService.get(postId));
         model.addAttribute("posts", postService.findAllPostByMainPost(postId));
+
         return new ModelAndView("posts/show");
     }
+
+    @RequestMapping(value = {"/likeProcess"}, method = RequestMethod.POST)
+    public ModelAndView processLikePost(HttpServletRequest request, Principal principal, Model model)
+    {
+        User currentUser = userService.getByUsername(principal.getName());
+        String likedPostID = request.getParameter("likePost");
+        Long userID = currentUser.getId();
+        PostLike aPostLike = new PostLike().setPostID(Long.parseLong(likedPostID)).setUserID(userID);
+
+        Long like_time = postService.get(Long.parseLong(likedPostID)).getLiked_time();
+        like_time++;
+        Post newPost = postService.get(Long.parseLong(likedPostID)).setLikeTime(like_time);
+        postService.save(newPost);
+
+        postLikeService.save(aPostLike);
+
+        model.addAttribute("mainPost", postService.get(Long.parseLong(likedPostID)));
+        model.addAttribute("posts", postService.findAllPostByMainPost(Long.parseLong(likedPostID)));
+
+        return new ModelAndView("posts/show");
+    }
+
     private boolean isContentEmpty(String content){
         return content.isEmpty();
     }
