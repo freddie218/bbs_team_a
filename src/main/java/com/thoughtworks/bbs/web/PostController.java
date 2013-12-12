@@ -2,8 +2,10 @@ package com.thoughtworks.bbs.web;
 
 import com.thoughtworks.bbs.model.Post;
 import com.thoughtworks.bbs.model.User;
+import com.thoughtworks.bbs.service.PostLikeService;
 import com.thoughtworks.bbs.service.PostService;
 import com.thoughtworks.bbs.service.UserService;
+import com.thoughtworks.bbs.service.impl.PostLikeServiceImpl;
 import com.thoughtworks.bbs.service.impl.PostServiceImpl;
 import com.thoughtworks.bbs.service.impl.UserServiceImpl;
 import com.thoughtworks.bbs.util.MyBatisUtil;
@@ -17,11 +19,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.security.Principal;
-import java.util.Date;
+import java.util.*;
 
 @Controller
 @RequestMapping("/posts")
@@ -29,15 +32,24 @@ public class PostController {
 
     private PostService postService;
     private UserService userService;
+    private PostLikeService postLikeService;
 
     public PostController(){
         postService = new PostServiceImpl(MyBatisUtil.getSqlSessionFactory());
         userService = new UserServiceImpl(MyBatisUtil.getSqlSessionFactory());
+        postLikeService = new PostLikeServiceImpl(MyBatisUtil.getSqlSessionFactory());
     }
 
     public PostController(PostService postService,UserService userService){
         this.postService = postService;
         this.userService = userService;
+    }
+
+    public PostController (PostService postService,UserService userService, PostLikeService postLikeService)
+    {
+        this.postLikeService = postLikeService;
+        this.userService = userService;
+        this.postLikeService = postLikeService;
     }
 
     @RequestMapping(value = {"/{postId}"}, method = RequestMethod.GET)
@@ -78,7 +90,7 @@ public class PostController {
 
 
     @RequestMapping(value = {"/create"}, method = RequestMethod.POST)
-    public ModelAndView processCreate(HttpServletRequest request, Principal principal,Model model) throws IOException {
+    public ModelAndView processCreate(HttpServletRequest request, Principal principal,RedirectAttributesModelMap model) throws IOException {
         String title = request.getParameter("title");
         String content = request.getParameter("content");
         String parentId = request.getParameter("parentId");
@@ -91,8 +103,8 @@ public class PostController {
         User currentUser = userService.getByUsername(principal.getName());
 
         if(isTitleOrContentEmpty(title,content)){
-           model.addAttribute("error","true");
-           return new ModelAndView("posts/create");
+           model.addFlashAttribute("error","true");
+           return new ModelAndView("redirect:posts/create");
         }
 
 
@@ -102,8 +114,27 @@ public class PostController {
 
         postService.save(builder.build());
 
-        model.addAttribute("posts", postService.findAllPostsOrderByTime());
-        return new ModelAndView("home");
+        model.addFlashAttribute("posts", postService.findAllPostsOrderByTime());
+
+        List<Post> posts = postService.findAllPostsOrderByTime();
+        List<User> users = new ArrayList<User>();
+        for(Post eachPost : posts) {
+            String name = eachPost.getAuthorName();
+            User user = userService.getByUsername(name);
+            users.add(user);
+        }
+        model.addFlashAttribute("posts",posts);
+        model.addFlashAttribute("users",users);
+
+        Map<Post, Boolean> postsWithLike = new HashMap<Post, Boolean>();
+        for(Post aPost : posts)
+        {
+            Long user_ID = userService.getByUsername(principal.getName()).getId();
+            postsWithLike.put(aPost, postLikeService.isLiked(user_ID, aPost.getPostId()));
+        }
+
+        model.addFlashAttribute("postsWithLike", postsWithLike);
+        return new ModelAndView("redirect:/");
     }
 
     private boolean isTitleOrContentEmpty(String title, String content){
