@@ -38,27 +38,9 @@
     </table>
 </div>
 
-<script type="text/javascript">
-    function show_confirm(authoriseUserId)
-    {
-        var r=confirm("Are you sure to authorise this user?");
-        if (r==true)
-          {
-              document.authoriseUserForm.authoriseUserId.value = authoriseUserId;
-              document.authoriseUserForm.submit();
-          }
-    }
-    function disableUser(userName){
-       if(confirm("Are you sure to disable this user?")){
-         disableForm.userName.value = userName;
-         document.disableForm.submit();
-       }
-    }
-</script>
-<form name="authoriseUserForm" method="post" onsubmit="return true;">
-     <input type="hidden" id="authoriseUserId" name="authoriseUserId">
-</form>
 <form name="disableForm" id="disableForm" method="post" action="disableUser">
     <input type="hidden" id="userName" name="userName"/>
 </form>
+
 <%@ include file="../footer.jsp" %>
+<script type="text/javascript" src="<c:url value='/scripts/users.js' />"></script>
