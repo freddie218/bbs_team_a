@@ -12,6 +12,7 @@ public class Post {
     private Date modifyTime;
     private Long creatorId;
     private Long modifierId;
+    private Long liked_time;
 
     public Post setPostId(long postId) {
         this.postId = postId;
@@ -58,6 +59,11 @@ public class Post {
         return this;
     }
 
+    public  Post setLikeTime(long liked_time){
+        this.liked_time = liked_time;
+        return this;
+    }
+
     public Long getPostId() {
         return postId;
     }
@@ -92,5 +98,9 @@ public class Post {
 
     public Long getModifierId() {
         return modifierId;
+    }
+
+    public Long getLiked_time(){
+        return liked_time;
     }
 }
