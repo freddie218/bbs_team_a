@@ -28,4 +28,10 @@ public interface PostLikeMapper {
                     "WHERE (post_id = #{postID})"
     )
     List<PostLike> getPostLikeByPostID(Long post_id);
+
+    @Select(
+            "SELECT post_id as postID, user_id as userID " +
+                    "FROM likes_table "
+    )
+    List<PostLike> getAll();
 }
