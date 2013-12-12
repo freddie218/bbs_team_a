@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -78,7 +79,7 @@ public class PostController {
 
 
     @RequestMapping(value = {"/create"}, method = RequestMethod.POST)
-    public ModelAndView processCreate(HttpServletRequest request, Principal principal,Model model) throws IOException {
+    public ModelAndView processCreate(HttpServletRequest request, Principal principal,RedirectAttributesModelMap model) throws IOException {
         String title = request.getParameter("title");
         String content = request.getParameter("content");
         String parentId = request.getParameter("parentId");
@@ -95,15 +96,14 @@ public class PostController {
            return new ModelAndView("posts/create");
         }
 
-
         PostBuilder builder = new PostBuilder();
         builder.title(title).content(content).author(currentUser.getUserName()).parentId(parentIdLong).creatorId(currentUser.getId())
                 .modifierId(currentUser.getId()).createTime(new Date()).modifyTime(builder.build().getCreateTime()).likedTime(0L);
 
         postService.save(builder.build());
 
-        model.addAttribute("posts", postService.findAllPostsOrderByTime());
-        return new ModelAndView("home");
+        model.addFlashAttribute("posts", postService.findAllPostsOrderByTime());
+        return new ModelAndView("redirect:/");
     }
 
     private boolean isTitleOrContentEmpty(String title, String content){
