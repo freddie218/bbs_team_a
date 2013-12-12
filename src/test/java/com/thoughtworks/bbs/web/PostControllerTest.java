@@ -1,6 +1,7 @@
 package com.thoughtworks.bbs.web;
 
 import com.thoughtworks.bbs.model.User;
+import com.thoughtworks.bbs.service.PostLikeService;
 import com.thoughtworks.bbs.service.PostService;
 import com.thoughtworks.bbs.service.UserService;
 import com.thoughtworks.bbs.service.impl.PostServiceImpl;
@@ -31,6 +32,7 @@ import static org.mockito.Mockito.when;
 public class PostControllerTest {
     private PostService postService;
     private UserService userService;
+    private PostLikeService postLikeService;
     private PostController postController;
     private HttpServletRequest request;
     private User user;
@@ -45,6 +47,7 @@ public class PostControllerTest {
     public void setup(){
         postService = mock(PostServiceImpl.class);
         userService = mock(UserServiceImpl.class);
+        postLikeService = mock(PostLikeService.class);
         request = mock(HttpServletRequest.class);
 
         user = new User();
@@ -155,7 +158,25 @@ public class PostControllerTest {
         assertTrue(model.containsAttribute("error"));
     }
 
+    /*
+    @Test
+    public void shouldLikeThePost()
+    {
+        Post aPost = new Post().setPostId(10L).setLikeTime(0L);
+        Long userID = userService.getByUsername(principal.getName()).getId();
+        Long postID = 10L;
+        PostLike aPostLike = new PostLike().setUserID(userID).setPostID(10L);
+        when(request.getParameter("likePost")).thenReturn("10");
+        result = postController.processLikePost(request, principal, model);
+        expected = new ModelAndView("redirect:" + "10");
 
+
+
+        assertEquals("page should stay posts/10:", expected.getViewName(), result.getViewName());
+        verify(postService).save(new Post().setPostId(postID));
+        verify(postLikeService).save(new PostLike().setPostID(postID).setUserID(userID));
+
+    } */
 
 
 

@@ -85,7 +85,7 @@ public class PostController {
     }
 
     @RequestMapping(value = {"/likeProcess"}, method = RequestMethod.POST)
-    public ModelAndView processLikePost(HttpServletRequest request, Principal principal, Model model)
+    public ModelAndView processLikePost(HttpServletRequest request, Principal principal, RedirectAttributesModelMap model)
     {
         User currentUser = userService.getByUsername(principal.getName());
         String likedPostID = request.getParameter("likePost");
@@ -99,10 +99,10 @@ public class PostController {
 
         postLikeService.save(aPostLike);
 
-        model.addAttribute("mainPost", postService.get(Long.parseLong(likedPostID)));
-        model.addAttribute("posts", postService.findAllPostByMainPost(Long.parseLong(likedPostID)));
+        model.addFlashAttribute("mainPost", postService.get(Long.parseLong(likedPostID)));
+        model.addFlashAttribute("posts", postService.findAllPostByMainPost(Long.parseLong(likedPostID)));
 
-        return new ModelAndView("posts/show");
+        return new ModelAndView("redirect:" + likedPostID);
     }
 
     private boolean isContentEmpty(String content){

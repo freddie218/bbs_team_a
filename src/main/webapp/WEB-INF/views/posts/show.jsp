@@ -38,10 +38,11 @@
                            <c:when test="${not like}">
                               <a href="javascript:void(0)" onclick="like_confirm('${post.postId}');">Like</a>
                            </c:when>
-                           <c:otherwise><td>Liked</td></c:otherwise>
+                           <c:otherwise>Liked</c:otherwise>
                         </c:choose>
                     </c:if>
                 </td>
+                <td></td>
             </tr>
         </c:forEach>
     </tbody>
