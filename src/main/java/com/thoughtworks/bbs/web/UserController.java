@@ -2,7 +2,6 @@ package com.thoughtworks.bbs.web;
 
 import com.thoughtworks.bbs.model.Post;
 import com.thoughtworks.bbs.model.User;
-import com.thoughtworks.bbs.model.UserRole;
 import com.thoughtworks.bbs.service.PostService;
 import com.thoughtworks.bbs.service.UserService;
 import com.thoughtworks.bbs.service.impl.PostServiceImpl;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.Console;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.HashMap;
@@ -66,17 +64,7 @@ public class UserController {
 
     @RequestMapping(value = {"/profile"}, method = RequestMethod.POST)
     public ModelAndView processDeletePost(HttpServletRequest request, Principal principal, ModelMap model) {
-        User user = userService.getByUsername(principal.getName());
-        Map<String, User> map = new HashMap<String, User>();
-        map.put("user", user);
-
-        String deletePostId = request.getParameter("deletePost");
-
-        postService.deleteAllPostsByMainPost(Long.parseLong(deletePostId));
-
-        List<Post> myPosts = postService.findMainPostByAuthorNameSortedByCreateTime(principal.getName());
-        model.addAttribute("myPosts", myPosts);
-        return new ModelAndView("user/profile", map);
+        return deletePostMethod(request, principal, model);
     }
 
     @RequestMapping(value = {"/create"}, method = RequestMethod.POST)
@@ -199,6 +187,24 @@ public class UserController {
         map.put("user",user);
         map.put("myPosts", posts);
         map.put("showUser", showUser);
+        return new ModelAndView("user/profile", map);
+    }
+
+    @RequestMapping(value = {"/{id}"}, method = RequestMethod.POST)
+    public ModelAndView DeletePost(HttpServletRequest request, Principal principal, ModelMap model) {
+        return deletePostMethod(request, principal, model);
+    }
+
+    private ModelAndView deletePostMethod(HttpServletRequest request, Principal principal, ModelMap model) {
+        User user = userService.getByUsername(principal.getName());
+        Map<String, User> map = new HashMap<String, User>();
+        map.put("user", user);
+
+        String deletePostId = request.getParameter("deletePost");
+        postService.deleteAllPostsByMainPost(Long.parseLong(deletePostId));
+
+        List<Post> myPosts = postService.findMainPostByAuthorNameSortedByCreateTime(principal.getName());
+        model.addAttribute("myPosts", myPosts);
         return new ModelAndView("user/profile", map);
     }
 
