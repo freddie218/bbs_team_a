@@ -15,22 +15,22 @@
     </thead>
     <tbody>
 
-    <c:forEach var="postWithLike" items="${postsWithLike}" varStatus="row">
+    <c:forEach var="post" items="${posts}" varStatus="row">
         <tr>
             <td>
-                <a href="<c:url value='/posts/${postWithLike.key.postId}' />">
-                    <c:out value="${postWithLike.key.title}"/>
+                <a href="<c:url value='/posts/${post.postId}' />">
+                    <c:out value="${post.title}"/>
                 </a>
             </td>
                <td>
                <a href="<c:url value='/user/${users[row.index].id}' />">
-               <c:out value="${postWithLike.key.authorName}"/></td>
+               <c:out value="${post.authorName}"/></td>
             <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-            <td><fmt:formatDate value="${postWithLike.key.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/> </td>
+            <td><fmt:formatDate value="${post.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/> </td>
 
                 <c:choose>
-                <c:when test="${not postWithLike.value}">
-                    <td><a href="javascript:void(0)" onclick="like_confirm('${postWithLike.key.postId}');">Like</a></td>
+                <c:when test="${not ifLike[row.index]}">
+                    <td><a href="javascript:void(0)" onclick="like_confirm('${post.postId}');">Like</a></td>
                 </c:when>
                 <c:otherwise><td>Liked</td></c:otherwise>
                 </c:choose>
