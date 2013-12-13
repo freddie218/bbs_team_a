@@ -64,7 +64,7 @@ public class PostController {
     }
 
     @RequestMapping(value = {"/{postId}"}, method = RequestMethod.POST)
-    public ModelAndView processReplyPost(@PathVariable("postId") Long postId, @ModelAttribute Post post, HttpServletRequest request, Principal principal,Model model) {
+    public ModelAndView processReplyPost(@PathVariable("postId") Long postId, @ModelAttribute Post post, HttpServletRequest request, Principal principal,RedirectAttributesModelMap model) {
         String title = request.getParameter("title");
         String content = request.getParameter("content");
         User currentUser = userService.getByUsername(principal.getName());
@@ -78,10 +78,11 @@ public class PostController {
 
         postService.save(builder.build());
 
-        model.addAttribute("mainPost", postService.get(postId));
-        model.addAttribute("posts", postService.findAllPostByMainPost(postId));
+        model.addFlashAttribute("mainPost", postService.get(postId));
+        model.addFlashAttribute("posts", postService.findAllPostByMainPost(postId));
 
-        return new ModelAndView("posts/show");
+        //return new ModelAndView("posts/show");
+        return new ModelAndView("redirect:" + postId);
     }
 
     @RequestMapping(value = {"/likeProcess"}, method = RequestMethod.POST)

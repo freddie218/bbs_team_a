@@ -127,7 +127,7 @@ public class PostControllerTest {
 
         Long postId = 1L;
             result = postController.processReplyPost(postId, null,request,principal,model);
-        expected = new ModelAndView("posts/show");
+        expected = new ModelAndView("redirect:" + postId);
 
         assertEquals("page should stay posts/show",expected.getViewName(),result.getViewName());
 
@@ -143,7 +143,7 @@ public class PostControllerTest {
         when(request.getParameter("content")).thenReturn("");
         Long postId = 1L;
         result = postController.processReplyPost(postId, null,request,principal,model);
-        expected = new ModelAndView("posts/show");
+        expected = new ModelAndView("redirect:" + postId);
 
         assertEquals("page should stay posts/show",expected.getViewName(),result.getViewName());
 
