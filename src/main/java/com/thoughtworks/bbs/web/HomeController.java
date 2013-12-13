@@ -70,18 +70,17 @@ public class HomeController {
     private void displayHomePage(Principal principal, Model model) {
         List<Post> posts = postService.findAllPostsOrderByTime();
         List<User> users = new ArrayList<User>();
-        List<Boolean> postsWithLike = new ArrayList<Boolean>();
+        List<Boolean> ifLiked = new ArrayList<Boolean>();
+        Long userId = userService.getByUsername(principal.getName()).getId();
 
         for(Post eachPost : posts) {
             String name = eachPost.getAuthorName();
             User user = userService.getByUsername(name);
             users.add(user);
-
-            Long user_ID = userService.getByUsername(principal.getName()).getId();
-            postsWithLike.add(postLikeService.isLiked(user_ID, eachPost.getPostId()));
+            ifLiked.add(postLikeService.isLiked(userId, eachPost.getPostId()));
         }
         model.addAttribute("posts",posts);
         model.addAttribute("users",users);
-        model.addAttribute("postsWithLike", postsWithLike);
+        model.addAttribute("ifLike", ifLiked);
     }
 }

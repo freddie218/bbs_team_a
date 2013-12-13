@@ -29,7 +29,7 @@
             <td><fmt:formatDate value="${post.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/> </td>
 
                 <c:choose>
-                <c:when test="${not postsWithLike[row.index]}">
+                <c:when test="${not ifLike[row.index]}">
                     <td><a href="javascript:void(0)" onclick="like_confirm('${post.postId}');">Like</a></td>
                 </c:when>
                 <c:otherwise><td>Liked</td></c:otherwise>

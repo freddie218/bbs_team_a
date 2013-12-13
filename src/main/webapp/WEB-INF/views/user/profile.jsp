@@ -83,8 +83,11 @@
                 </c:when>
                 <c:otherwise>
                    <c:if test="${showUser.id==user.id}">
-                      <th>Delete</th>
+                       <th>Delete</th>
                    </c:if>
+                    <c:if test="${showUser.id!=user.id}">
+                       <th>Operations</th>
+                    </c:if>
                 </c:otherwise>
             </c:choose>
 
