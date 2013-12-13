@@ -141,26 +141,6 @@ public class PostController {
 
         postService.save(builder.build());
 
-        model.addFlashAttribute("posts", postService.findAllPostsOrderByTime());
-
-        List<Post> posts = postService.findAllPostsOrderByTime();
-        List<User> users = new ArrayList<User>();
-        for(Post eachPost : posts) {
-            String name = eachPost.getAuthorName();
-            User user = userService.getByUsername(name);
-            users.add(user);
-        }
-        model.addFlashAttribute("posts",posts);
-        model.addFlashAttribute("users",users);
-
-        Map<Post, Boolean> postsWithLike = new HashMap<Post, Boolean>();
-        for(Post aPost : posts)
-        {
-            Long user_ID = userService.getByUsername(principal.getName()).getId();
-            postsWithLike.put(aPost, postLikeService.isLiked(user_ID, aPost.getPostId()));
-        }
-
-        model.addFlashAttribute("postsWithLike", postsWithLike);
         return new ModelAndView("redirect:/");
     }
 
