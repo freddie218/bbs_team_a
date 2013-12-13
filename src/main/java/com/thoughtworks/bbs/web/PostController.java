@@ -118,7 +118,7 @@ public class PostController {
 
 
     @RequestMapping(value = {"/create"}, method = RequestMethod.POST)
-    public ModelAndView processCreate(HttpServletRequest request, Principal principal,RedirectAttributesModelMap model) throws IOException {
+    public ModelAndView processCreate(HttpServletRequest request, Principal principal, Model aModel, RedirectAttributesModelMap model) throws IOException {
         String title = request.getParameter("title");
         String content = request.getParameter("content");
         String parentId = request.getParameter("parentId");
@@ -131,8 +131,8 @@ public class PostController {
         User currentUser = userService.getByUsername(principal.getName());
 
         if(isTitleOrContentEmpty(title,content)){
-           model.addFlashAttribute("error","true");
-           return new ModelAndView("redirect:posts/create");
+           aModel.addAttribute("error","true");
+           return new ModelAndView("posts/create");
         }
 
         PostBuilder builder = new PostBuilder();

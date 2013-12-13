@@ -9,6 +9,8 @@ import com.thoughtworks.bbs.service.impl.UserServiceImpl;
 import com.thoughtworks.bbs.util.PostBuilder;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.ui.ExtendedModelMap;
+import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 import sun.security.acl.PrincipalImpl;
@@ -39,6 +41,7 @@ public class PostControllerTest {
 
     private Principal principal;
     private RedirectAttributesModelMap model;
+    private Model aModel;
     private ModelAndView expected;
     private ModelAndView result;
     PostBuilder postBuilder;
@@ -59,6 +62,7 @@ public class PostControllerTest {
         when(request.getParameter("parentId")).thenReturn("0");
 
         model = new RedirectAttributesModelMap();
+        aModel = new ExtendedModelMap();
         principal = new PrincipalImpl("name");
 
         postController = new PostController(postService,userService);
@@ -71,7 +75,7 @@ public class PostControllerTest {
         when(request.getParameter("title")).thenReturn("hello");
         when(request.getParameter("content")).thenReturn("hello everyone");
 
-        result = postController.processCreate(request,principal,model);
+        result = postController.processCreate(request,principal,aModel, model);
         expected = new ModelAndView("redirect:/");
 
         assertEquals("page should jump to home",expected.getViewName(),result.getViewName());
@@ -83,8 +87,8 @@ public class PostControllerTest {
         when(request.getParameter("title")).thenReturn("");
         when(request.getParameter("content")).thenReturn("hello everyone");
 
-        result = postController.processCreate(request,principal,model);
-        expected= new ModelAndView("redirect:posts/create");
+        result = postController.processCreate(request,principal,aModel, model);
+        expected= new ModelAndView("posts/create");
 
         assertEquals("page should jump to posts/create",expected.getViewName(),result.getViewName());
 
@@ -96,8 +100,8 @@ public class PostControllerTest {
         when(request.getParameter("title")).thenReturn("hello");
         when(request.getParameter("content")).thenReturn("");
 
-        result = postController.processCreate(request,principal,model);
-        expected= new ModelAndView("redirect:posts/create");
+        result = postController.processCreate(request,principal,aModel, model);
+        expected= new ModelAndView("posts/create");
 
         assertEquals("page should jump to posts/create",expected.getViewName(),result.getViewName());
 
@@ -110,8 +114,8 @@ public class PostControllerTest {
         when(request.getParameter("title")).thenReturn("");
         when(request.getParameter("content")).thenReturn("");
 
-        result = postController.processCreate(request,principal,model);
-        expected= new ModelAndView("redirect:posts/create");
+        result = postController.processCreate(request,principal,aModel, model);
+        expected= new ModelAndView("posts/create");
 
         assertEquals("page should jump to posts/create",expected.getViewName(),result.getViewName());
 
