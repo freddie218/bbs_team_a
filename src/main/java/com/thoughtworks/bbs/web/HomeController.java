@@ -20,9 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/")
@@ -48,26 +46,7 @@ public class HomeController {
         if (null == principal) {
             return "login";
         }
-
-        List<Post> posts = postService.findAllPostsOrderByTime();
-        List<User> users = new ArrayList<User>();
-        for(Post eachPost : posts) {
-            String name = eachPost.getAuthorName();
-            User user = userService.getByUsername(name);
-            users.add(user);
-        }
-        model.addAttribute("posts",posts);
-        model.addAttribute("users",users);
-
-        Map<Post, Boolean> postsWithLike = new HashMap<Post, Boolean>();
-        for(Post aPost : posts)
-        {
-            Long userID = userService.getByUsername(principal.getName()).getId();
-            postsWithLike.put(aPost, postLikeService.isLiked(userID, aPost.getPostId()));
-        }
-
-        model.addAttribute("postsWithLike", postsWithLike);
-
+        displayHomePage(principal, model);
         return "home";
     }
 
@@ -82,28 +61,27 @@ public class HomeController {
         like_time++;
         Post newPost = postService.get(Long.parseLong(likedPostID)).setLikeTime(like_time);
         postService.save(newPost);
-
         postLikeService.save(aPostLike);
 
+        displayHomePage(principal, model);
+        return new ModelAndView("home");
+    }
+
+    private void displayHomePage(Principal principal, Model model) {
         List<Post> posts = postService.findAllPostsOrderByTime();
         List<User> users = new ArrayList<User>();
+        List<Boolean> postsWithLike = new ArrayList<Boolean>();
+
         for(Post eachPost : posts) {
             String name = eachPost.getAuthorName();
             User user = userService.getByUsername(name);
             users.add(user);
+
+            Long user_ID = userService.getByUsername(principal.getName()).getId();
+            postsWithLike.add(postLikeService.isLiked(user_ID, eachPost.getPostId()));
         }
         model.addAttribute("posts",posts);
         model.addAttribute("users",users);
-
-        Map<Post, Boolean> postsWithLike = new HashMap<Post, Boolean>();
-        for(Post aPost : posts)
-        {
-            Long user_ID = userService.getByUsername(principal.getName()).getId();
-            postsWithLike.put(aPost, postLikeService.isLiked(user_ID, aPost.getPostId()));
-        }
-
         model.addAttribute("postsWithLike", postsWithLike);
-
-        return new ModelAndView("home");
     }
 }
