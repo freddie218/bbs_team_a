@@ -46,21 +46,7 @@ public class HomeController {
         if (null == principal) {
             return "login";
         }
-
-        List<Post> posts = postService.findAllPostsOrderByTime();
-        List<User> users = new ArrayList<User>();
-        List<Boolean> ifLiked = new ArrayList<Boolean>();
-        Long userID = userService.getByUsername(principal.getName()).getId();
-        for(Post eachPost : posts) {
-            String name = eachPost.getAuthorName();
-            User user = userService.getByUsername(name);
-            users.add(user);
-            ifLiked.add(postLikeService.isLiked(userID, eachPost.getPostId()));
-        }
-        model.addAttribute("posts",posts);
-        model.addAttribute("users",users);
-        model.addAttribute("ifLike", ifLiked);
-
+        displayHomePage(principal, model);
         return "home";
     }
 
@@ -75,13 +61,18 @@ public class HomeController {
         like_time++;
         Post newPost = postService.get(Long.parseLong(likedPostID)).setLikeTime(like_time);
         postService.save(newPost);
-
         postLikeService.save(aPostLike);
 
+        displayHomePage(principal, model);
+        return new ModelAndView("home");
+    }
+
+    private void displayHomePage(Principal principal, Model model) {
         List<Post> posts = postService.findAllPostsOrderByTime();
         List<User> users = new ArrayList<User>();
         List<Boolean> ifLiked = new ArrayList<Boolean>();
         Long userId = userService.getByUsername(principal.getName()).getId();
+
         for(Post eachPost : posts) {
             String name = eachPost.getAuthorName();
             User user = userService.getByUsername(name);
@@ -91,7 +82,5 @@ public class HomeController {
         model.addAttribute("posts",posts);
         model.addAttribute("users",users);
         model.addAttribute("ifLike", ifLiked);
-
-        return new ModelAndView("home");
     }
 }
