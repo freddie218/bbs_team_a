@@ -21,13 +21,13 @@
         <div class="control-group">
             <label class="control-label" for="j_username">Username</label>
             <div class="controls">
-                <input type='text' id="j_username" name='j_username' placeholder="Username" />
+                <input class="input-box" type='text' id="j_username" name='j_username' placeholder="Username" />
             </div>
         </div>
         <div class="control-group">
             <label class="control-label" for="j_password">Password</label>
             <div class="controls">
-                <input type="password" id="j_password" name="j_password" placeholder="Password" />
+                <input class="input-box" type="password" id="j_password" name="j_password" placeholder="Password" />
             </div>
         </div>
         <div class="control-group">

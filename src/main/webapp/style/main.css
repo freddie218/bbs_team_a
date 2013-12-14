@@ -4,8 +4,15 @@
     font-family: Helvetica;
 }
 
+html{
+    background-color:white;
+}
+
 body {
+    margin: 0 auto;
+    width: 800px;
     padding: 20px;
+    background-color:#EEEEEE;
 }
 
 .brand {
@@ -25,6 +32,10 @@ body {
     margin-right: 10px;
 }
 
+.nav li a:hover{
+   background-color: #DDDDDD;
+}
+
 .navbar {
     margin-bottom: 20px;
 }
@@ -32,7 +43,10 @@ body {
 a { text-decoration: none; }
 a:link { color: black; }
 a:visited { color: black; }
-a:hover { color: grey; }
+a:hover {
+    color: gray;
+     background-color: #DDDDDD;
+   }
 a:active { color: gray; }
 
 .navbar-text {
@@ -57,8 +71,8 @@ form label {
 }
 
 .controls {
-    display: inline-block;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
+    margin-top: 5px;
 }
 
 form input[type=text],[type=password] {
@@ -86,6 +100,35 @@ table th {
 table {
     border-spacing: 8px;
     border-collapse: separate;
+}
+
+.form-horizontal{
+    background-color:#DDDDDD;
+    max-width:400px;
+    margin: 0 auto;
+    text-align:left;
+    padding: 20px;
+}
+
+.control-group{
+    text-align:left;
+}
+.control-label{
+    max-width:75px;
+    vertical-align:middle;
+    margin: 0 auto;
+}
+
+.input-box{
+    vertical-align:middle;
+}
+
+.btn{
+    margin: 10px 0px;
+}
+
+.page-action{
+    text-align:center;
 }
 
 .text-error {
