@@ -5,12 +5,13 @@
 }
 
 html{
-    background-color:white;
+    background-color:#EEEEEE;
+    height: 100%;
 }
 
 body {
     margin: 0 auto;
-    width: 800px;
+    max-width: 800px;
     padding: 20px;
     background-color:#EEEEEE;
 }
@@ -19,6 +20,7 @@ body {
     display: inline-block;
     font-size: 14pt;
 }
+
 
 .nav {
     display: inline-block;
@@ -73,6 +75,10 @@ form label {
 .controls {
     margin-bottom: 5px;
     margin-top: 5px;
+}
+
+.form-horizontal .control-label {
+    text-align: left;
 }
 
 form input[type=text],[type=password] {
