@@ -15,7 +15,9 @@
             <th>Content</th>
             <th>Liked</th>
             <th>Operations</th>
-            <th></th>
+            <c:if test="${not empty isMyMainPost}">
+                <th>Delete</th>
+            </c:if>
         </tr>
     </thead>
 
@@ -42,7 +44,11 @@
                         </c:choose>
                     </c:if>
                 </td>
-                <td></td>
+                <td>
+                    <c:if test="${not empty isMyMainPost}">
+                        <a href="javascript:void(0);" onclick="deletePost('${post.postId}');">X
+                    </c:if>
+                </td>
             </tr>
         </c:forEach>
     </tbody>
@@ -57,7 +63,7 @@ function like_confirm(likedPostId)
 }
 
 </script>
-<form name="LikePostForm" method="post" action="likeProcess" onsubmit="return form_validate();">
+<form name="LikePostForm" method="post" action="likeProcess" >
      <input type="hidden" id="likePost" name="likePost">
 </form>
 
@@ -88,4 +94,18 @@ function like_confirm(likedPostId)
 
 </br>
 
+<script type="text/javascript">
+function deletePost(PostId)
+{
+    var isConfirmed = confirm("Are you sure to delete this post?");
+    if(isConfirmed) {
+        document.deletePostById.postIdToDel.value = PostId;
+        document.deletePostById.submit();
+    }
+}
+
+</script>
+<form name="deletePostById" method="post" action='<c:url value="del/${postId}" />' >
+     <input type="hidden" id="postIdToDel" name="postIdToDel" value="" >
+</form>
 <%@ include file="../footer.jsp" %>
