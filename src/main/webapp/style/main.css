@@ -98,14 +98,27 @@ button {
     padding: 5px;
 }
 
-table th {
+table {
+    border-spacing: 8px;
+    border-collapse:collapse;
+}
+
+tr {
+    border-bottom: 2px solid #EEEEEE;
+    background-color:#FFFFFF;
+}
+
+th {
     width: 100px;
     text-align: left;
 }
 
-table {
-    border-spacing: 8px;
-    border-collapse: separate;
+td {
+    background: #F9F9F9;
+}
+
+.first {
+    background-color:#DDDDDD;
 }
 
 .form-horizontal{
@@ -153,4 +166,20 @@ table {
     width: 280px;
     background: #9d2932;
     color: white;
+}
+
+#userInformation {
+    max-width: 240px;
+    margin-left: 100px;
+}
+
+#myPost {
+    max-width: 600px;
+    margin-left: 100px;
+}
+
+#line {
+    padding-left:4px;
+    border-left:1px solid black;
+    margin:1px;
 }

@@ -46,7 +46,7 @@
                 </td>
                 <td>
                     <c:if test="${not empty isMyMainPost}">
-                        <a href="javascript:void(0);" onclick="deletePost('${post.postId}');">X
+                        <a href="javascript:void(0);" onclick="deletePost('${post.postId}');">X</a>
                     </c:if>
                 </td>
             </tr>
