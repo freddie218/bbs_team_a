@@ -1,5 +1,6 @@
 package com.thoughtworks.bbs.web;
 
+import com.thoughtworks.bbs.model.Post;
 import com.thoughtworks.bbs.model.User;
 import com.thoughtworks.bbs.service.PostLikeService;
 import com.thoughtworks.bbs.service.PostService;
@@ -13,7 +14,6 @@ import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
-import sun.security.acl.PrincipalImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -21,8 +21,7 @@ import java.security.Principal;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -44,7 +43,6 @@ public class PostControllerTest {
     private Model aModel;
     private ModelAndView expected;
     private ModelAndView result;
-    PostBuilder postBuilder;
 
     @Before
     public void setup(){
@@ -52,6 +50,7 @@ public class PostControllerTest {
         userService = mock(UserServiceImpl.class);
         postLikeService = mock(PostLikeService.class);
         request = mock(HttpServletRequest.class);
+        principal = mock(Principal.class);
 
         user = new User();
         user.setUserName("name");
@@ -60,12 +59,15 @@ public class PostControllerTest {
 
         when(userService.getByUsername("name")).thenReturn(user);
         when(request.getParameter("parentId")).thenReturn("0");
+        when(principal.getName()).thenReturn("name") ;
 
         model = new RedirectAttributesModelMap();
         aModel = new ExtendedModelMap();
-        principal = new PrincipalImpl("name");
 
-        postController = new PostController(postService,userService);
+        postController = new PostController();
+        postController.setPostService(postService);
+        postController.setUserService(userService);
+        postController.setPostLikeService(postLikeService);
 
     }
 
@@ -160,6 +162,38 @@ public class PostControllerTest {
         Long postId = 1L;
         postController.processReplyPost(postId,null,request,principal,model);
         assertTrue(model.containsAttribute("error"));
+    }
+
+    @Test
+    public void shouldStayAtShowPageAfterReplyDeletion() {
+        Post post = new PostBuilder().author("someone").id(5L).parentId(3L).build();
+        Post parentPost = new PostBuilder().author("author").id(3L).parentId(0L).build();
+        when(request.getParameter("postIdToDel")).thenReturn("5");
+        when(userService.getByUsername(user.getUserName())).thenReturn(user);
+        when(postService.get(5L)).thenReturn(post);
+        when(postService.get(3L)).thenReturn(parentPost);
+        when(postLikeService.isLiked(0L,3L)).thenReturn(true);
+
+        expected = new ModelAndView("redirect:/posts/" + post.getParentId());
+        result = postController.processPostDeletion(request, parentPost.getPostId(), model, parentPost, principal);
+
+        verify(postService).delete(post);
+        assertEquals("page should stay posts/show", expected.getViewName(), result.getViewName());
+    }
+
+    @Test
+    public void shouldJumpToHomePageAfterMainPostDeletion() {
+        Post post = new Post();
+        post.setPostId(3L);
+        post.setParentId(0L);
+        when(request.getParameter("postIdToDel")).thenReturn("3");
+        when(postService.get(3L)).thenReturn(post);
+
+        expected = new ModelAndView("redirect:/");
+        result = postController.processPostDeletion(request, post.getPostId(), model, post, principal);
+
+        verify(postService).delete(post);
+        assertEquals("page should turn to home", expected.getViewName(), result.getViewName());
     }
 
     /*

@@ -31,25 +31,19 @@ import java.util.*;
 @RequestMapping("/posts")
 public class PostController {
 
-    private PostService postService;
-    private UserService userService;
-    private PostLikeService postLikeService;
+    private PostService postService = new PostServiceImpl(MyBatisUtil.getSqlSessionFactory());
+    private UserService userService = new UserServiceImpl(MyBatisUtil.getSqlSessionFactory());
+    private PostLikeService postLikeService = new PostLikeServiceImpl(MyBatisUtil.getSqlSessionFactory());
 
-    public PostController(){
-        postService = new PostServiceImpl(MyBatisUtil.getSqlSessionFactory());
-        userService = new UserServiceImpl(MyBatisUtil.getSqlSessionFactory());
-        postLikeService = new PostLikeServiceImpl(MyBatisUtil.getSqlSessionFactory());
+    public void setPostService(PostService postService) {
+        this.postService = postService;
     }
 
-    public PostController(PostService postService,UserService userService){
-        this.postService = postService;
+    public void setUserService(UserService userService) {
         this.userService = userService;
     }
 
-    public PostController (PostService postService,UserService userService, PostLikeService postLikeService)
-    {
-        this.postService = postService;
-        this.userService = userService;
+    public void setPostLikeService(PostLikeService postLikeService) {
         this.postLikeService = postLikeService;
     }
 
@@ -57,6 +51,9 @@ public class PostController {
     public String get(@PathVariable("postId") Long postId, Model model, @ModelAttribute Post post, Principal principal) {
         model.addAttribute("mainPost", postService.get(postId));
         model.addAttribute("posts", postService.findAllPostByMainPost(postId));
+        if(postService.get(postId).getAuthorName().equals(principal.getName())) {
+            model.addAttribute("isMyMainPost", "True");
+        }
 
         Long userID = userService.getByUsername(principal.getName()).getId();
         model.addAttribute("like", postLikeService.isLiked(userID, postId));
@@ -64,7 +61,8 @@ public class PostController {
     }
 
     @RequestMapping(value = {"/{postId}"}, method = RequestMethod.POST)
-    public ModelAndView processReplyPost(@PathVariable("postId") Long postId, @ModelAttribute Post post, HttpServletRequest request, Principal principal,RedirectAttributesModelMap model) {
+    public ModelAndView processReplyPost(@PathVariable("postId") Long postId, @ModelAttribute Post post,
+                                         HttpServletRequest request, Principal principal,RedirectAttributesModelMap model) {
         String title = request.getParameter("title");
         String content = request.getParameter("content");
         User currentUser = userService.getByUsername(principal.getName());
@@ -83,6 +81,26 @@ public class PostController {
 
         //return new ModelAndView("posts/show");
         return new ModelAndView("redirect:" + postId);
+    }
+
+    @RequestMapping(value = {"/del/{postId}"}, method = RequestMethod.POST)
+    public ModelAndView processPostDeletion(HttpServletRequest request, @PathVariable("postId") Long postId,
+                                            RedirectAttributesModelMap model, @ModelAttribute Post post, Principal principal) {
+        Post postToDelete = postService.get(Long.parseLong(request.getParameter("postIdToDel")));
+        postService.delete(postToDelete);
+        if(postToDelete.getParentId().equals(0L)) {
+            return new ModelAndView("redirect:/");
+        }
+
+        model.addFlashAttribute("mainPost", postService.get(postId));
+        model.addFlashAttribute("posts", postService.findAllPostByMainPost(postId));
+        if(postService.get(postId).getAuthorName().equals(principal.getName())) {
+            model.addFlashAttribute("isMyMainPost", "True");
+        }
+
+        Long userID = userService.getByUsername(principal.getName()).getId();
+        model.addFlashAttribute("like", postLikeService.isLiked(userID, postId));
+        return new ModelAndView("redirect:/posts/" + postId);
     }
 
     @RequestMapping(value = {"/likeProcess"}, method = RequestMethod.POST)
@@ -106,6 +124,7 @@ public class PostController {
         return new ModelAndView("redirect:" + likedPostID);
     }
 
+
     private boolean isContentEmpty(String content){
         return content.isEmpty();
     }
@@ -115,7 +134,6 @@ public class PostController {
     public ModelAndView createPostForm(ModelMap model, Principal principal) {
         return new ModelAndView("posts/create");
     }
-
 
     @RequestMapping(value = {"/create"}, method = RequestMethod.POST)
     public ModelAndView processCreate(HttpServletRequest request, Principal principal, Model aModel, RedirectAttributesModelMap model) throws IOException {
@@ -147,5 +165,4 @@ public class PostController {
     private boolean isTitleOrContentEmpty(String title, String content){
         return title.isEmpty() || content.isEmpty();
     }
-
 }
