@@ -53,7 +53,7 @@ UNLOCK TABLES;
 
 
 --
--- Table structure for table `user_roles`
+-- Table structure for table `likes_table`
 --
 DROP TABLE IF EXISTS `likes_table`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -65,7 +65,7 @@ CREATE TABLE `likes_table` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `user_roles`
+-- Dumping data for table `likes_table`
 --
 
 LOCK TABLE `likes_table` WRITE;
@@ -88,16 +88,6 @@ CREATE TABLE `user_roles` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `user_roles`
---
-
-LOCK TABLES `user_roles` WRITE;
-/*!40000 ALTER TABLE `user_roles` DISABLE KEYS */;
-INSERT INTO `user_roles` VALUES (1,'ROLE_ADMIN'),(2,'ROLE_ADMIN');
-/*!40000 ALTER TABLE `user_roles` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `users`
 --
 
@@ -113,15 +103,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `users`
---
 
-LOCK TABLES `users` WRITE;
-/*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'juntao','123456',1),(2,'huan','123456',1);
-/*!40000 ALTER TABLE `users` ENABLE KEYS */;
-UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
