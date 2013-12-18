@@ -1,6 +1,7 @@
 package com.thoughtworks.bbs.web;
 
 import com.thoughtworks.bbs.model.Post;
+import com.thoughtworks.bbs.model.PostLike;
 import com.thoughtworks.bbs.model.User;
 import com.thoughtworks.bbs.service.PostLikeService;
 import com.thoughtworks.bbs.service.PostService;
@@ -10,6 +11,7 @@ import com.thoughtworks.bbs.service.impl.UserServiceImpl;
 import com.thoughtworks.bbs.util.PostBuilder;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentMatcher;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
@@ -196,26 +198,51 @@ public class PostControllerTest {
         assertEquals("page should turn to home", expected.getViewName(), result.getViewName());
     }
 
-    /*
+
     @Test
     public void shouldLikeThePost()
     {
         Post aPost = new Post().setPostId(10L).setLikeTime(0L);
         Long userID = userService.getByUsername(principal.getName()).getId();
-        Long postID = 10L;
         PostLike aPostLike = new PostLike().setUserID(userID).setPostID(10L);
         when(request.getParameter("likePost")).thenReturn("10");
+        when(postService.get(10L)).thenReturn(aPost);
+
         result = postController.processLikePost(request, principal, model);
         expected = new ModelAndView("redirect:" + "10");
 
-
-
         assertEquals("page should stay posts/10:", expected.getViewName(), result.getViewName());
-        verify(postService).save(new Post().setPostId(postID));
-        verify(postLikeService).save(new PostLike().setPostID(postID).setUserID(userID));
+        verify(postService).save(argThat(new IsSamePostWith(aPost)));
+        verify(postLikeService).save(argThat(new IsSamePostLikeWith(aPostLike)));
+    }
 
-    } */
 
+    class IsSamePostWith extends ArgumentMatcher<Post> {
+        private Post post;
+
+        IsSamePostWith(Post post) {
+            this.post = post;
+        }
+
+        @Override
+        public boolean matches(Object postToMatch) {
+            return ((Post) postToMatch).getPostId().equals(post.getPostId());
+        }
+    }
+
+    class IsSamePostLikeWith extends ArgumentMatcher<PostLike> {
+        private PostLike postLike;
+
+        IsSamePostLikeWith(PostLike postLike) {
+            this.postLike = postLike;
+        }
+
+        @Override
+        public boolean matches(Object postLikeToMatch) {
+            return ((PostLike) postLikeToMatch).getPost_id().equals(postLike.getPost_id())
+                    &&((PostLike) postLikeToMatch).getUser_id().equals(postLike.getUser_id());
+        }
+    }
 
 
 }

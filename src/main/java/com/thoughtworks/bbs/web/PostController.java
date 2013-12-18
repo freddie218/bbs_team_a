@@ -106,21 +106,15 @@ public class PostController {
     @RequestMapping(value = {"/likeProcess"}, method = RequestMethod.POST)
     public ModelAndView processLikePost(HttpServletRequest request, Principal principal, RedirectAttributesModelMap model)
     {
-        User currentUser = userService.getByUsername(principal.getName());
         String likedPostID = request.getParameter("likePost");
-        Long userID = currentUser.getId();
-        PostLike aPostLike = new PostLike().setPostID(Long.parseLong(likedPostID)).setUserID(userID);
+        PostLike aPostLike = new PostLike().setPostID(Long.parseLong(likedPostID)).setUserID(userService.getByUsername(principal.getName()).getId());
+        postLikeService.save(aPostLike);
 
         Long like_time = postService.get(Long.parseLong(likedPostID)).getLiked_time();
-        like_time++;
-        Post newPost = postService.get(Long.parseLong(likedPostID)).setLikeTime(like_time);
-        postService.save(newPost);
-
-        postLikeService.save(aPostLike);
+        postService.save(postService.get(Long.parseLong(likedPostID)).setLikeTime(like_time + 01L));
 
         model.addFlashAttribute("mainPost", postService.get(Long.parseLong(likedPostID)));
         model.addFlashAttribute("posts", postService.findAllPostByMainPost(Long.parseLong(likedPostID)));
-
         return new ModelAndView("redirect:" + likedPostID);
     }
 
