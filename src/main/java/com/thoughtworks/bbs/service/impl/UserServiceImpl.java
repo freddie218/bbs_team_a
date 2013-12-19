@@ -148,7 +148,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Map<User,String> getAllUsersWithRole(){
         List<User> users = getAll();
-        Map <User,String> userWithRole= new TreeMap<>(new Comparator<User>() {
+        Map <User,String> userWithRole= new TreeMap<User,String>(new Comparator<User>() {
             @Override
             public int compare(User user1, User user2) {
                 return (int)(user1.getId()-user2.getId());
