@@ -3,20 +3,19 @@
 
 <%@ include file="header.jsp" %>
 
-<table class="table table-striped">
+<table class="table">
     <thead>
-    <tr>
+    <tr style="background-color:#DDDDDD">
         <th>Title</th>
         <th>Author</th>
         <th>Publish Time</th>
         <th>Operations</th>
-        <th></th>
     </tr>
     </thead>
     <tbody>
 
     <c:forEach var="post" items="${posts}" varStatus="row">
-        <tr>
+        <tr style="background-color:#FFFFFF">
             <td>
                 <a href="<c:url value='/posts/${post.postId}' />">
                     <c:out value="${post.title}"/>
