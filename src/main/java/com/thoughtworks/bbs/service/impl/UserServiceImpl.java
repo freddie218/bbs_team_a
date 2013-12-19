@@ -10,10 +10,7 @@ import com.thoughtworks.bbs.service.UserService;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class UserServiceImpl implements UserService {
     private UserValidator validator;
@@ -151,7 +148,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public Map<User,String> getAllUsersWithRole(){
         List<User> users = getAll();
-        Map <User,String> userWithRole= new HashMap<User,String>();
+        Map <User,String> userWithRole= new TreeMap<>(new Comparator<User>() {
+            @Override
+            public int compare(User user1, User user2) {
+                return (int)(user1.getId()-user2.getId());
+            }
+        });
         SqlSession session = factory.openSession();
 
         try{
