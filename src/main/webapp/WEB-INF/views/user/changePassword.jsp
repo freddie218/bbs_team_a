@@ -2,38 +2,65 @@
 <c:set var="pageTitle" scope="request" value="changePassword"/>
 
 <%@ include file="../header.jsp" %>
+<style type="text/css">
 
+    body{
+
+         background:#EEEEEE;
+    }
+
+    #changePassword{
+
+         max-width:650px;
+
+         margin-left: auto;
+
+         margin-right: auto;
+
+    }
+    #changePassword .form-horizontal{
+        background-color:#DDDDDD;
+        max-width:650px;
+        margin: 0 auto;
+        text-align:left;
+        padding: 20px;
+    }
+
+    #changePassword .control-group{
+        padding: 5px;
+    }
+
+    #changePassword .control-label{
+        max-width:150px;
+        }
+</style>
+
+
+<div id="changePassword">
 <p class="lead">Change Password</p>
-
-<form class="form-horizontal" method="post" name="changePassword" onsubmit="return form_validate();">
-    <div class="control-group">
-        <label class="control-label" for="inputPassword">Old password</label>
-        <div class="controls">
+    <form class="form-horizontal" method="post" name="changePassword" onsubmit="return form_validate();">
+        <div class="control-group">
+            <label class="control-label" for="inputPassword">Old password</label>
             <input type="password" id="password" name="password" placeholder="old password" ">
+            <span name="pswdInfo" id="pswdInfo" class="help-inline text-info">Input your old password here.</span>
         </div>
-        <span name="pswdInfo" id="pswdInfo" class="help-inline text-info">Input your old password here.</span>
-    </div>
-    <div class="control-group">
-        <label class="control-label" for="newPassword">New password</label>
-        <div class="controls">
+        <div class="control-group">
+            <label class="control-label" for="newPassword">New password</label>
             <input type="password" id="newPassword" name="newPassword" placeholder="new password" maxlength="12" />
+            <span name="newPassInfo" id="newPassInfo" class="help-inline text-info">New password here.</span>
         </div>
-        <span name="newPassInfo" id="newPassInfo" class="help-inline text-info">New password here.</span>
-    </div>
-    <div class="control-group">
-        <label class="control-label" for="confirmPassword">Confirm password</label>
-        <div class="controls">
+        <div class="control-group">
+            <label class="control-label" for="confirmPassword">Confirm password</label>
             <input type="password" id="confirmPassword" name="confirmPassword" placeholder="confirm new password" maxlength="12" />
+            <span name="confirmInfo" id="confirmInfo" class="help-inline text-info">confirm new password here.</span>
         </div>
-        <span name="confirmInfo" id="confirmInfo" class="help-inline text-info">confirm new password here.</span>
-    </div>
-    <div class="control-group">
-        <div class="controls col-sm-offset-3">
-            <button type="submit" class="btn" >Change</button>
+        <div class="control-group">
+            <div class="controls">
+                <button type="submit" class="btn" style="background-color:#CCCCCC" >Change</button>
+            </div>
         </div>
-    </div>
-</form>
-
+    </form>
+</div>
 <script type="text/javascript" >
 	function form_validate(){
 		var pass = changePassword.password.value;
