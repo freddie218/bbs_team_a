@@ -129,6 +129,17 @@ td {
     padding: 20px;
 }
 
+.form-for-post-content{
+    background-color:#DDDDDD;
+    text-align:left;
+    padding: 5px;
+}
+
+.form-for-post{
+    width: 80%;
+    margin: 0 auto;
+}
+
 .control-group{
     text-align:left;
 }
