@@ -77,6 +77,11 @@ form label {
     margin-top: 5px;
 }
 
+.controls #content{
+    width: 100%;
+    padding: 5px;
+}
+
 .form-horizontal .control-label {
     text-align: left;
 }
