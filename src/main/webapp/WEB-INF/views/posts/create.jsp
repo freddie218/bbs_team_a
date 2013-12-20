@@ -29,7 +29,7 @@
         <div class="control-group">
             <label class="control-label" for="content">Content</label>
             <div class="controls">
-                <textarea placeholder="post content" id="content" name="content" cols="100" rows="6"></textarea>
+                <textarea placeholder="post content" id="content" name="content" rows="6"></textarea>
             </div>
         </div>
         <div class="control-group">

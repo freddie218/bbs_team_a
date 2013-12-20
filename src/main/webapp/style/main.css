@@ -77,6 +77,11 @@ form label {
     margin-top: 5px;
 }
 
+.controls #content{
+    width: 100%;
+    padding: 5px;
+}
+
 .form-horizontal .control-label {
     text-align: left;
 }
@@ -127,6 +132,17 @@ td {
     margin: 0 auto;
     text-align:left;
     padding: 20px;
+}
+
+.form-for-post-content{
+    background-color:#DDDDDD;
+    text-align:left;
+    padding: 5px;
+}
+
+.form-for-post{
+    width: 80%;
+    margin: 0 auto;
 }
 
 .control-group{
