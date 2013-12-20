@@ -1,58 +1,35 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="pageTitle" scope="request" value="Home"/>
 
 <%@ include file="../header.jsp" %>
 
+<c:forEach var="post" items="${posts}" varStatus="row">
+    <div class="form-for-post">
+        <c:if test="${post.parentId eq 0}"><h1 style="text-align: center;">${post.title}</h1></c:if>
+        <c:if test="${post.parentId > 0}"><h3 style="text-align: center;">${post.title}</h3></c:if>
+        <p style="text-align: center;">Author:&nbsp;&nbsp;<strong>${post.authorName}</strong>&nbsp;&nbsp;&nbsp;&nbsp;Create
+            Time:&nbsp;&nbsp;<strong><fmt:formatDate value="${post.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></strong>
+        </p>
 
+        <p class="form-for-post-content">${post.content}</p>
 
+        <p style="text-align: center;">Operations:
+            <strong>
+                <c:choose>
+                    <c:when test="${not like}">
+                        <a href="javascript:void(0)" onclick="like_confirm('${post.postId}');">Like</a>
+                    </c:when>
+                    <c:otherwise>Liked</c:otherwise>
+                </c:choose>
+                <c:if test="${not empty isMyMainPost}">
+                    <a href="javascript:void(0);" onclick="deletePost('${post.postId}');">X</a>
+                </c:if>
+            </strong>
+        </p>
+    </div>
+</c:forEach>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Publish Time</th>
-            <th>Content</th>
-            <th>Liked</th>
-            <th>Operations</th>
-            <c:if test="${not empty isMyMainPost}">
-                <th>Delete</th>
-            </c:if>
-        </tr>
-    </thead>
-
-    <tbody>
-        <c:forEach var="post" items="${posts}" varStatus="row">
-            <tr>
-                <td><c:out value="${post.title}"/></td>
-                <td><c:out value="${post.authorName}"/></td>
-                <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-                <td><fmt:formatDate value="${post.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                <td><c:out value="${post.content}"/></td>
-                <td>
-                    <c:if test="${row.index==0}">
-                        <c:out value="${post.liked_time} times"/>
-                    </c:if>
-                </td>
-                <td>
-                    <c:if test="${row.index==0}">
-                        <c:choose>
-                           <c:when test="${not like}">
-                              <a href="javascript:void(0)" onclick="like_confirm('${post.postId}');">Like</a>
-                           </c:when>
-                           <c:otherwise>Liked</c:otherwise>
-                        </c:choose>
-                    </c:if>
-                </td>
-                <td>
-                    <c:if test="${not empty isMyMainPost}">
-                        <a href="javascript:void(0);" onclick="deletePost('${post.postId}');">X</a>
-                    </c:if>
-                </td>
-            </tr>
-        </c:forEach>
-    </tbody>
-</table>
 
 <script type="text/javascript">
 function like_confirm(likedPostId)
@@ -63,6 +40,7 @@ function like_confirm(likedPostId)
 }
 
 </script>
+
 <form name="LikePostForm" method="post" action="likeProcess" >
      <input type="hidden" id="likePost" name="likePost">
 </form>
@@ -87,8 +65,8 @@ function like_confirm(likedPostId)
         <input type="hidden" id="parentId" name="parentId" value="${mainPost.postId}" />
         <input type="hidden" id="title" name="title" value="Re: ${mainPost.title}" />
         <input type="hidden" id="likePost" name="likePost" />
-        <textarea name="content" id="content"  placeholder="post content" cols="100" rows="6"></textarea>
-        <button type="submit" class="btn">Create</button>
+        <textarea name="content" id="content"  placeholder="post content" style="margin:0 10%;width: 80%;height: 100px;"></textarea>
+        <button type="submit" class="btn" style="margin:10px 0 0 10%;">Create</button>
     </form>
 </div>
 
