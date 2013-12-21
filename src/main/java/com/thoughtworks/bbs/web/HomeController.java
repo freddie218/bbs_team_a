@@ -56,12 +56,11 @@ public class HomeController {
         String likedPostID = request.getParameter("likePost");
         Long userID = userService.getByUsername(principal.getName()).getId();
         PostLike aPostLike = new PostLike().setPostID(Long.parseLong(likedPostID)).setUserID(userID);
+        postLikeService.save(aPostLike);
 
         Long like_time = postService.get(Long.parseLong(likedPostID)).getLiked_time();
-        like_time++;
-        Post newPost = postService.get(Long.parseLong(likedPostID)).setLikeTime(like_time);
+        Post newPost = postService.get(Long.parseLong(likedPostID)).setLikeTime(like_time + 1);
         postService.save(newPost);
-        postLikeService.save(aPostLike);
 
         displayHomePage(principal, model);
         return new ModelAndView("home");
