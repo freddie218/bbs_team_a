@@ -91,15 +91,6 @@ public class PostController {
         if(postToDelete.getParentId().equals(0L)) {
             return new ModelAndView("redirect:/");
         }
-
-        model.addFlashAttribute("mainPost", postService.get(postId));
-        model.addFlashAttribute("posts", postService.findAllPostByMainPost(postId));
-        if(postService.get(postId).getAuthorName().equals(principal.getName())) {
-            model.addFlashAttribute("isMyMainPost", "True");
-        }
-
-        Long userID = userService.getByUsername(principal.getName()).getId();
-        model.addFlashAttribute("like", postLikeService.isLiked(userID, postId));
         return new ModelAndView("redirect:/posts/" + postId);
     }
 
