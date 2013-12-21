@@ -132,4 +132,9 @@ public class PostServiceImpl implements PostService {
         return postByAuthorName;
     }
 
+    @Override
+    public List<Post> searchPost(String huan, String tdd, String s, String s1, String s2) {
+        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    }
+
 }
