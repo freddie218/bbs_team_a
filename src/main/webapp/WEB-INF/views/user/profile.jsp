@@ -86,14 +86,14 @@
             <th>Publish Time</th>
             <c:choose>
                 <c:when test="${empty showUser}">
-                     <th>Delete</th>
+                     <th>Operations</th>
                 </c:when>
                 <c:otherwise>
                    <c:if test="${showUser.id==user.id}">
-                       <th>Delete</th>
+                       <th>Operations</th>
                    </c:if>
                     <c:if test="${showUser.id!=user.id}">
-                       <th>Operations</th>
+
                     </c:if>
                 </c:otherwise>
             </c:choose>
