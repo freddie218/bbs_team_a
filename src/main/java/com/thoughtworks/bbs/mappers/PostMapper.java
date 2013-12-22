@@ -1,12 +1,10 @@
 package com.thoughtworks.bbs.mappers;
 
 import com.thoughtworks.bbs.model.Post;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+
 
 public interface PostMapper {
 
@@ -76,4 +74,12 @@ public interface PostMapper {
     )
     List<Post> findAllPostsOrderByTime();
 
+    @Select(
+            "SELECT id as postId, parent_id as parentId, author_name as authorName, title, content, create_time as createTime, " +
+                    "modify_time as modifyTime, creator_id as creatorId, modifier_id as modifierId, liked_time as liked_time " +
+                    "FROM post " +
+                    "WHERE (parent_id = 0 and author_name like #{author} and title like #{title} and content like #{content} and create_time >= #{starttime} and create_time < #{endtime})" +
+                    "ORDER BY create_time DESC"
+    )
+    List<Post> searchPost(@Param(value="author") String author, @Param(value="title") String title, @Param(value="content") String content, @Param(value="starttime")String startTime, @Param(value="endtime")String endTime);
 }

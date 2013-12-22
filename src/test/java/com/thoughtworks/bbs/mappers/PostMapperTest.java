@@ -5,11 +5,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
 
 public class PostMapperTest extends MapperTestBase {
     PostMapper postMapper;
@@ -101,4 +103,15 @@ public class PostMapperTest extends MapperTestBase {
         assertThat(postResult.get(1).getAuthorName(), is("first"));
 
     }
+
+    @Test
+    public void shouldSearchResult(){
+        Post post1= new Post().setAuthorName("gongming").setTitle("TDD").setContent("TDD is a good thing").setCreateTime(new Date())
+                .setModifyTime(new Date()).setCreatorId(1L).setModifierId(1L).setParentId(0).setLikeTime(0);
+        postMapper.insert(post1);
+        List<Post> expectResult = postMapper.searchPost("%gongming%","%TDD%","%TDD%","1992-10-11","5555-12-18");
+        assertEquals(1,expectResult.size());
+
+    }
+
 }

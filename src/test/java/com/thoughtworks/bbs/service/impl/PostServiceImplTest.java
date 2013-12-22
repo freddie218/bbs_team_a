@@ -6,7 +6,6 @@ import com.thoughtworks.bbs.util.PostBuilder;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -14,7 +13,6 @@ import java.util.Date;
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -39,19 +37,7 @@ public class PostServiceImplTest {
         postBuilder = new PostBuilder();
         postBuilder.author("juntao").title("Introduce to TDD").content("ssss");
 
-        postService.save( createPost("huan", "Thought in TDD class", "TDD is a test driven divelopment, that is TDD.", new Date(2013, 12, 18, 12, 31)));
-        postService.save(createPost("juntao","Database migration","Database migration is not a easy thing to do.",new Date(2013,11,18,0,30)));
 
-    }
-
-    private Post createPost(String author, String title, String content, Date date){
-        return new PostBuilder()
-        .author(author)
-                .title(title)
-                .content(content)
-                .parentId(0L)
-                .createTime(date)
-                .build();
     }
 
     @Test
@@ -131,14 +117,16 @@ public class PostServiceImplTest {
         verify(mapper).findMainPostByAuthorName(authorName);
     }
 
-    @Ignore
+    @Test
     public void shouldGetSearchResult(){
-        List<Post> result = postService.searchPost("huan", "TDD", "", "2013-11-10", "");
-        assertEquals(result.size(),1);
-        result = postService.searchPost("juntao", "TDD", "","","");
-        assertEquals(result.size(),0);
-        result = postService.searchPost("","","","","2013-12-30");
-        assertEquals(result.size(),2);
+
+        List<Post> expectedPostList = new ArrayList<Post>();
+        expectedPostList.add(new Post());
+        when(mapper.searchPost("huan","%TDD%","%TDD%","1992-10-11","5555-12-18")).thenReturn(expectedPostList);
+        List<Post> returnedPostList = postService.searchPost("huan","%TDD%","%TDD%","1992-10-11","5555-12-18");
+        verify(mapper).searchPost("huan","%TDD%","%TDD%","1992-10-11","5555-12-18");
+        assertThat(returnedPostList, is(expectedPostList));
+
     }
 
 

@@ -133,8 +133,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> searchPost(String huan, String tdd, String s, String s1, String s2) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public List<Post> searchPost(String author, String title, String content, String start, String end) {
+        SqlSession session = factory.openSession();
+        PostMapper postMapper = session.getMapper(PostMapper.class);
+        List<Post> posts = postMapper.searchPost(author, title, content, start, end);
+        session.close();
+        return posts;
     }
-
 }
