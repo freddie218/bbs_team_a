@@ -172,6 +172,12 @@ td {
     color: indianred;
 }
 
+.prompt {
+    color: #428bca;
+    font-size: 12pt;
+    margin: 12px 0;
+}
+
 #createError {
     text-align: left;
     margin-left: 145px;

@@ -15,6 +15,7 @@ import org.junit.Test;
 import org.mockito.ArgumentMatcher;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -101,7 +102,7 @@ public class HomeControllerTest {
     @Test
     public void shouldShowSearchResult(){
         when(userService.getByUsername("username")).thenReturn(user);
-        ModelAndView result = controller.searchPost(request,principal, model);
+        ModelAndView result = controller.searchPost(request,principal, new ModelMap());
         ModelAndView expected = new ModelAndView("home");
         assertEquals(expected.getViewName(), result.getViewName());
 

@@ -12,6 +12,7 @@ import com.thoughtworks.bbs.service.impl.UserServiceImpl;
 import com.thoughtworks.bbs.util.MyBatisUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,7 +21,9 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/")
@@ -83,15 +86,14 @@ public class HomeController {
         model.addAttribute("ifLike", ifLiked);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public ModelAndView searchPost(HttpServletRequest request, Principal principal, Model model) {
+    @RequestMapping(value = {"/search"},method = RequestMethod.GET)
+    public ModelAndView searchPost(HttpServletRequest request, Principal principal, ModelMap map) {
         String author = request.getParameter("author");
         String title = request.getParameter("title");
         String content = request.getParameter("content");
         String start = request.getParameter("start");
         String end = request.getParameter("end");
         List<Post> posts = postService.searchPost(author, title, content, start, end);
-
         List<User> users = new ArrayList<User>();
         List<Boolean> ifLiked = new ArrayList<Boolean>();
         Long userId = userService.getByUsername(principal.getName()).getId();
@@ -102,9 +104,10 @@ public class HomeController {
             users.add(user);
             ifLiked.add(postLikeService.isLiked(userId, eachPost.getPostId()));
         }
-        model.addAttribute("posts",posts);
-        model.addAttribute("users",users);
-        model.addAttribute("ifLike", ifLiked);
-        return new ModelAndView("home");
+        map.addAttribute("posts",posts);
+        map.addAttribute("users",users);
+        map.addAttribute("ifLike", ifLiked);
+        map.addAttribute("number", posts.size());
+        return new ModelAndView("home",map);
     }
 }
