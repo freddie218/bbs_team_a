@@ -8,18 +8,18 @@
         <div class="control-group">
             <label class="control-label" for="username">Username</label>
             <div class="controls">
-                <input type="text" placeholder="user name" id="username" name="username" />
+                <input class="form-control" type="text" placeholder="user name" id="username" name="username" />
             </div>
         </div>
         <div class="control-group">
             <label class="control-label" for="password">Password</label>
             <div class="controls">
-                <input type="password" placeholder="password" id="password" name="password" />
+                <input class="form-control" type="password" placeholder="password" id="password" name="password" />
             </div>
         </div>
         <div class="control-group">
             <div class="controls">
-                <button type="submit" class="btn">Create</button>
+                <button type="submit" class="btn btn-primary">Create</button>
             </div>
         </div>
     </form>

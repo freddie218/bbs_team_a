@@ -5,17 +5,16 @@
 
 <table class="table">
     <thead>
-    <tr style="background-color:#DDDDDD">
-        <th>Title</th>
-        <th>Author</th>
-        <th>Publish Time</th>
-        <th>Operations</th>
-    </tr>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Publish Time</th>
+            <th>Operations</th>
+        </tr>
     </thead>
     <tbody>
-
     <c:forEach var="post" items="${posts}" varStatus="row">
-        <tr style="background-color:#FFFFFF">
+        <tr>
             <td>
                 <a href="<c:url value='/posts/${post.postId}' />">
                     <c:out value="${post.title}"/>
@@ -37,6 +36,55 @@
     </c:forEach>
     </tbody>
 </table>
+
+<form action="<c:url value='/user/create' />" method="post">
+<table class="table">
+    <thead>
+        <th class="row" colSpan=2 >Please fill search condition</th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <label class="control-label">Title:</label>
+                <div class="controls">
+                    <input class="form-control" type='text' id="search_title" name='search_title'/>
+                </div>
+            </td>
+            <td>
+                <label class="control-label">Content:</label>
+                <div class="controls">
+                    <input class="form-control" type='text' id="search_content" name='search_content'/>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label class="control-label">Publish Time From:</label>
+                <div class="controls">
+                    <input class="form-control" type='date'  id="search_start" name='search_start'/>
+                </div>
+            </td>
+            <td>
+                <label class="control-label">Publish Time To:</label>
+                <div class="controls">
+                    <input class="form-control" type='date' id="search_end" name='search_end'/>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+               <label class="control-label">Author:</label>
+               <div class="controls">
+                   <input class="form-control"" type='text' id="search_author" name='search_author'/>
+               </div>
+            </td>
+            <td>
+               <button type="submit" class="btn btn-primary">Search</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</form>
 
 <script type="text/javascript">
 function like_confirm(likedPostId)
