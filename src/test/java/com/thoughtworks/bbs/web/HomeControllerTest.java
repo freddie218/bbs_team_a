@@ -79,24 +79,33 @@ public class HomeControllerTest {
     }
 
 
-        @Test
-        public void shouldLikeAPost() {
+    @Test
+    public void shouldLikeAPost() {
 
-            when(userService.getByUsername("username")).thenReturn(user);
-            when(request.getParameter("likePost")).thenReturn("10");
-            Post aPost = new Post().setPostId(10L).setLikeTime(0L);
+        when(userService.getByUsername("username")).thenReturn(user);
+        when(request.getParameter("likePost")).thenReturn("10");
+        Post aPost = new Post().setPostId(10L).setLikeTime(0L);
 
-            Long userID = userService.getByUsername(principal.getName()).getId();
-            PostLike aPostLike = new PostLike().setUserID(userID).setPostID(10L);
-            when(service.get(10L)).thenReturn(aPost);
+        Long userID = userService.getByUsername(principal.getName()).getId();
+        PostLike aPostLike = new PostLike().setUserID(userID).setPostID(10L);
+        when(service.get(10L)).thenReturn(aPost);
 
-            ModelAndView result = controller.likeProcess(request, principal, model);
-            ModelAndView expected = new ModelAndView("home");
+        ModelAndView result = controller.likeProcess(request, principal, model);
+        ModelAndView expected = new ModelAndView("home");
 
-            assertEquals(expected.getViewName(), result.getViewName());
-            verify(service).save(argThat(new IsSamePostWith(aPost)));
-            verify(postLikeService).save(argThat(new IsSamePostLikeWith(aPostLike)));
-        }
+        assertEquals(expected.getViewName(), result.getViewName());
+        verify(service).save(argThat(new IsSamePostWith(aPost)));
+        verify(postLikeService).save(argThat(new IsSamePostLikeWith(aPostLike)));
+    }
+
+    @Test
+    public void shouldShowSearchResult(){
+        when(userService.getByUsername("username")).thenReturn(user);
+        ModelAndView result = controller.searchPost(request,principal, model);
+        ModelAndView expected = new ModelAndView("home");
+        assertEquals(expected.getViewName(), result.getViewName());
+
+    }
 
 
     class IsSamePostWith extends ArgumentMatcher<Post> {
@@ -126,26 +135,7 @@ public class HomeControllerTest {
         }
     }
 
-//    @Test
-//    public void  shouldReturnHomeWhenGetPrincipalNotNull() {
-//        principal = new PrincipalImpl(userBuilder.build().getUserName());
-//        List<Post> expectedPosts = new ArrayList<Post>();
-//        expectedPosts.add(new Post().setAuthorName("huan"));
-//        when(service.findAllPostsOrderByTime()).thenReturn(expectedPosts);
-//        User user = new UserBuilder().userName("huan").build();
-//        when(userService.getByUsername("huan")).thenReturn(user);
-//        List<User> users = new ArrayList<User>();
-//        users.add(user);
-//        String expectedUrl = "home";
-//        Model expectedModel = new ExtendedModelMap();
-//        expectedModel.addAttribute("posts", expectedPosts);
-//        expectedModel.addAttribute("users", users);
-//
-//        String resultUrl = controller.get(model, postBuilder.build(), principal);
-//        verify(service).findAllPostsOrderByTime();
-//        assertThat(resultUrl, is(expectedUrl));
-//        assertThat(model, is(expectedModel));
-//    }
+
 
 
 

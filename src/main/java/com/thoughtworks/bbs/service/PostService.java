@@ -20,5 +20,5 @@ public interface PostService {
 
     List<Post> findMainPostByAuthorNameSortedByCreateTime(String authorName);
 
-    List<Post> searchPost(String huan, String tdd, String s, String s1, String s2);
+    List<Post> searchPost(String author, String title, String content, String start, String end);
 }

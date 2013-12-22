@@ -82,4 +82,29 @@ public class HomeController {
         model.addAttribute("users",users);
         model.addAttribute("ifLike", ifLiked);
     }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public ModelAndView searchPost(HttpServletRequest request, Principal principal, Model model) {
+        String author = request.getParameter("author");
+        String title = request.getParameter("title");
+        String content = request.getParameter("content");
+        String start = request.getParameter("start");
+        String end = request.getParameter("end");
+        List<Post> posts = postService.searchPost(author, title, content, start, end);
+
+        List<User> users = new ArrayList<User>();
+        List<Boolean> ifLiked = new ArrayList<Boolean>();
+        Long userId = userService.getByUsername(principal.getName()).getId();
+
+        for(Post eachPost : posts) {
+            String name = eachPost.getAuthorName();
+            User user = userService.getByUsername(name);
+            users.add(user);
+            ifLiked.add(postLikeService.isLiked(userId, eachPost.getPostId()));
+        }
+        model.addAttribute("posts",posts);
+        model.addAttribute("users",users);
+        model.addAttribute("ifLike", ifLiked);
+        return new ModelAndView("home");
+    }
 }
