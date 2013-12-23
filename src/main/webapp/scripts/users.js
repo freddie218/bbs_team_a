@@ -9,6 +9,7 @@ function show_confirm(authoriseUserId)
         var hiddenField = document.createElement("input");
         hiddenField.setAttribute("name", "authoriseUserId");
         hiddenField.setAttribute("value", authoriseUserId);
+        hiddenField.setAttribute("type", "hidden");
 
         form.appendChild(hiddenField);
         document.body.appendChild(form);
