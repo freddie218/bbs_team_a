@@ -122,9 +122,9 @@ public class PostServiceImplTest {
 
         List<Post> expectedPostList = new ArrayList<Post>();
         expectedPostList.add(new Post());
-        when(mapper.searchPost("huan","%TDD%","%TDD%","1992-10-11","5555-12-18")).thenReturn(expectedPostList);
-        List<Post> returnedPostList = postService.searchPost("huan","%TDD%","%TDD%","1992-10-11","5555-12-18");
-        verify(mapper).searchPost("huan","%TDD%","%TDD%","1992-10-11","5555-12-18");
+        when(mapper.searchPost("%huan%","%TDD%","%TDD%","1992-10-11","5555-12-18")).thenReturn(expectedPostList);
+        List<Post> returnedPostList = postService.searchPost("huan","TDD","TDD","1992-10-11","5555-12-18");
+        verify(mapper).searchPost("%huan%","%TDD%","%TDD%","1992-10-11","5555-12-18");
         assertThat(returnedPostList, is(expectedPostList));
 
     }
