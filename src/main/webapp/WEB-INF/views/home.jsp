@@ -3,19 +3,39 @@
 
 <%@ include file="header.jsp" %>
 
+<script type="text/javascript">
+    function getURLParameter(name) {
+        return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null;
+    }
+    $(document).ready(function() {
+        $("#start").val(getURLParameter("start"));
+        $("#end").val(getURLParameter("end"));
+        $("#title").val(getURLParameter("title"));
+        $("#content").val(getURLParameter("content"));
+        $("#author").val(getURLParameter("author"));
+
+    });
+</script>
+
 <table class="table">
     <thead>
-    <tr style="background-color:#DDDDDD">
-        <th>Title</th>
-        <th>Author</th>
-        <th>Publish Time</th>
-        <th>Operations</th>
-    </tr>
+        <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Publish Time</th>
+            <th>Operations</th>
+        </tr>
     </thead>
     <tbody>
-
+    <c:if test="${ number==0 }">
+        <tr >
+            <td colSpan=4 class="prompt">
+                No post found, please search again with other conditions.
+            </td>
+        </tr>
+    </c:if>
     <c:forEach var="post" items="${posts}" varStatus="row">
-        <tr style="background-color:#FFFFFF">
+        <tr>
             <td>
                 <a href="<c:url value='/posts/${post.postId}' />">
                     <c:out value="${post.title}"/>
@@ -38,7 +58,57 @@
     </tbody>
 </table>
 
+<form action="search" method="get">
+<table class="table">
+    <thead>
+        <th class="row" colSpan=2 >Please fill search condition</th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <label class="control-label">Title:</label>
+                <div class="controls">
+                    <input class="form-control" type='text' id="title" name='title'/>
+                </div>
+            </td>
+            <td>
+                <label class="control-label">Content:</label>
+                <div class="controls">
+                    <input class="form-control" type='text' id="content" name='content'/>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label class="control-label">Publish Time From:</label>
+                <div class="controls">
+                    <input class="form-control" type='date'  id="start" name='start'/>
+                </div>
+            </td>
+            <td>
+                <label class="control-label">Publish Time To:</label>
+                <div class="controls">
+                    <input class="form-control" type='date' id="end" name='end'/>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+               <label class="control-label">Author:</label>
+               <div class="controls">
+                   <input class="form-control" type='text' id="author" name='author' />
+               </div>
+            </td>
+            <td>
+               <button type="submit" class="btn btn-primary">Search</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</form>
+
 <script type="text/javascript">
+
 function like_confirm(likedPostId)
 {
     alert("you liked this post")

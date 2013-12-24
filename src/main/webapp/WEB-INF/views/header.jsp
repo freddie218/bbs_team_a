@@ -27,25 +27,25 @@
                 <li>
                     <a href="<c:url value='/' />" >Home</a>
                 </li>
-                    <security:authorize ifNotGranted="ROLE_ANONYMOUS">
+                <security:authorize ifNotGranted="ROLE_ANONYMOUS">
+                    <li>
+                        <a href="<c:url value='/user/profile' />" class="nav_link"><i class="icon-user"></i> User Profile</a>
+                    </li>
+                    <security:authorize ifAnyGranted="ROLE_ADMIN">
                         <li>
-                            <a href="<c:url value='/user/profile' />" class="nav_link"><i class="icon-user"></i> User Profile</a>
-                        </li>
-                        <security:authorize ifAnyGranted="ROLE_ADMIN">
-                            <li>
-                                <a href="<c:url value='/user/create' />" class="nav_link"><i class="icon-plus"></i> Create User</a>
-                            </li>
-                            <li>
-                                <a href="<c:url value='/user/users' />" class="nav_link"><i class="icon-plus"></i> Users</a>
-                            </li>
-                        </security:authorize>
-                        <li>
-                            <a href="<c:url value='/posts/create' />" class="nav_link"><i class="icon-plus"></i> Create Post</a>
+                            <a href="<c:url value='/user/create' />" class="nav_link"><i class="icon-plus"></i> Create User</a>
                         </li>
                         <li>
-                            <a href="<c:url value="/j_spring_security_logout" />" class="nav_link"><i class="icon-eject"></i> Logout</a>
+                            <a href="<c:url value='/user/users' />" class="nav_link"><i class="icon-plus"></i> Users</a>
                         </li>
                     </security:authorize>
+                    <li>
+                        <a href="<c:url value='/posts/create' />" class="nav_link"><i class="icon-plus"></i> Create Post</a>
+                    </li>
+                    <li>
+                        <a href="<c:url value="/j_spring_security_logout" />" class="nav_link"><i class="icon-eject"></i> Logout</a>
+                    </li>
+                </security:authorize>
 
             </ul>
 

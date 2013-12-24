@@ -21,7 +21,6 @@ body {
     font-size: 14pt;
 }
 
-
 .nav {
     display: inline-block;
     float: right;
@@ -42,6 +41,11 @@ body {
     margin-bottom: 20px;
 }
 
+.navbar-text {
+    color: lightskyblue;
+}
+
+
 a { text-decoration: none; }
 a:link { color: black; }
 a:visited { color: black; }
@@ -51,9 +55,6 @@ a:hover {
    }
 a:active { color: gray; }
 
-.navbar-text {
-    color: lightskyblue;
-}
 
 .page-action {
     font-size: 16pt;
@@ -88,7 +89,6 @@ form label {
 
 form input[type=text],[type=password] {
     padding: 4px;
-    width: 14em;
     font-size: 12pt;
 }
 
@@ -116,10 +116,12 @@ tr {
 th {
     width: 100px;
     text-align: left;
+    background-color:#DDDDDD
 }
 
 td {
     background: #F9F9F9;
+
 }
 
 .first {
@@ -149,7 +151,7 @@ td {
     text-align:left;
 }
 .control-label{
-    max-width:75px;
+    max-width:100%;
     vertical-align:middle;
     margin: 0 auto;
 }
@@ -168,6 +170,12 @@ td {
 
 .text-error {
     color: indianred;
+}
+
+.prompt {
+    color: #428bca;
+    font-size: 12pt;
+    margin: 12px 0;
 }
 
 #createError {

@@ -10,6 +10,10 @@
         <c:if test="${post.parentId > 0}"><h3 style="text-align: center;">${post.title}</h3></c:if>
         <p style="text-align: center;">Author:&nbsp;&nbsp;<strong>${post.authorName}</strong>&nbsp;&nbsp;&nbsp;&nbsp;Create
             Time:&nbsp;&nbsp;<strong><fmt:formatDate value="${post.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></strong>
+            <c:if test="${post.parentId eq 0}">
+            <a name="xn_share" onclick="shareClick('${post.title}','${post.content}')" type="icon" href="javascript:;"></a>
+            <a name="douban_share" onclick="shareToDouban()" href="javascript:;"><img src="http://img2.douban.com/pics/fw2douban_s.png" /></a>
+            </c:if>
         </p>
 
         <p class="form-for-post-content">${post.content}</p>
@@ -87,3 +91,6 @@ function deletePost(PostId)
      <input type="hidden" id="postIdToDel" name="postIdToDel" value="" >
 </form>
 <%@ include file="../footer.jsp" %>
+
+<script type="text/javascript" src="http://widget.renren.com/js/rrshare.js"></script>
+<script type="text/javascript" src="<c:url value='/scripts/share.js' />"></script>

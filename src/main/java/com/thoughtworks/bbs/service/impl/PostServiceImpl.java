@@ -145,4 +145,25 @@ public class PostServiceImpl implements PostService {
         }
     }
 
+    @Override
+    public List<Post> searchPost(String author, String title, String content, String start, String end) {
+        if(author == null) author = "";
+        if(title == null) title = "";
+        if(content == null) content = "";
+        if(start == null||start == "" ) start = "1949-10-1";
+        if(end == null || end == "") end = "9999-12-30";
+        author = addFilter(author);
+        title = addFilter(title);
+        content = addFilter(content);
+        SqlSession session = factory.openSession();
+        PostMapper postMapper = session.getMapper(PostMapper.class);
+        List<Post> posts = postMapper.searchPost(author, title, content, start, end);
+        session.close();
+        return posts;
+    }
+
+    private String addFilter(String param){
+        if(param == null) param = "";
+        return "%"+param+"%";
+    }
 }
