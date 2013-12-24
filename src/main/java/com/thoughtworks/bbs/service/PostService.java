@@ -2,6 +2,7 @@ package com.thoughtworks.bbs.service;
 
 import com.thoughtworks.bbs.model.Post;
 
+import java.util.Date;
 import java.util.List;
 
 public interface PostService {
@@ -19,5 +20,7 @@ public interface PostService {
     List<Post> findAllPostsOrderByTime();
 
     List<Post> findMainPostByAuthorNameSortedByCreateTime(String authorName);
+
+    Long getPostIdByAuthorAndCreateTime (String name, Date time);
 
 }

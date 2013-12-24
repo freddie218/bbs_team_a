@@ -77,6 +77,28 @@ UNLOCK TABLES;
 --
 -- Table structure for table `user_roles`
 --
+DROP TABLE IF EXISTS `tags_table`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tags_table` (
+    `post_id` int(11) NOT NULL,
+    `tag` varchar(100) NOT NULL
+)   ENGINE=InnoDB DEFAULT CHARSET=utf8;
+    /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user_roles`
+--
+
+LOCK TABLE `tags_table` WRITE;
+/*!40000 ALTER TABLE `tags_table` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tags_table` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+--
+-- Table structure for table `user_roles`
+--
 
 DROP TABLE IF EXISTS `user_roles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;

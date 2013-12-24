@@ -29,8 +29,7 @@ public class PostLikeMapperTest extends MapperTestBase{
         PostLike two = new PostLike().setPostID(5L).setUserID(12L);
         postLikeMapper.insert(one);
         postLikeMapper.insert(two);
-        List<PostLike> result = postLikeMapper.getAll();
-        assertEquals(result.size(), before + 2);
+        assertEquals(postLikeMapper.getAll().size(), before + 2);
     }
 
     @Test
@@ -39,7 +38,6 @@ public class PostLikeMapperTest extends MapperTestBase{
         int before = postLikeMapper.getAll().size();
         PostLike newPostLike = new PostLike().setPostID(1L).setUserID(11L);
         postLikeMapper.insert(newPostLike);
-
         assertEquals(postLikeMapper.getAll().size(), before + 1);
     }
 

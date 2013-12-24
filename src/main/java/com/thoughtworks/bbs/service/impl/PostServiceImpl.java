@@ -132,4 +132,17 @@ public class PostServiceImpl implements PostService {
         return postByAuthorName;
     }
 
+    @Override
+    public Long getPostIdByAuthorAndCreateTime(String name, Date time) {
+
+        SqlSession session = factory.openSession();
+        try
+        {
+            PostMapper postMapper = session.getMapper(PostMapper.class);
+            return postMapper.getPostIDByNameAndTime(name, time);
+        } finally {
+            session.close();
+        }
+    }
+
 }

@@ -115,5 +115,19 @@ public class PostServiceImplTest {
         verify(mapper).findMainPostByAuthorName(authorName);
     }
 
+    @Test
+    public void shouldGetPostIDbyNameAndTime()
+    {
+        Date date_1 = new Date();
+        date_1.setTime(1);
+        Post post1 = new Post().setAuthorName("juntao").setTitle("1").setContent("content1").setCreateTime(date_1)
+                .setModifyTime(new Date()).setCreatorId(1L).setModifierId(1L).setParentId(0);
+        when(mapper.getPostIDByNameAndTime("juntao", date_1)).thenReturn(1L);
+
+        Long result = postService.getPostIdByAuthorAndCreateTime("juntao", date_1);
+        assertThat(result, is(1L));
+        verify(mapper).getPostIDByNameAndTime("juntao", date_1);
+    }
+
 
 }

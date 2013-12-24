@@ -2,6 +2,7 @@ package com.thoughtworks.bbs.mappers;
 
 import com.thoughtworks.bbs.model.Post;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -100,5 +101,17 @@ public class PostMapperTest extends MapperTestBase {
         assertThat(postResult.get(0).getAuthorName(), is("third"));
         assertThat(postResult.get(1).getAuthorName(), is("first"));
 
+    }
+
+    @Ignore
+    public void shouldGetPostIDByAuthorAndTime()
+    {
+        Post post1 = new Post().setAuthorName("first").setTitle("I am a post").setContent("content").setCreateTime(new Date(2013,11,21))
+                .setModifyTime(new Date()).setCreatorId(1L).setModifierId(1L).setParentId(0).setLikeTime(0);
+        postMapper.insert(post1);
+
+        Long expected = 1L;
+        Long result = postMapper.getPostIDByNameAndTime("first", new Date(2013,11,21));
+        assertThat(result,is(expected));
     }
 }

@@ -2,12 +2,15 @@ package com.thoughtworks.bbs.web;
 
 import com.thoughtworks.bbs.model.Post;
 import com.thoughtworks.bbs.model.PostLike;
+import com.thoughtworks.bbs.model.PostTag;
 import com.thoughtworks.bbs.model.User;
 import com.thoughtworks.bbs.service.PostLikeService;
 import com.thoughtworks.bbs.service.PostService;
+import com.thoughtworks.bbs.service.PostTagService;
 import com.thoughtworks.bbs.service.UserService;
 import com.thoughtworks.bbs.service.impl.PostLikeServiceImpl;
 import com.thoughtworks.bbs.service.impl.PostServiceImpl;
+import com.thoughtworks.bbs.service.impl.PostTagServiceImpl;
 import com.thoughtworks.bbs.service.impl.UserServiceImpl;
 import com.thoughtworks.bbs.util.MyBatisUtil;
 import com.thoughtworks.bbs.util.PostBuilder;
@@ -27,6 +30,7 @@ import java.io.IOException;
 import java.security.Principal;
 import java.util.*;
 
+
 @Controller
 @RequestMapping("/posts")
 public class PostController {
@@ -34,6 +38,7 @@ public class PostController {
     private PostService postService = new PostServiceImpl(MyBatisUtil.getSqlSessionFactory());
     private UserService userService = new UserServiceImpl(MyBatisUtil.getSqlSessionFactory());
     private PostLikeService postLikeService = new PostLikeServiceImpl(MyBatisUtil.getSqlSessionFactory());
+    private PostTagService postTagService = new PostTagServiceImpl(MyBatisUtil.getSqlSessionFactory());
 
     public void setPostService(PostService postService) {
         this.postService = postService;
@@ -45,6 +50,10 @@ public class PostController {
 
     public void setPostLikeService(PostLikeService postLikeService) {
         this.postLikeService = postLikeService;
+    }
+
+    public void setPostTagService(PostTagService postTagService) {
+        this.postTagService = postTagService;
     }
 
     @RequestMapping(value = {"/{postId}"}, method = RequestMethod.GET)
@@ -125,6 +134,7 @@ public class PostController {
         String title = request.getParameter("title");
         String content = request.getParameter("content");
         String parentId = request.getParameter("parentId");
+        String tag = request.getParameter("allTags");
 
         Long parentIdLong = 0L;
 
@@ -142,7 +152,17 @@ public class PostController {
         builder.title(title).content(content).author(currentUser.getUserName()).parentId(parentIdLong).creatorId(currentUser.getId())
                 .modifierId(currentUser.getId()).createTime(new Date()).modifyTime(builder.build().getCreateTime()).likedTime(0L);
 
-        postService.save(builder.build());
+        Post aPost = builder.build();
+        postService.save(aPost);
+
+        String[] tagSplit = tag.split(";");
+
+        for(String s : tagSplit)
+        {
+            PostTag newPostTag = new PostTag().setATag(s).setPostID(
+                    postService.getPostIdByAuthorAndCreateTime(aPost.getAuthorName(), aPost.getCreateTime()));
+            postTagService.save(newPostTag);
+        }
 
         return new ModelAndView("redirect:/");
     }

@@ -1,11 +1,9 @@
 package com.thoughtworks.bbs.mappers;
 
 import com.thoughtworks.bbs.model.Post;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
+import java.util.Date;
 import java.util.List;
 
 public interface PostMapper {
@@ -75,5 +73,11 @@ public interface PostMapper {
                     "ORDER BY create_time desc"
     )
     List<Post> findAllPostsOrderByTime();
+
+    @Select(
+            "SELECT id as postId FROM post WHERE (author_name = #{name} and create_time = #{time})"
+
+    )
+    Long getPostIDByNameAndTime(@Param(value="name")String name, @Param(value="time") Date time);
 
 }
