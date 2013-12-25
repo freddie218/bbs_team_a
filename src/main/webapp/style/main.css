@@ -136,6 +136,10 @@ td {
     padding: 20px;
 }
 
+.post-create {
+    max-width: 80%;
+}
+
 .form-for-post-content{
     background-color:#DDDDDD;
     text-align:left;
@@ -178,12 +182,15 @@ td {
     margin: 12px 0;
 }
 
-#createError {
+.create-error {
     text-align: left;
-    margin: 20px auto;
-    width: 400px;
+    margin-left: 10%;
     background: #9d2932;
     color: white;
+}
+
+.page-action .create-error {
+    width: 80%;
 }
 
 #replyPostError {

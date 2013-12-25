@@ -29,7 +29,7 @@
     </c:choose>
 
 <div id="createPanel">
-    <form class="form-horizontal" name="createForm" action="<c:url value='/posts/create' />" method="post">
+    <form class="form-horizontal post-create" name="createForm" action="<c:url value='/posts/create' />" method="post">
         <div class="control-group">
             <label class="control-label" for="title">Title</label>
             <div class="controls">
