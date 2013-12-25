@@ -110,4 +110,20 @@ public class HomeController {
         map.addAttribute("number", posts.size());
         return new ModelAndView("home",map);
     }
+
+    @RequestMapping(value = {"/search"},method = RequestMethod.POST)
+    public ModelAndView searchLike(HttpServletRequest request, Principal principal, Model model)
+    {
+        String likedPostID = request.getParameter("likePost");
+        Long userID = userService.getByUsername(principal.getName()).getId();
+        PostLike aPostLike = new PostLike().setPostID(Long.parseLong(likedPostID)).setUserID(userID);
+        postLikeService.save(aPostLike);
+
+        Long like_time = postService.get(Long.parseLong(likedPostID)).getLiked_time();
+        Post newPost = postService.get(Long.parseLong(likedPostID)).setLikeTime(like_time + 1);
+        postService.save(newPost);
+
+        displayHomePage(principal, model);
+        return new ModelAndView("home");
+    }
 }
