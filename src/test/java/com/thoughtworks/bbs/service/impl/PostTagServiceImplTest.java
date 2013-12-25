@@ -55,7 +55,7 @@ public class PostTagServiceImplTest {
     {
         Long postID = 1L;
         PostTag onePostTag = new PostTag().setATag("one").setPostID(postID);
-        List<PostTag> expected = new ArrayList<>();
+        List<PostTag> expected = new ArrayList<PostTag>();
         expected.add(onePostTag);
         when(postTagsMapper.getPostTagsByPostID(postID)).thenReturn(expected);
 

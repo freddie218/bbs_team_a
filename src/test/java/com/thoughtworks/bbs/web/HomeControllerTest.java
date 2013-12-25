@@ -108,6 +108,19 @@ public class HomeControllerTest {
 
     }
 
+    @Test
+    public void shouldLikeSearchPost(){
+        when(userService.getByUsername("username")).thenReturn(user);
+        when(request.getParameter("likePost")).thenReturn("10");
+        Post aPost = new Post().setPostId(10L).setLikeTime(0L);
+        Long userID = userService.getByUsername(principal.getName()).getId();
+        PostLike aPostLike = new PostLike().setUserID(userID).setPostID(10L);
+        when(service.get(10L)).thenReturn(aPost);
+        ModelAndView result = controller.searchLike(request,principal, new ModelMap());
+        ModelAndView expected = new ModelAndView("home");
+        assertEquals(expected.getViewName(), result.getViewName());
+    }
+
 
     class IsSamePostWith extends ArgumentMatcher<Post> {
         private Post post;
