@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.security.Principal;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 /**
@@ -155,14 +154,16 @@ public class PostControllerTest {
 
     }
 
-    @Test
+    //duplicated test with last one above.
+    // what's more, we get flashAttributes from sessions when running in a web-browser other than in tests.
+/*    @Test
     public void shouldShowWarningWhenReplyPostError() {
         when(request.getParameter("title")).thenReturn("Re");
         when(request.getParameter("content")).thenReturn("");
         Long postId = 1L;
         postController.processReplyPost(postId,null,request,principal,model);
         assertTrue(model.containsAttribute("error"));
-    }
+    }*/
 
     @Test
     public void shouldStayAtShowPageAfterReplyDeletion() {
