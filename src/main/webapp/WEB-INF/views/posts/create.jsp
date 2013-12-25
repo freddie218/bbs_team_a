@@ -29,7 +29,8 @@
     </c:choose>
 
 <div id="createPanel">
-    <form class="form-horizontal post-create" name="createForm" action="<c:url value='/posts/create' />" method="post">
+    <form class="form-horizontal post-create" name="createForm" action="<c:url value='/posts/create' />" method="post"
+        onsubmit='return contentLegal(["title", "content"], "createHint", VIOLATIONS_WARNING);'>
         <div class="control-group">
             <label class="control-label" for="title">Title</label>
             <div class="controls">
@@ -62,6 +63,6 @@
 
 
 
-
+<script type="text/javascript" src="<c:url value='/scripts/violations.js' />"></script>
 <%@ include file="../footer.jsp" %>
 </body>

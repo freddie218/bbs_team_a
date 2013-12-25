@@ -58,14 +58,15 @@ function like_confirm(likedPostId)
             </div>
         </c:when>
         <c:otherwise>
-            <div id="createHint" class="page-action">
+            <div id="replyCreateHint" class="page-action">
 
             </div>
         </c:otherwise>
     </c:choose>
 
 <div id="createPanel">
-    <form name="replyPost" id="replyPost" method="post">
+    <form name="replyPost" id="replyPost" method="post"
+        onsubmit='return contentLegal(["title", "content"], "replyCreateHint", VIOLATIONS_WARNING);'>
         <input type="hidden" id="parentId" name="parentId" value="${mainPost.postId}" />
         <input type="hidden" id="title" name="title" value="Re: ${mainPost.title}" />
         <input type="hidden" id="likePost" name="likePost" />
@@ -90,6 +91,8 @@ function deletePost(PostId)
 <form name="deletePostById" method="post" action='<c:url value="del/${postId}" />' >
      <input type="hidden" id="postIdToDel" name="postIdToDel" value="" >
 </form>
+
+<script type="text/javascript" src="<c:url value='/scripts/violations.js' />"></script>
 <%@ include file="../footer.jsp" %>
 
 <script type="text/javascript" src="http://widget.renren.com/js/rrshare.js"></script>

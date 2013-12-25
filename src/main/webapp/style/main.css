@@ -199,6 +199,12 @@ td {
     color: white;
 }
 
+#replyCreateHint {
+    text-align: center;
+    width: 475px;
+    margin-left:15%;
+}
+
 #userInformation {
     max-width: 240px;
     margin-left: 100px;

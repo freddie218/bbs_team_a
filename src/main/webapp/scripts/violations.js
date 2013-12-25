@@ -25,6 +25,15 @@ var VIOLATIONS_WARNING = "根据国家相关法律和政策，您的帖子不能
     return violationsCheck(getById(id).value);
  }
 
+ function contentEmpty(contents) {
+    for(var i=0; i<contents.length; i++) {
+        content = getById(contents[i]).value.replace(/\s/g,'');
+        if(content == "")
+            return true;
+    }
+    return false;
+ }
+
  function contentLegal(contents,messageBar,message) {
     var ret = true;
     for(var i=0; i<contents.length && ret; i++) {
