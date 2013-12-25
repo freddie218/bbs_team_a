@@ -77,7 +77,7 @@ public class PostController {
         User currentUser = userService.getByUsername(principal.getName());
 
         if(isContentEmpty(content)){
-            model.addAttribute("error","true");
+            model.addFlashAttribute("error","true");
         }
         PostBuilder builder = new PostBuilder();
         builder.title(title).content(content).author(currentUser.getUserName()).parentId(postId).creatorId(currentUser.getId())
