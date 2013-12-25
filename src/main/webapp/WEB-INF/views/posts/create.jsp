@@ -44,12 +44,12 @@
         </div>
         <div class="control-group">
             <div>
-            <label style="align-left"><span>Tags:<span></label>
-            <label id="tagLabel"><span></span></label>
+                <label class="control-label">Tags:</label>
+                <label id="tagLabel" class="control-label"></label>
             </div>
             <div>
-                <textarea placeholder="post tags" id="tags" rows="1"></textarea>
-                <button type="button" class="btn" id="addButton" onclick="showTags();">Add</button>
+                <input id="tags" class="form-control" placeholder="post tags"/>
+                <button type="button" class="btn btn-default" id="addButton" onclick="showTags();">Add</button>
                 <input type="hidden" id="allTags" name="allTags">
             </div>
         </div>

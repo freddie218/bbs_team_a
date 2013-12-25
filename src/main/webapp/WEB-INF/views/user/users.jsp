@@ -4,7 +4,7 @@
 <%@ include file="../header.jsp" %>
 
 <div id="AllUsersInformation">
-    <table class="table">
+    <table class="table table-hover">
     <thead>
         <tr>
             <th>Username</th>

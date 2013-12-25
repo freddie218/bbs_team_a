@@ -180,8 +180,8 @@ td {
 
 #createError {
     text-align: left;
-    margin-left: 145px;
-    width: 350px;
+    margin: 20px auto;
+    width: 400px;
     background: #9d2932;
     color: white;
 }
@@ -206,4 +206,10 @@ td {
     padding-left:4px;
     border-left:1px solid black;
     margin:1px;
+}
+
+#tags{
+    width: 50%;
+    margin-right: 5px;
+    display: inline;
 }
