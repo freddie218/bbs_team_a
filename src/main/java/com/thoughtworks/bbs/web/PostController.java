@@ -85,10 +85,6 @@ public class PostController {
 
         postService.save(builder.build());
 
-        model.addFlashAttribute("mainPost", postService.get(postId));
-        model.addFlashAttribute("posts", postService.findAllPostByMainPost(postId));
-
-        //return new ModelAndView("posts/show");
         return new ModelAndView("redirect:" + postId);
     }
 
@@ -130,7 +126,7 @@ public class PostController {
     }
 
     @RequestMapping(value = {"/create"}, method = RequestMethod.POST)
-    public ModelAndView processCreate(HttpServletRequest request, Principal principal, Model aModel, RedirectAttributesModelMap model) throws IOException {
+    public ModelAndView processCreate(HttpServletRequest request, Principal principal, ModelMap model) throws IOException {
         String title = request.getParameter("title");
         String content = request.getParameter("content");
         String parentId = request.getParameter("parentId");
@@ -144,7 +140,7 @@ public class PostController {
         User currentUser = userService.getByUsername(principal.getName());
 
         if(isTitleOrContentEmpty(title,content)){
-           aModel.addAttribute("error","true");
+           model.addAttribute("error","true");
            return new ModelAndView("posts/create");
         }
 
