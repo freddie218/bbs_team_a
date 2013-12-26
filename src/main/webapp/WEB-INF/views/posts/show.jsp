@@ -32,6 +32,7 @@
 
         <p class="form-for-post-content">${post.content}</p>
 
+
         <p style="text-align: center;">Operations:
             <strong>
                 <c:choose>

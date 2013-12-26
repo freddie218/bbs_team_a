@@ -156,6 +156,9 @@ td {
 }
 .control-label{
     max-width:100%;
+    width:auto;
+    padding-top: 5px;
+    padding-bottom: 5px;
     vertical-align:middle;
     margin: 0 auto;
 }
@@ -225,4 +228,30 @@ td {
     width: 50%;
     margin-right: 5px;
     display: inline;
+}
+
+#addButton {
+    color: black;
+    text-shadow: none;
+    background-color: #C1C1C1;
+    background-image: none;
+    border-color: #C1C1C1;
+}
+
+#create{
+    color: black;
+    text-shadow: none;
+    background-color: #C1C1C1;
+    background-image: none;
+    border-color: #C1C1C1;
+}
+
+#tagLabel{
+    color: 4262A1;
+    text-align: center;
+    width: auto;
+    padding-top: 5px;
+    margin: 0px;
+    background: white;
+    border-radius: 5px;
 }

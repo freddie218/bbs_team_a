@@ -56,7 +56,7 @@
         </div>
         <div class="control-group">
             <div class="controls">
-                <button type="submit" class="btn btn-primary">Create</button>
+                <button type="submit" class="btn btn-primary" id="create">Create</button>
             </div>
         </div>
 </div>
