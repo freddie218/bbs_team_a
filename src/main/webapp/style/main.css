@@ -250,8 +250,9 @@ td {
     color: 4262A1;
     text-align: center;
     width: auto;
-    padding-top: 5px;
-    margin: 0px;
+    padding: 5px 0px;
     background: white;
+    text-indent: 3px;
+    border-right: white solid 3px;
     border-radius: 5px;
 }
