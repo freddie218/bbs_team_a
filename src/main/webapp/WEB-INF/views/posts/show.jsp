@@ -105,4 +105,6 @@ function deletePost(PostId)
 <form name="deletePostById" method="post" action='<c:url value="del/${postId}" />' >
      <input type="hidden" id="postIdToDel" name="postIdToDel" value="" >
 </form>
+
+<script type="text/javascript" src="<c:url value='/scripts/violations.js' />"></script>
 <%@ include file="../footer.jsp" %>
