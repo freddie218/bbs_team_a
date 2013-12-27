@@ -44,12 +44,15 @@
 
         <p style="text-align: center;">Operations:
             <strong>
-                <c:choose>
-                    <c:when test="${not like}">
-                        <a href="javascript:void(0)" onclick="like_confirm('${post.postId}');">Like</a>
-                    </c:when>
-                    <c:otherwise>Liked</c:otherwise>
-                </c:choose>
+                <c:if test="${post.parentId eq 0}">
+                    <c:choose>
+                        <c:when test="${not like}">
+                            <a href="javascript:void(0)" onclick="like_confirm('${post.postId}');">Like</a>
+                        </c:when>
+                        <c:otherwise>Liked</c:otherwise>
+                    </c:choose>
+                </c:if>
+                
                 <c:if test="${not empty isMyMainPost}">
                     <a href="javascript:void(0);" onclick="deletePost('${post.postId}');">X</a>
                 </c:if>
