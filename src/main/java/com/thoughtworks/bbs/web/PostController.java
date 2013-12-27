@@ -151,7 +151,7 @@ public class PostController {
         Post aPost = builder.build();
         postService.save(aPost);
 
-        String[] tagSplit = tag.split(";");
+        String[] tagSplit = tag.split("[,;]");
 
         for(String s : tagSplit)
         {

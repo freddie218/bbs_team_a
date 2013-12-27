@@ -247,12 +247,11 @@ td {
 }
 
 #tagLabel{
-    color: 4262A1;
+    color: #4262A1;
     text-align: center;
-    width: auto;
     padding: 5px 0px;
     background: white;
-    text-indent: 3px;
+    border-left: white solid 3px;
     border-right: white solid 3px;
     border-radius: 5px;
 }

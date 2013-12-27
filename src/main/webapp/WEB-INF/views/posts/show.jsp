@@ -32,6 +32,13 @@
 
         <p class="form-for-post-content">${post.content}</p>
 
+        <p style="float:left; width:auto;">
+             <c:if test="${post.parentId eq 0}">
+                <span>Tags:</span>
+                <span id="tagLabel">${post.title}</span>
+             </c:if>
+        </p>
+
 
         <p style="text-align: center;">Operations:
             <strong>
