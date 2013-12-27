@@ -46,13 +46,25 @@
                <c:out value="${post.authorName}"/></td>
             <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
             <td><fmt:formatDate value="${post.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/> </td>
-
+            <td>
                 <c:choose>
                 <c:when test="${not ifLike[row.index]}">
-                    <td><a href="javascript:void(0)" onclick="like_confirm('${post.postId}');">Like</a></td>
+                    <a href="javascript:void(0)" onclick="like_confirm('${post.postId}');">Like</a>
                 </c:when>
-                <c:otherwise><td>Liked</td></c:otherwise>
+                <c:otherwise>Liked</c:otherwise>
                 </c:choose>
+
+                <c:choose>
+                     <c:when test="${ifTop[row.index]}">
+                          |Topped
+                     </c:when>
+                     <c:otherwise>
+                          <security:authorize ifAnyGranted="ROLE_ADMIN">
+                              <a href="javascript:void(0)" onclick="topPost('${post.postId}');">|Top</a>
+                          </security:authorize>
+                     </c:otherwise>
+                </c:choose>
+            </td>
         </tr>
     </c:forEach>
     </tbody>
@@ -121,4 +133,18 @@ function like_confirm(likedPostId)
      <input type="hidden" id="likePost" name="likePost">
 </form>
 
+<script type="text/javascript">
+function topPost(PostId)
+{
+    var isConfirmed = confirm("Are you sure to top this post?");
+    if(isConfirmed) {
+        document.topPostById.postIdToTop.value = PostId;
+        document.topPostById.submit();
+    }
+}
+
+</script>
+<form name="topPostById" method="post" action='<c:url value="top/${postId}" />' >
+     <input type="hidden" id="postIdToTop" name="postIdToTop" value="" >
+</form>
 <%@ include file="footer.jsp" %>
