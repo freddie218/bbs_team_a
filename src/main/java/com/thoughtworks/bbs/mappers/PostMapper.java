@@ -3,6 +3,7 @@ package com.thoughtworks.bbs.mappers;
 import com.thoughtworks.bbs.model.Post;
 import org.apache.ibatis.annotations.*;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -41,7 +42,7 @@ public interface PostMapper {
     @Update(
         "UPDATE post " +
         "SET parent_id=#{parentId}, author_name=#{authorName}, title=#{title}, content=#{content}, create_time=#{createTime}," +
-                " modify_time=#{modifyTime}, creator_id=#{creatorId}, modifier_id=#{modifierId}, liked_time=#{liked_time}, top=#{top}" +
+                " modify_time=#{modifyTime}, creator_id=#{creatorId}, modifier_id=#{modifierId}, liked_time=#{liked_time}, top=#{top} " +
         "WHERE id=#{postId}"
     )
     void update(Post post);
@@ -70,10 +71,10 @@ public interface PostMapper {
             "SELECT id as postId, parent_id as parentId, author_name as authorName, title, content, create_time as createTime, " +
                     "modify_time as modifyTime, creator_id as creatorId, modifier_id as modifierId, liked_time as liked_time, top as top " +
                     "FROM post " +
-                    "WHERE parent_id = 0 " +
+                    "WHERE parent_id = 0 AND top = false " +
                     "ORDER BY create_time desc"
     )
-    List<Post> findAllPostsOrderByTime();
+    List<Post> findAllNormalPostsOrderByTime();
 
     @Select(
             "SELECT id as postId FROM post WHERE (author_name = #{name} and create_time = #{time})"
@@ -85,8 +86,18 @@ public interface PostMapper {
              "SELECT id as postId, parent_id as parentId, author_name as authorName, title, content, create_time as createTime, " +
                     "modify_time as modifyTime, creator_id as creatorId, modifier_id as modifierId, liked_time as liked_time, top as top  " +
                     "FROM post " +
-                    "WHERE (parent_id = 0 and author_name like #{author} and title like #{title} and content like #{content} and create_time >= #{starttime} and create_time < #{endtime})" +
+                    "WHERE (parent_id = 0 and author_name like #{author} and title like #{title} and content like #{content} and create_time >= #{starttime} and create_time < #{endtime}) " +
                     "ORDER BY create_time DESC"
     )
     List<Post> searchPost(@Param(value="author") String author, @Param(value="title") String title, @Param(value="content") String content, @Param(value="starttime")String startTime, @Param(value="endtime")String endTime);
+
+
+    @Select(
+            "SELECT id as postId, parent_id as parentId, author_name as authorName, title, content, create_time as createTime, " +
+                    "modify_time as modifyTime, creator_id as creatorId, modifier_id as modifierId, liked_time as liked_time, top as top " +
+                    "FROM post " +
+                    "WHERE parent_id = 0 AND top = true " +
+                    "ORDER BY create_time desc"
+    )
+    List<Post> findAllTopmostPostsOrderByTime();
 }

@@ -69,6 +69,16 @@ public class HomeControllerTest {
     }
 
     @Test
+    public void shouldReturnHomeAfterSetTopmost(){
+        when(request.getParameter("postIdToTop")).thenReturn("123");
+
+        ModelAndView result = controller.setTopMost(request,principal,model);
+
+        verify(service).setTopMostPost("123");
+        assertEquals("redirect:/", result.getViewName());
+    }
+
+    @Test
     public void shouldReturnLoginWhenGetPrincipalNull() {
         principal = null;
         String expectedUrl = "login";
