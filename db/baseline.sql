@@ -38,6 +38,7 @@ CREATE TABLE `post` (
   `creator_id` int(11) NOT NULL,
   `modifier_id` int(11) NOT NULL,
   `liked_time` int(11) NOT NULL,
+  `top` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
