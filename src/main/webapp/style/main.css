@@ -255,3 +255,9 @@ td {
     border-right: white solid 3px;
     border-radius: 5px;
 }
+
+.jiathis_style{
+    float:right;
+    padding:5px 20px;
+    position:absolute;
+}
