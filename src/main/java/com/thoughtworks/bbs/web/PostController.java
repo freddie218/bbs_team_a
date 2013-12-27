@@ -60,13 +60,24 @@ public class PostController {
     public String get(@PathVariable("postId") Long postId, Model model, @ModelAttribute Post post, Principal principal) {
         model.addAttribute("mainPost", postService.get(postId));
         model.addAttribute("posts", postService.findAllPostByMainPost(postId));
+
         if(postService.get(postId).getAuthorName().equals(principal.getName())) {
             model.addAttribute("isMyMainPost", "True");
         }
 
         Long userID = userService.getByUsername(principal.getName()).getId();
         model.addAttribute("like", postLikeService.isLiked(userID, postId));
+        model.addAttribute("tagLabels", getTags(postTagService.getPostTagByPostID(postId)));
         return "posts/show";
+    }
+
+    private List<String> getTags(List<PostTag> allTags) {
+        List<String> tags = new ArrayList<String>();
+        for(PostTag postTag : allTags)
+        {
+            tags.add(postTag.getATag());
+        }
+        return tags;
     }
 
     @RequestMapping(value = {"/{postId}"}, method = RequestMethod.POST)
@@ -152,12 +163,10 @@ public class PostController {
         postService.save(aPost);
 
         String[] tagSplit = tag.split("[,;]");
-
         for(String s : tagSplit)
         {
-            PostTag newPostTag = new PostTag().setATag(s).setPostID(
-                    postService.getPostIdByAuthorAndCreateTime(aPost.getAuthorName(), aPost.getCreateTime()));
-            postTagService.save(newPostTag);
+            postTagService.save(new PostTag().setATag(s).setPostID(
+                    postService.getPostIdByAuthorAndCreateTime(aPost.getAuthorName(), aPost.getCreateTime())));
         }
 
         return new ModelAndView("redirect:/");

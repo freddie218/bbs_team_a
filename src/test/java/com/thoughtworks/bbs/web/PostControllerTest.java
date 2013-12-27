@@ -2,9 +2,11 @@ package com.thoughtworks.bbs.web;
 
 import com.thoughtworks.bbs.model.Post;
 import com.thoughtworks.bbs.model.PostLike;
+import com.thoughtworks.bbs.model.PostTag;
 import com.thoughtworks.bbs.model.User;
 import com.thoughtworks.bbs.service.PostLikeService;
 import com.thoughtworks.bbs.service.PostService;
+import com.thoughtworks.bbs.service.PostTagService;
 import com.thoughtworks.bbs.service.UserService;
 import com.thoughtworks.bbs.service.impl.PostServiceImpl;
 import com.thoughtworks.bbs.service.impl.UserServiceImpl;
@@ -13,7 +15,9 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.ArgumentMatcher;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
@@ -35,6 +39,7 @@ public class PostControllerTest {
     private PostService postService;
     private UserService userService;
     private PostLikeService postLikeService;
+    private PostTagService postTagService;
     private PostController postController;
     private HttpServletRequest request;
     private User user;
@@ -50,6 +55,7 @@ public class PostControllerTest {
         postService = mock(PostServiceImpl.class);
         userService = mock(UserServiceImpl.class);
         postLikeService = mock(PostLikeService.class);
+        postTagService = mock(PostTagService.class);
         request = mock(HttpServletRequest.class);
         principal = mock(Principal.class);
 
@@ -69,14 +75,16 @@ public class PostControllerTest {
         postController.setPostService(postService);
         postController.setUserService(userService);
         postController.setPostLikeService(postLikeService);
+        postController.setPostTagService(postTagService);
 
     }
 
-    @Ignore
+    @Test
     public void shouldJumpToHomeWhenCreatePostSuccess() throws IOException {
 
         when(request.getParameter("title")).thenReturn("hello");
         when(request.getParameter("content")).thenReturn("hello everyone");
+        when(request.getParameter("allTags")).thenReturn("tag1;tag2,tag3");
 
         result = postController.processCreate(request, principal, modelMap);
         expected = new ModelAndView("redirect:/");
@@ -154,16 +162,20 @@ public class PostControllerTest {
 
     }
 
-    //duplicated test with last one above.
-    // what's more, we get flashAttributes from sessions when running in a web-browser other than in tests.
-/*    @Test
-    public void shouldShowWarningWhenReplyPostError() {
-        when(request.getParameter("title")).thenReturn("Re");
-        when(request.getParameter("content")).thenReturn("");
-        Long postId = 1L;
-        postController.processReplyPost(postId,null,request,principal,model);
-        assertTrue(model.containsAttribute("error"));
-    }*/
+    @Test
+    public void shouldShowAllInfoAboutOnePost() {
+
+        Post post = new PostBuilder().author("someone").id(5L).parentId(3L).build();
+        postService.save(post);
+        when(postService.get(post.getPostId())).thenReturn(post);
+
+        ModelAndView expected = new ModelAndView("posts/show");
+        ModelAndView result = new ModelAndView(postController.get(5L, model, new Post(), principal));
+
+        assertEquals(expected.getViewName(), result.getViewName());
+
+    }
+
 
     @Test
     public void shouldStayAtShowPageAfterReplyDeletion() {

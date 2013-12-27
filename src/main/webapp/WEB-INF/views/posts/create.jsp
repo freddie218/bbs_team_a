@@ -6,8 +6,13 @@
     function showTags()
     {
         var cont = document.getElementById('tags').value;
-        $("#tagLabel").text(cont);
-        document.createForm.allTags.value=cont;
+        var pre = $("#tagLabel").text();
+        var after = cont.concat(";", pre);
+        var tags = after.split(/;|,/);
+        tags = tags.filter (function (v, i, a) { return a.indexOf (v) == i });
+
+        $("#tagLabel").text(tags.toString());
+        document.createForm.allTags.value=tags.join();
     }
     </script>
 
