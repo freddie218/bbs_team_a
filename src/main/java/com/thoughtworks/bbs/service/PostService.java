@@ -24,4 +24,6 @@ public interface PostService {
     Long getPostIdByAuthorAndCreateTime (String name, Date time);
 
     List<Post> searchPost(String author, String title, String content, String start, String end);
+
+    void setTopMostPost(String postID);
 }

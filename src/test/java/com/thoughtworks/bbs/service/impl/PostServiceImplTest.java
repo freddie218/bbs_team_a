@@ -83,16 +83,23 @@ public class PostServiceImplTest {
 
     @Test
     public void shouldGetAllPostsOrderByTime() {
-        List<Post> expectedPostList = new ArrayList<Post>();
-        expectedPostList.add(new Post());
-        expectedPostList.add(new Post());
-        expectedPostList.add(new Post());
-        when(mapper.findAllPostsOrderByTime()).thenReturn(expectedPostList);
+        List<Post> expectedNormalPostList = new ArrayList<Post>();
+        expectedNormalPostList.add(new Post());
+        expectedNormalPostList.add(new Post());
+        List<Post> expectedTopmostPostList = new ArrayList<Post>();
+        expectedTopmostPostList.add(new Post());
+        when(mapper.findAllNormalPostsOrderByTime()).thenReturn(expectedNormalPostList);
+        when(mapper.findAllTopmostPostsOrderByTime()).thenReturn(expectedTopmostPostList);
+
+        List<Post> expectedAllPostList = new ArrayList<Post>();
+        expectedAllPostList.addAll(expectedTopmostPostList);
+        expectedAllPostList.addAll(expectedNormalPostList);
 
         List<Post> returnedPostList = postService.findAllPostsOrderByTime();
 
-        verify(mapper).findAllPostsOrderByTime();
-        assertThat(returnedPostList, is(expectedPostList));
+        verify(mapper).findAllNormalPostsOrderByTime();
+        verify(mapper).findAllTopmostPostsOrderByTime();
+        assertThat(returnedPostList, is(expectedAllPostList));
     }
 
     @Test
@@ -131,6 +138,7 @@ public class PostServiceImplTest {
         verify(mapper).getPostIDByNameAndTime("juntao", date_1);
 
     }
+
     @Test
     public void shouldGetSearchResult(){
 
@@ -143,5 +151,13 @@ public class PostServiceImplTest {
 
     }
 
+    @Test
+    public void shouldUpdatePostWhenSetTopmost(){
+        Post post = new Post();
+        when(mapper.get(Long.parseLong("123"))).thenReturn(post);
 
+        postService.setTopMostPost("123");
+
+        verify(mapper).update(post);
+    }
 }

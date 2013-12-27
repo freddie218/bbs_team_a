@@ -123,4 +123,12 @@ public class HomeController {
         postService.save(newPost);
         return searchPost(request,principal,model);
     }
+
+    @RequestMapping(value = {"/top"}, method = RequestMethod.POST)
+    public ModelAndView setTopMost(HttpServletRequest request, Principal principal, Model model)
+    {
+        String postID = request.getParameter("postIdToTop");
+        postService.setTopMostPost(postID);
+        return new ModelAndView("redirect:/");
+    }
 }

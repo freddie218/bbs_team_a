@@ -111,7 +111,8 @@ public class PostServiceImpl implements PostService {
 
         try {
             PostMapper postMapper = session.getMapper(PostMapper.class);
-            posts = postMapper.findAllPostsOrderByTime();
+            posts = postMapper.findAllTopmostPostsOrderByTime();
+            posts.addAll(postMapper.findAllNormalPostsOrderByTime());
         } finally {
             session.close();
         }
@@ -165,5 +166,19 @@ public class PostServiceImpl implements PostService {
     private String addFilter(String param){
         if(param == null) param = "";
         return "%"+param+"%";
+    }
+
+    @Override
+    public void setTopMostPost(String postID) {
+        SqlSession session = factory.openSession();
+        try {
+            PostMapper postMapper = session.getMapper(PostMapper.class);
+            Post post = postMapper.get(Long.parseLong(postID));
+            post.setTop(true);
+            postMapper.update(post);
+            session.commit();
+        } finally {
+            session.close();
+        }
     }
 }
