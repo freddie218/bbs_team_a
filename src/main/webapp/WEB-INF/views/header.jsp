@@ -13,9 +13,11 @@
     <link rel="stylesheet" href="<c:url value='/style/bootstrap.css' />" type="text/css"/>
     <link rel="stylesheet" href="<c:url value='/style/bootstrap-theme.css' />" type="text/css"/>
     <link rel="stylesheet" href="<c:url value='/style/main.css' />" type="text/css"/>
+    <link rel="stylesheet" href="<c:url value='/style/jquery-ui.css' />">
 
     <script type="text/javascript" src="<c:url value='/scripts/jquery-1.10.2.js' />"></script>
     <script type="text/javascript" src="<c:url value='/scripts/bootstrap.js' />"></script>
+    <script type="text/javascript" src="<c:url value='/scripts/jquery-ui.js' />"></script>
 </head>
 <body>
     <div class="navbar">

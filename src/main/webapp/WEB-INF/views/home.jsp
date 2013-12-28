@@ -15,6 +15,11 @@
         $("#author").val(getURLParameter("author"));
 
     });
+    $(function(){
+       $("#start").datepicker({ dateFormat: "yy-mm-dd" }).val();
+       $("#end").datepicker({ dateFormat: "yy-mm-dd" }).val();
+    });
+
 </script>
 
 <table class="table table-hover">
@@ -94,13 +99,13 @@
             <td>
                 <label class="control-label">Publish Time From:</label>
                 <div class="controls">
-                    <input class="form-control" type='date'  id="start" name='start'/>
+                    <input class="form-control" type='text'  id="start" name='start'/>
                 </div>
             </td>
             <td>
                 <label class="control-label">Publish Time To:</label>
                 <div class="controls">
-                    <input class="form-control" type='date' id="end" name='end'/>
+                    <input class="form-control" type='text' id="end" name='end'/>
                 </div>
             </td>
         </tr>
