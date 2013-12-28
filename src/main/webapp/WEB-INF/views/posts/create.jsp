@@ -11,7 +11,7 @@
         var tags = after.split(/;|,/);
         tags = tags.filter (function (v, i, a) { return a.indexOf (v) == i });
 
-        $("#tagLabel").text(tags.toString());
+        $("#tagLabel").text(tags.join());
         document.createForm.allTags.value=tags.join();
     }
     </script>

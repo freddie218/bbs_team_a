@@ -42,7 +42,7 @@
         </p>
 
 
-        <p style="text-align: center;">Operations:
+        <p style="position:absolute; margin: 0 0 0 250px">Operations:
             <strong>
                 <c:if test="${post.parentId eq 0}">
                     <c:choose>
