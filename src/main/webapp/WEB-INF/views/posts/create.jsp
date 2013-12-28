@@ -10,8 +10,12 @@
         var after = cont.concat(";", pre);
         var tags = after.split(/;|,/);
         tags = tags.filter (function (v, i, a) { return a.indexOf (v) == i });
+        for(var i=0;i<tags.length;i++)
+        {
+            var label = $("<label style='color: #4262A1; background: white;margin: 0 5px 0 0 ; width: auto; border-left: white solid 3px; border-right: white solid 3px;border-radius: 5px;'>").text(tags[i]);
+            $("#tagsLabel").append(label);
+        }
 
-        $("#tagLabel").text(tags.join());
         document.createForm.allTags.value=tags.join();
     }
     </script>
@@ -51,7 +55,7 @@
         <div class="control-group">
             <div>
                 <label class="control-label">Tags:</label>
-                <label id="tagLabel" class="control-label"></label>
+                <div id="tagsLabel"></div>
             </div>
             <div>
                 <input id="tags" class="form-control" placeholder="post tags"/>
