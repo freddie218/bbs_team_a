@@ -36,7 +36,9 @@
              <c:if test="${post.parentId eq 0}">
                 <span>Tags:</span>
                 <c:forEach var="postTag" items="${tagLabels}" varStatus="row">
-                    <span id="tagLabel">${postTag}</span>
+                    <c:if test="${not empty postTag}">
+                        <span id="tagLabel">${postTag}</span>
+                    </c:if>
                 </c:forEach>
              </c:if>
         </p>
