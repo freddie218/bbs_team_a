@@ -58,13 +58,13 @@
                 </c:when>
                 <c:otherwise>Liked</c:otherwise>
                 </c:choose>
-                <span> | </span>
                 <c:choose>
                      <c:when test="${post.top}">
-                          Topped
+                         <span> | Topped</span>
                      </c:when>
                      <c:otherwise>
                           <security:authorize ifAnyGranted="ROLE_ADMIN">
+                              <span> | </span>
                               <a href="javascript:void(0)" onclick="topPost('${post.postId}');">Top</a>
                           </security:authorize>
                      </c:otherwise>
