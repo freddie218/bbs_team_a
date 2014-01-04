@@ -16,8 +16,24 @@
 
     });
     $(function(){
-       $("#start").datepicker({ dateFormat: "yy-mm-dd" }).val();
-       $("#end").datepicker({ dateFormat: "yy-mm-dd" }).val();
+       $("#start").datepicker({
+        defaultDate: "+1w",
+        dateFormat: "yy-mm-dd",
+        changeMonth: true,
+        changeYear: true,
+        onClose: function( selectedDate ) {
+            $( "#end" ).datepicker( "option", "minDate", selectedDate );
+        }
+        });
+       $("#end").datepicker({
+        defaultDate: "+1w",
+        dateFormat: "yy-mm-dd",
+        changeMonth: true,
+        changeYear: true,
+        onClose: function( selectedDate ) {
+            $( "#start" ).datepicker( "option", "maxDate", selectedDate );
+        }
+        });
     });
 
 </script>
