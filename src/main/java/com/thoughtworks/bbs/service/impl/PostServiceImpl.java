@@ -8,6 +8,9 @@ import com.thoughtworks.bbs.service.ServiceResult;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class PostServiceImpl implements PostService {
@@ -156,6 +159,7 @@ public class PostServiceImpl implements PostService {
         author = addFilter(author);
         title = addFilter(title);
         content = addFilter(content);
+        end = addOneDay(end);
         SqlSession session = factory.openSession();
         PostMapper postMapper = session.getMapper(PostMapper.class);
         List<Post> posts = postMapper.searchPost(author, title, content, start, end);
@@ -166,6 +170,21 @@ public class PostServiceImpl implements PostService {
     private String addFilter(String param){
         if(param == null) param = "";
         return "%"+param+"%";
+    }
+
+    private String addOneDay(String dateStr){
+        DateFormat dm = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date date = dm.parse(dateStr);
+            Calendar c =Calendar.getInstance();
+            c.setTime(date);
+            c.add(Calendar.DATE, 1);
+            date = c.getTime();
+            dateStr = dm.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return dateStr;
     }
 
     @Override
