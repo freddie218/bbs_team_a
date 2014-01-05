@@ -8,13 +8,13 @@
         <div class="control-group">
             <label class="control-label" for="username">Username</label>
             <div class="controls">
-                <input class="form-control" type="text" placeholder="user name" id="username" name="username" />
+                <input class="form-control" type="text" placeholder="user name" id="username" name="username" required="required"/>
             </div>
         </div>
         <div class="control-group">
             <label class="control-label" for="password">Password</label>
             <div class="controls">
-                <input class="form-control" type="password" placeholder="password" id="password" name="password" />
+                <input class="form-control" type="password" placeholder="password" id="password" name="password" required="required"/>
             </div>
         </div>
         <div class="control-group">

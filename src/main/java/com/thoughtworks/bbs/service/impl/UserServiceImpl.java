@@ -56,26 +56,26 @@ public class UserServiceImpl implements UserService {
     public ServiceResult<User> save(User user) {
         Map<String, String> errors = validator.validate(user);
         SqlSession session = factory.openSession();
-
         if(errors.isEmpty()) {
             try{
                 UserMapper userMapper = session.getMapper(UserMapper.class);
-                UserRoleMapper userRoleMapper = session.getMapper(UserRoleMapper.class);
+                User duplicateUser = userMapper.findByUsername(user.getUserName());
+                if(duplicateUser!=null){
+                    errors.put("username", "This username <span class='span-name'>"+user.getUserName()+"</span> is so popular, please change another!");
+                }else{
+                    userMapper.insert(user);
+                    UserRoleMapper userRoleMapper = session.getMapper(UserRoleMapper.class);
+                    UserRole userRole = new UserRole();
+                    userRole.setUserId(user.getId());
+                    userRole.setRoleName(ROLE_REGULAR);
+                    userRoleMapper.insert(userRole);
+                    session.commit();
+                }
 
-                userMapper.insert(user);
-
-                UserRole userRole = new UserRole();
-                userRole.setUserId(user.getId());
-                userRole.setRoleName(ROLE_REGULAR);
-
-                userRoleMapper.insert(userRole);
-
-                session.commit();
             } finally {
                 session.close();
             }
         }
-
         return new ServiceResult<User>(errors, user);
     }
 

@@ -187,6 +187,12 @@ td {
     margin: 12px 0;
 }
 
+.prompt-error {
+    color: #a94442;
+    font-size: 12pt;
+    margin: 12px 0;
+}
+
 .create-error {
     text-align: left;
     margin-left: 10%;
@@ -230,6 +236,11 @@ td {
     width: 50%;
     margin-right: 5px;
     display: inline;
+}
+
+.span-name {
+    color: #3D84C1;
+    font-style:italic;
 }
 
 #addButton {

@@ -5,6 +5,7 @@ import com.thoughtworks.bbs.model.PostLike;
 import com.thoughtworks.bbs.model.User;
 import com.thoughtworks.bbs.service.PostLikeService;
 import com.thoughtworks.bbs.service.PostService;
+import com.thoughtworks.bbs.service.ServiceResult;
 import com.thoughtworks.bbs.service.UserService;
 import com.thoughtworks.bbs.service.impl.PostLikeServiceImpl;
 import com.thoughtworks.bbs.service.impl.PostServiceImpl;
@@ -82,16 +83,19 @@ public class UserController {
     public ModelAndView processCreate(HttpServletRequest request) throws IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-
         UserBuilder builder = new UserBuilder();
         builder.userName(username).password(password).enable(true);
-
-        userService.save(builder.build());
-        User user = userService.getByUsername(username);
-
-        Map<String, User> map = new HashMap<String, User>();
-        map.put("user", user);
-
+        ServiceResult<User> result = userService.save(builder.build());
+        Map<String, Object> map = new HashMap<String, Object>();
+        if(result!=null){
+           map.put("user", result.getModel());
+           if(result.getErrors().isEmpty()){
+               map.put("hasError", false);
+           }else{
+               map.put("hasError", true);
+               map.put("errors",result.getErrors());
+           }
+        }
         return new ModelAndView("user/createSuccess", map);
     }
 
