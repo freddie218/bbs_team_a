@@ -189,8 +189,14 @@ public class UserController {
                 postService.save(post);
             }
             userService.update(user);
-            Authentication authentication = new UsernamePasswordAuthenticationToken(newUsername,user.getPasswordHash(),SecurityContextHolder.getContext().getAuthentication().getAuthorities());
-           SecurityContextHolder.getContext().setAuthentication(authentication);
+            Authentication oldAuthentication = SecurityContextHolder.getContext().getAuthentication();
+            Authentication authentication = null;
+            if(oldAuthentication == null){
+                authentication = new UsernamePasswordAuthenticationToken(newUsername,user.getPasswordHash());
+            }else{
+                authentication = new UsernamePasswordAuthenticationToken(newUsername,user.getPasswordHash(),oldAuthentication.getAuthorities());
+            }
+            SecurityContextHolder.getContext().setAuthentication(authentication);
             map.clear();
             map.put("user",user);
             model.addAttribute("myPosts", myPosts);
@@ -243,6 +249,7 @@ public class UserController {
     }
 
     private boolean isLegalPwd(String pwd){
+        if(pwd==null || pwd.trim().isEmpty()) return false;
         String regex = "^[a-zA-Z0-9]\\w{5,11}$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(pwd);
