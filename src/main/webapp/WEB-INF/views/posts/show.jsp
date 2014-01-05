@@ -8,8 +8,12 @@
     <div class="form-for-post">
         <c:if test="${post.parentId eq 0}"><h1 style="text-align: center;">${post.title}</h1></c:if>
         <c:if test="${post.parentId > 0}"><h3 style="text-align: center;">${post.title}</h3></c:if>
-        <p style="text-align: center;">Author:&nbsp;&nbsp;<strong>${post.authorName}</strong>&nbsp;&nbsp;&nbsp;&nbsp;Create
-            Time:&nbsp;&nbsp;<strong><fmt:formatDate value="${post.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></strong>
+        <p style="text-align: center;">Author:&nbsp;&nbsp;
+         <a href="<c:url value='/user/${post.modifierId}' />">
+         <strong>${post.authorName}</strong></a>
+         &nbsp;&nbsp;&nbsp;&nbsp;Create
+         Time:&nbsp;&nbsp;
+        <strong><fmt:formatDate value="${post.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></strong>
         <c:if test="${post.parentId eq 0}">
          <span class="jiathis_style">
              <a class="jiathis_button_renren"></a>
