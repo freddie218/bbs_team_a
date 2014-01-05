@@ -188,7 +188,7 @@ td {
 .prompt-error {
     color: #a94442;
     font-size: 12pt;
-    margin: 12px 0;
+    margin: 10px 0;
 }
 
 .create-error {

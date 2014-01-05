@@ -126,15 +126,13 @@ public class UserController {
         String newPasswd = request.getParameter("confirmPassword");
         Map<String, User> map = new HashMap<String, User>();
         map.put("user", user);
-
         List<Post> myPosts = postService.findMainPostByAuthorNameSortedByCreateTime(principal.getName());
         model.addAttribute("myPosts", myPosts);
-
-        if (userService.passwordVerify(user, password) && userService.password(user, newPasswd)){
+        if (isLegalPwd(newPasswd)&&userService.passwordVerify(user, password) && userService.password(user, newPasswd)){
             model.addAttribute("success", "Password changed successfully.");
-            return new ModelAndView("user/profile", map);
+        }else{
+            model.addAttribute("error", "Failed to change password.");
         }
-        model.addAttribute("error", "Failed to change password.");
         return new ModelAndView("user/profile", map);
     }
 
