@@ -173,6 +173,6 @@ public class PostController {
     }
 
     private boolean isTitleOrContentEmpty(String title, String content){
-        return title.isEmpty() || content.isEmpty();
+        return title.trim().isEmpty() || content.trim().isEmpty();
     }
 }
