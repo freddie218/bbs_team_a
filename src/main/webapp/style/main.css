@@ -157,8 +157,6 @@ td {
     text-align:left;
 }
 .control-label{
-    max-width:100%;
-    width:auto;
     padding-top: 5px;
     padding-bottom: 5px;
     vertical-align:middle;
@@ -202,6 +200,17 @@ td {
 
 .page-action .create-error {
     width: 80%;
+}
+
+.lead {
+    margin-left:55px;
+}
+#changePassword .form-horizontal{
+    background-color:#DDDDDD;
+    max-width:650px;
+    margin: 0 auto;
+    text-align: left;
+    padding: 20px;
 }
 
 #replyPostError {

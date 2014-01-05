@@ -178,10 +178,9 @@ public class UserController {
                 post.setAuthorName(newUsername);
                 postService.save(post);
             }
-
             userService.update(user);
-            Authentication authentication = new UsernamePasswordAuthenticationToken(newUsername,user.getPasswordHash());
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            Authentication authentication = new UsernamePasswordAuthenticationToken(newUsername,user.getPasswordHash(),SecurityContextHolder.getContext().getAuthentication().getAuthorities());
+           SecurityContextHolder.getContext().setAuthentication(authentication);
             map.clear();
             map.put("user",user);
             model.addAttribute("myPosts", myPosts);
