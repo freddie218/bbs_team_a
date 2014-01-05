@@ -28,6 +28,8 @@ import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Controller
 @RequestMapping("/user")
@@ -83,10 +85,20 @@ public class UserController {
     public ModelAndView processCreate(HttpServletRequest request) throws IOException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+        Map<String, Object> map = new HashMap<String, Object>();
+        boolean isPwdValid = isLegalPwd(password);
+        if(!isPwdValid){
+            map.put("hasError", true);
+            Map<String,String> errors = new HashMap<String, String>();
+            errors.put("password","Password should only contains numbers, chars and underscore with length between 6 to 12");
+            map.put("errors",errors);
+            return new ModelAndView("user/createSuccess", map);
+        }
+
         UserBuilder builder = new UserBuilder();
         builder.userName(username).password(password).enable(true);
         ServiceResult<User> result = userService.save(builder.build());
-        Map<String, Object> map = new HashMap<String, Object>();
+
         if(result!=null){
            map.put("user", result.getModel());
            if(result.getErrors().isEmpty()){
@@ -230,6 +242,13 @@ public class UserController {
         {
             postLikeService.deletePostLike(aLike);
         }
+    }
+
+    private boolean isLegalPwd(String pwd){
+        String regex = "^[a-zA-Z0-9]\\w{5,11}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(pwd);
+        return matcher.matches();
     }
 
 }
