@@ -163,6 +163,28 @@ public class PostControllerTest {
     }
 
     @Test
+    public void shouldStayAndNotReplyWhenBadWordsDetectedInReply() {
+        when(request.getParameter("title")).thenReturn("bal...bla...");
+        when(request.getParameter("content")).thenReturn("I love hk.");
+
+        Long postId = 1L;
+        expected = new ModelAndView("redirect:" + postId);
+        Post post = new PostBuilder().author("somebody").parentId(0L).content("some content.").build();
+        result = postController.processReplyPost(postId, post, request,principal, model);
+        assertEquals("should stay and not reply", expected.getViewName(), result.getViewName());
+    }
+
+    @Test
+    public void shouldStayPostCreatePageWhenBadWordsDetected() throws IOException {
+        when(request.getParameter("title")).thenReturn("I love HK");
+        when(request.getParameter("content")).thenReturn("bla..bla...");
+
+        expected = new ModelAndView("posts/create");
+        result = postController.processCreate(request, principal, modelMap);
+        assertEquals("shoul stay while bad words detected", expected.getViewName(), result.getViewName());
+    }
+
+    @Test
     public void shouldShowAllInfoAboutOnePost() {
 
         Post post = new PostBuilder().author("someone").id(5L).parentId(3L).build();

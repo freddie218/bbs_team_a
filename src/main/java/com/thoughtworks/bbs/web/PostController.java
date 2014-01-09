@@ -14,6 +14,7 @@ import com.thoughtworks.bbs.service.impl.PostTagServiceImpl;
 import com.thoughtworks.bbs.service.impl.UserServiceImpl;
 import com.thoughtworks.bbs.util.MyBatisUtil;
 import com.thoughtworks.bbs.util.PostBuilder;
+import com.thoughtworks.bbs.util.ViolationChecker;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,7 +29,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.security.Principal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 
 @Controller
@@ -90,11 +93,16 @@ public class PostController {
         if(isContentEmpty(content)){
             model.addFlashAttribute("error","true");
         }
-        PostBuilder builder = new PostBuilder();
-        builder.title(title).content(content).author(currentUser.getUserName()).parentId(postId).creatorId(currentUser.getId())
-                .modifierId(currentUser.getId()).createTime(new Date()).modifyTime(builder.build().getCreateTime()).likedTime(0L);
+        else if(!ViolationChecker.getInstance().contentLegal(content + " " + title)) {
+            model.addFlashAttribute("illegal", "根据国家相关法律和政策，您的帖子不能发布。");
+        }
+        else {
+            PostBuilder builder = new PostBuilder();
+            builder.title(title).content(content).author(currentUser.getUserName()).parentId(postId).creatorId(currentUser.getId())
+                    .modifierId(currentUser.getId()).createTime(new Date()).modifyTime(builder.build().getCreateTime()).likedTime(0L);
 
-        postService.save(builder.build());
+            postService.save(builder.build());
+        }
 
         return new ModelAndView("redirect:" + postId);
     }
@@ -153,6 +161,12 @@ public class PostController {
         if(isTitleOrContentEmpty(title,content)){
            model.addAttribute("error","true");
            return new ModelAndView("posts/create");
+        }
+        else {
+            if(!ViolationChecker.getInstance().contentLegal(content + " " + title + " " + tag)) {
+                model.addAttribute("illegal", "根据国家相关法律和政策，您的帖子不能发布。");
+                return new ModelAndView("posts/create");
+            }
         }
 
         PostBuilder builder = new PostBuilder();
