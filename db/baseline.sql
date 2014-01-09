@@ -18,11 +18,11 @@
 -- Table structure for table `post`
 --
 
-DROP DATABASE IF EXISTS `bbs`;
+DROP DATABASE IF EXISTS `bbs_a`;
 
-CREATE DATABASE `bbs` character set utf8;
+CREATE DATABASE `bbs_a` character set utf8;
 
-USE `bbs`;
+USE `bbs_a`;
 
 DROP TABLE IF EXISTS `post`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
