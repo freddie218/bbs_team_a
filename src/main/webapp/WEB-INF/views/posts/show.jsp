@@ -87,19 +87,17 @@ function like_confirm(likedPostId)
         <c:when test="${not empty error}">
             <div id="replyPostError" class="page-action create-error">
                 Content cannot be empty!
-                ${sessionScope["SPRING_SECURITY_LAST_EXCEPTION"].message}
             </div>
         </c:when>
         <c:otherwise>
-            <div id="replyCreateHint" class="page-action">
-
-            </div>
+             <c:if test="${not empty illegal}">
+                 <div id="replyCreateHint" class="page-action create-error">${illegal}</div>
+             </c:if>
         </c:otherwise>
     </c:choose>
 
 <div id="createPanel">
-    <form name="replyPost" id="replyPost" method="post"
-        onsubmit='return contentLegal(["title", "content"], "replyCreateHint", VIOLATIONS_WARNING);'>
+    <form name="replyPost" id="replyPost" method="post" >
         <input type="hidden" id="parentId" name="parentId" value="${mainPost.postId}" />
         <input type="hidden" id="title" name="title" value="Re: ${mainPost.title}" />
         <input type="hidden" id="likePost" name="likePost" />

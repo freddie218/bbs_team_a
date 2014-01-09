@@ -31,15 +31,14 @@
             </div>
         </c:when>
         <c:otherwise>
-            <div id="createHint" class="page-action">
-
-            </div>
+            <c:if test="${not empty illegal}">
+                <div id="createHint" class="page-action create-error">${illegal}</div>
+            </c:if>
         </c:otherwise>
     </c:choose>
 
 <div id="createPanel">
-    <form class="form-horizontal post-create" name="createForm" action="<c:url value='/posts/create' />" method="post"
-        onsubmit='return contentLegal(["title", "content"], "createHint", VIOLATIONS_WARNING);'>
+    <form class="form-horizontal post-create" name="createForm" action="<c:url value='/posts/create' />" method="post">
         <div class="control-group">
             <label class="control-label" for="title">Title</label>
             <div class="controls">
