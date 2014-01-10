@@ -14,7 +14,10 @@
                     authentication-failure-url="/loginfailed"
                     always-use-default-target="true"/>
         <logout logout-success-url="/logout" />
-
+        <session-management invalid-session-url="/login">
+            <concurrency-control max-sessions="1" error-if-maximum-exceeded="false"/>
+        </session-management>
+        
         <intercept-url pattern="/admin" access="ROLE_ADMIN"/>
         <intercept-url pattern="/user" access="ROLE_REGULAR"/>
         <intercept-url pattern="/user/users" access="ROLE_ADMIN"/>
