@@ -10,14 +10,38 @@
         var after = cont.concat(";", pre);
         var tags = after.split(/;|,/);
         tags = tags.filter (function (v, i, a) { return a.indexOf (v) == i });
+
+        var len = document.getElementById("tagsLabel").childNodes.length;
+        var s = new Array(len);
+        for(var j=0;j<len;j++)
+        {
+            s[j] = document.getElementById("tagsLabel").childNodes[j].innerHTML;
+        }
+
         for(var i=0;i<tags.length;i++)
         {
-            var label = $("<label style='color: #4262A1; background: white;margin: 0 5px 0 0 ; width: auto; border-left: white solid 3px; border-right: white solid 3px;border-radius: 5px;'>").text(tags[i]);
-            $("#tagsLabel").append(label);
+            if("" != tags[i] )
+            {
+                var flag = false;
+                for(var k=0; k<s.length; k++)
+                {
+                    if(s[k] == tags[i])
+                    {
+                        flag = true;
+                    }
+                }
+                if(flag == false)
+                {
+                    var label = $("<label style='color: #4262A1; background: white;margin: 0 5px 0 0 ; width: auto; border-left: white solid 3px; border-right: white solid 3px;border-radius: 5px;'>").text(tags[i] .replace(/(^\s*)|(\s*$)/g, ""));
+                    $("#tagsLabel").append(label);
+                }
+
+            }
         }
 
         document.createForm.allTags.value=tags.join();
     }
+
     </script>
 
 <body>
